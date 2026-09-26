@@ -1,0 +1,913 @@
+.commit-hero {
+    height: min(65rem, 100vh);
+    position: relative;
+    display: flex;
+    align-items: end;
+}
+
+.commit-hero .container {
+    margin-left: 0;
+}
+
+.commit-hero-bg {
+    position: absolute;
+    inset: 0;
+}
+
+.commit-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 6.4rem 0;
+    color: var(--white);
+    width: 62.4rem;
+    margin-top: 0;
+}
+
+.commit-hero-title {
+    margin-top: 2.4rem;
+}
+
+.commit-hero-pagi {
+    display: flex;
+    gap: .6rem;
+
+}
+
+.commit-hero-pagi-devi {
+    color: var(--white);
+    opacity: .6;
+}
+
+.commit-hero-pagi-prev {
+    opacity: .6;
+    color: var(--white);
+    transition: opacity var(--transition);
+}
+
+.commit-hero-pagi-prev:hover {
+    opacity: 1;
+}
+
+.commit-hero-content-bg {
+    opacity: .97;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: calc(abs(100vw - 1440px)/2*-1 - 8rem);
+    pointer-events: none;
+    background: var(--linear-primary);
+    z-index: -1;
+    --cut: 8rem;
+}
+
+@media screen and (max-width: 991px) {
+    .commit-hero-content {
+        padding-block: 3.2rem;
+    }
+
+    .commit-hero-title {
+        margin-top: 1.6rem;
+    }
+
+    .commit-hero-content-bg {
+        --cut: 6rem;
+    }
+
+
+    .commit-hero .container {
+        padding-right: 0;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .commit-hero-content-bg {
+        background: linear-gradient(94deg, rgba(32, 183, 198, 1) -3.94%, rgba(11, 111, 126, 1) 174.46%);
+        --cut: 4.8rem;
+    }
+
+    .commit-hero-content {
+        width: 100%;
+    }
+}
+
+/* ========================================================================== 
+   Company Introduction
+   ========================================================================== */
+.commit-intro {
+    padding-block: 12rem;
+    background-color: var(--white);
+}
+
+.commit-intro-inner {
+    align-items: center;
+}
+
+.commit-intro-content {
+    grid-column: 1/7;
+    margin-right: 4.8rem;
+}
+
+.commit-intro-title {
+    margin-top: 1.6rem;
+    color: var(--txt-icon-primary);
+}
+
+.commit-intro-title span {
+    display: block;
+    color: var(--primary-2);
+}
+
+.commit-intro-copy {
+    margin-top: 2.4rem;
+    color: var(--txt-icon-secondary);
+}
+
+.commit-intro-list {
+    display: grid;
+    row-gap: .6rem;
+    margin-top: 1.6rem;
+    padding-left: 2rem;
+}
+
+.commit-intro-media {
+    grid-column: 7/-1;
+    margin: 0;
+    overflow: hidden;
+}
+
+.commit-intro-media img {
+    display: block;
+}
+
+@media screen and (max-width: 991px) {
+    .commit-intro {
+        padding-block: 6.4rem;
+    }
+
+    .commit-intro-content {
+        grid-column: 1/7;
+    }
+
+    .commit-intro-media {
+        grid-column: 7/-1;
+    }
+
+    .commit-intro-content {
+        margin-right: 0;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .commit-intro-list {
+        margin-top: 1.2rem;
+    }
+
+    .commit-intro {
+        padding-block: 4.8rem;
+    }
+
+
+    .commit-intro-inner {
+        row-gap: 3.2rem;
+    }
+
+    .commit-intro-content,
+    .commit-intro-media {
+        grid-column: 1/-1;
+        clip-path: none;
+    }
+
+    .commit-intro-copy {
+        margin-top: 1.6rem;
+    }
+
+    .label.red-light {
+        margin-bottom: 0;
+    }
+}
+
+/* ========================================================================== 
+   Manufacturing Capabilities
+   ========================================================================== */
+.commit-capabilities {
+    padding-block: 8rem;
+    background-color: #F6F7FA;
+}
+
+.commit-capabilities-head {
+    align-items: end;
+}
+
+.commit-capabilities-heading {
+    grid-column: 1/8;
+}
+
+.commit-capabilities-label {
+    margin-bottom: 2.4rem;
+}
+
+.commit-capabilities-title {
+    color: var(--txt-icon-primary);
+}
+
+.commit-capabilities-summary {
+    grid-column: 9/-1;
+    align-self: end;
+    color: var(--txt-icon-secondary);
+}
+
+.commit-capabilities-slider {
+    width: 100%;
+    margin-top: 6.4rem;
+    overflow: hidden;
+    border: var(--1px) solid var(--primary-1);
+    background-color: var(--primary-2);
+}
+
+.commit-capabilities-slide.swiper-slide {
+    display: grid;
+    grid-template-columns: 48.5% 51.5%;
+    height: auto;
+}
+
+.commit-capabilities-slide-left {
+    position: relative;
+    z-index: 2;
+    min-width: 0;
+    padding: 4.8rem 0 0 4.8rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--primary-2);
+}
+
+.commit-capabilities-watermark {
+    position: absolute;
+    right: -14rem;
+    bottom: -8rem;
+    width: 42rem;
+    opacity: .12;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.commit-capabilities-number {
+    position: absolute;
+    top: 4rem;
+    left: 4.8rem;
+    z-index: 1;
+    color: rgba(255, 255, 255, .62);
+    user-select: none;
+}
+
+.commit-capabilities-card {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    --cut: 8rem;
+    background: var(--linear-primary);
+}
+
+.commit-capabilities-card-body {
+    width: 100%;
+    min-height: 54rem;
+    padding: 6.4rem 4.8rem 3.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.commit-capabilities-card-title {
+    margin-bottom: 1.8rem;
+    color: var(--white);
+}
+
+.commit-capabilities-card-desc {
+    display: grid;
+    row-gap: 1.4rem;
+    margin-bottom: 2.8rem;
+    color: var(--white);
+}
+
+.commit-capabilities-specs {
+    margin-top: .4rem;
+    padding-left: 2.4rem;
+    display: grid;
+    row-gap: .35rem;
+}
+
+.commit-capabilities-card-action {
+    margin-top: auto;
+}
+
+.commit-capabilities-card-btn {
+    display: inline-flex;
+    padding: 1.2rem 2.4rem;
+}
+
+.commit-capabilities-slide-right {
+    position: relative;
+    z-index: 2;
+    min-width: 0;
+    min-height: 54rem;
+    overflow: hidden;
+}
+
+.commit-capabilities-slide-right img {
+    display: block;
+    transition: transform var(--transition);
+    transform: scale(1.05);
+}
+
+.commit-capabilities-slide.swiper-slide-active .commit-capabilities-slide-right img {
+    transform: scale(1);
+}
+
+.commit-capabilities-image-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 64%, rgba(0, 0, 0, .58) 100%);
+}
+
+.commit-capabilities-card-body,
+.commit-capabilities-number {
+    opacity: 0;
+    transform: translateY(1.2rem);
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+.commit-capabilities-slide.swiper-slide-active .commit-capabilities-card-body,
+.commit-capabilities-slide.swiper-slide-active .commit-capabilities-number {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.commit-capabilities-controls {
+    position: absolute;
+    left: calc(48.5% + 4.8rem);
+    right: 2.8rem;
+    bottom: 2.8rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    column-gap: 1.2rem;
+}
+
+.commit-capabilities-prev,
+.commit-capabilities-next {
+    width: 4.4rem;
+    height: 4.4rem;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --cut: 1.2rem;
+    border: none;
+    color: var(--primary-2);
+    background-color: var(--white);
+    cursor: pointer;
+    transition: color var(--transition), background-color var(--transition);
+}
+
+.commit-capabilities-prev:hover,
+.commit-capabilities-next:hover {
+    color: var(--white);
+    background-color: var(--secondary);
+}
+
+.commit-capabilities-prev svg,
+.commit-capabilities-next svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+.commit-capabilities-prev.swiper-button-disabled,
+.commit-capabilities-next.swiper-button-disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+.commit-capabilities-progress {
+    position: relative;
+    height: .2rem;
+    flex: 1;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, .35);
+}
+
+.commit-capabilities-progress-bar {
+    position: absolute;
+    inset: 0;
+    background-color: var(--white);
+    transform: scaleX(.5);
+    transform-origin: left;
+    transition: transform var(--transition);
+}
+
+.commit-capabilities-next-tab {
+    position: relative;
+    width: max-content;
+    height: 4.4rem;
+    padding: .8rem 1.6rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    --cut: .8rem;
+    border: none;
+    overflow: hidden;
+    transition: background-color var(--transition);
+    background-color: unset;
+}
+
+.commit-capabilities-next-item {
+    grid-column: 1/2;
+    grid-row: 1/2;
+    display: flex;
+    align-items: center;
+    column-gap: 1.2rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition);
+}
+
+.commit-capabilities-next-item.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.commit-capabilities-next-number,
+.commit-capabilities-next-title {
+    color: var(--primary-2);
+    transition: color var(--transition);
+    position: relative;
+}
+
+.commit-capabilities-next-number {
+    color: var(--white);
+}
+
+.commit-capabilities-next-number::before {
+    content: "";
+    width: 1px;
+    position: absolute;
+    top: -.3rem;
+    bottom: -0.3rem;
+    background-color: #EDEFF4;
+    right: -0.8rem;
+}
+
+.commit-capabilities-next-title {
+    background-color: var(--white);
+    padding: .3rem 1.2rem;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+
+
+@media screen and (max-width: 991px) {
+    .commit-capabilities {
+        padding-block: 8rem;
+    }
+
+    .commit-capabilities-heading {
+        grid-column: 1/8;
+    }
+
+    .commit-capabilities-summary {
+        grid-column: 8/-1;
+    }
+
+    .commit-capabilities-slide.swiper-slide {
+        grid-template-columns: 1fr;
+    }
+
+    .commit-capabilities-slide-left {
+        min-height: 54rem;
+        padding: 0;
+    }
+
+    .commit-capabilities-slide-right {
+        min-height: 40rem;
+    }
+
+    .commit-capabilities-controls {
+        left: 2.8rem;
+        bottom: 2rem;
+    }
+
+    .commit-capabilities-card {
+        --cut: 11.6rem;
+        padding-top: 6rem;
+    }
+
+    .commit-capabilities-number {
+        top: .8rem;
+        left: .8rem;
+        background: linear-gradient(180deg, #FFF 0%, rgba(255, 255, 255, 0.00) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+    }
+
+    .commit-capabilities-card-body {
+        padding-top: 4.4rem;
+    }
+
+    .commit-capabilities-controls {
+        left: unset;
+        bottom: unset;
+        top: 3.2rem;
+        right: 3.2rem;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .commit-capabilities {
+        padding-block: 4.8rem;
+    }
+
+    .commit-capabilities-title br {
+        display: none;
+    }
+
+    .commit-capabilities-heading,
+    .commit-capabilities-summary {
+        grid-column: 1/-1;
+    }
+
+    .commit-capabilities-summary {
+        margin-top: 1.6rem;
+    }
+
+    .commit-capabilities-slider {
+        margin-top: 3.2rem;
+    }
+
+    .commit-capabilities-card-body {
+        min-height: 55rem;
+        padding: 4.4rem 2.8rem 3.2rem;
+    }
+
+    .commit-capabilities-slide-right {
+        min-height: 30rem;
+    }
+
+    .commit-capabilities-next-tab {
+        max-width: 16rem;
+    }
+
+    .commit-capabilities-next-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .commit-capabilities-card-title {
+        margin-bottom: 1.2rem;
+    }
+
+    .commit-capabilities-card-desc {
+        gap: .8rem;
+        margin-bottom: 2.4rem;
+    }
+
+    .commit-capabilities-card-action {
+        margin-top: 0;
+    }
+}
+
+/* ========================================================================== 
+   Mission & Vision
+   ========================================================================== */
+.commit-mission-vision {
+    padding-block: 10rem;
+    background-color: var(--white);
+}
+
+.commit-mission-vision-head {
+    text-align: center;
+}
+
+.commit-mission-vision-label {
+    margin: 0 auto 2.4rem;
+}
+
+.commit-mission-vision-title {
+    color: var(--txt-icon-primary);
+}
+
+.commit-mission-row {
+    display: grid;
+    grid-template-columns: 1fr .95fr;
+    margin-top: 6.4rem;
+    align-items: stretch;
+}
+
+.commit-mission-media {
+    position: relative;
+    min-width: 0;
+    min-height: 43rem;
+    overflow: hidden;
+    background-color: var(--border-default);
+}
+
+.commit-mission-media img {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    max-width: none;
+    display: block;
+    transform: translateX(-50%);
+}
+
+.commit-mission-panel {
+    --cut: 7.2rem;
+    min-width: 0;
+    padding: 5.6rem 6.4rem;
+    background-color: color-mix(in srgb, var(--border-default) 28%, var(--white));
+}
+
+.commit-mission-title {
+    margin-bottom: 2rem;
+    color: var(--primary-2);
+}
+
+.commit-mission-list {
+    display: grid;
+    row-gap: 1.8rem;
+}
+
+.commit-mission-item {
+    display: grid;
+    grid-template-columns: 4.8rem 1fr;
+    column-gap: 1.6rem;
+    align-items: start;
+}
+
+.commit-mission-item-content {
+    min-width: 0;
+}
+
+.commit-mission-icon-frame {
+    width: 4.8rem;
+    height: 4.8rem;
+    padding: var(--1px);
+    color: var(--primary-2);
+    background-color: var(--primary-1);
+}
+
+.commit-mission-icon {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white);
+}
+
+.commit-mission-icon svg {
+    width: 2.4rem;
+    height: 2.4rem;
+}
+
+.commit-mission-item-title {
+    margin-bottom: .4rem;
+    color: var(--txt-icon-primary);
+}
+
+.commit-mission-item-desc {
+    color: var(--txt-icon-secondary);
+}
+
+.commit-vision-banner {
+    position: relative;
+    min-height: 18.4rem;
+    margin-top: 3.6rem;
+    display: grid;
+    grid-template-columns: 32% 68%;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.commit-vision-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: #B50F1D;
+}
+
+.commit-vision-banner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 68%;
+    z-index: 4;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cline x1='17.34' y1='-2' x2='-0.34' y2='102' stroke='%23ffffff' stroke-width='3' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.commit-vision-brand {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    padding-inline: 6.4rem 2rem;
+    margin-right: -18rem;
+}
+
+.commit-vision-brand-bg {
+    position: absolute;
+    inset: 0;
+    opacity: .15;
+    z-index: 2;
+}
+
+.commit-vision-brand-logo img {
+    position: relative;
+    z-index: 3;
+    width: 28rem;
+    height: auto;
+    display: block;
+    filter: brightness(0) invert(1);
+}
+
+.commit-vision-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 4.8rem 4.8rem 4.8rem 15rem;
+    text-align: right;
+    color: var(--white);
+    background: var(--linear-primary);
+    clip-path: polygon(17% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.commit-vision-title {
+    margin-bottom: 1.2rem;
+    color: var(--white);
+}
+
+.commit-vision-desc {
+    width: 100%;
+    max-width: 68rem;
+    color: var(--white);
+}
+
+
+@media screen and (max-width: 991px) {
+    .commit-mission-vision {
+        padding-block: 6rem;
+    }
+
+    .commit-mission-row {
+        grid-template-columns: 1fr;
+        margin-top: 5.6rem;
+    }
+
+    .commit-mission-media {
+        min-height: auto;
+        aspect-ratio: 16 / 9;
+    }
+
+    .commit-mission-panel {
+        --cut: 5.6rem;
+        padding: 4.8rem;
+    }
+
+    .commit-vision-banner {
+        grid-template-columns: 32% 68%;
+    }
+
+
+    .commit-vision-brand {
+        padding-left: 3.2rem;
+    }
+
+    .commit-vision-brand-logo img {
+        width: 20rem;
+    }
+
+    .commit-vision-content {
+        padding: 3.2rem 3.2rem 3.2rem 10rem;
+    }
+
+    .commit-mission-vision-head {
+        text-align: left;
+    }
+
+    .commit-mission-vision-label {
+        margin-inline: 0;
+        margin-bottom: 1.6rem !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .commit-mission-vision {
+        padding-block: 4.8rem;
+        overflow: hidden;
+    }
+
+    .commit-mission-vision-title-tail {
+        display: block;
+    }
+
+    .commit-mission-vision .container {
+        padding-inline: 2rem;
+    }
+
+    .commit-mission-row {
+        margin-top: 3.2rem;
+    }
+
+    .commit-mission-media {
+        aspect-ratio: 4 / 3;
+        order: 2;
+    }
+
+    .commit-mission-vision-title br {
+        display: none;
+    }
+
+    .commit-mission-vision-title {
+        display: flex;
+        gap: .4rem;
+    }
+
+    .commit-mission-panel {
+        --cut: 3.2rem;
+        padding: 3.2rem 1.6rem;
+        order: 1;
+    }
+
+    .commit-mission-item {
+        grid-template-columns: 4.4rem 1fr;
+        column-gap: 1.2rem;
+    }
+
+    .commit-mission-icon-frame {
+        width: 4.4rem;
+        height: 4.4rem;
+    }
+
+    .commit-vision-banner {
+        min-height: 0;
+        margin-top: 3.2rem;
+        display: block;
+    }
+
+    .commit-vision-banner::after,
+    .commit-vision-banner::before {
+        content: none;
+    }
+
+    .commit-vision-brand {
+        min-height: 15rem;
+        justify-content: start;
+        padding: 5.6rem 2.4rem 2.4rem;
+        margin-right: 0;
+        margin-top: -7.7rem;
+        order: 2;
+        position: relative;
+        background-color: #B50F1D;
+        clip-path: polygon(0 0, 100% 8.2rem, 100% 100%, 0 100%);
+        z-index: 1;
+    }
+
+    .commit-vision-brand-logo img {
+        width: 21.3rem
+    }
+
+    .commit-vision-content {
+        width: 100%;
+        min-height: 24rem;
+        margin-top: -3rem;
+        padding: 6rem 2rem 7.2rem;
+        align-items: flex-end;
+        text-align: right;
+        position: relative;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% calc(100% - 8.2rem));
+        z-index: 2;
+    }
+
+    .commit-vision-desc {
+        max-width: none;
+        opacity: .8;
+        font-weight: 400;
+    }
+
+    .commit-vision-banner {
+        display: flex;
+        flex-direction: column;
+    }
+}

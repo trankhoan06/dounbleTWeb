@@ -1,0 +1,442 @@
+/* ==========================================================================
+   Insight Page Styles - Double T
+   Complies strictly with design.md and AGENTS.md rules
+   NO custom font-size, line-height, letter-spacing, or font-weight declarations (Rule 6)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Header Overrides for Insight Page (Solid White Header matching mockup)
+   -------------------------------------------------------------------------- */
+body.insight-page .header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-default);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+body.insight-page .header-top {
+    border-bottom-color: var(--border-default);
+}
+
+body.insight-page .header-top-slogan,
+body.insight-page .header-top-link,
+body.insight-page .header-lang-trigger {
+    color: var(--txt-icon-secondary);
+}
+
+body.insight-page .header-top-divider {
+    background-color: var(--border-default);
+}
+
+body.insight-page .header-logo img {
+    filter: none;
+}
+
+body.insight-page .header-menu-item {
+    color: var(--txt-icon-primary);
+}
+
+body.insight-page .header-menu-item:hover,
+body.insight-page .header-menu-item.active {
+    color: var(--primary-1);
+}
+
+body.insight-page .header-cta-wrap:after,
+body.insight-page .header-cta-wrap:before {
+    background-color: var(--border-default);
+}
+
+/* --------------------------------------------------------------------------
+   1. Hero Banner (Full width background with bottom-left cut-tr teal card)
+   -------------------------------------------------------------------------- */
+.insight-hero {
+    position: relative;
+    height: min(65rem, 100vh);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background-color: var(--primary-2);
+}
+
+.insight-hero-bg {
+    position: absolute;
+    inset: 0;
+}
+
+.insight-hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0, 0, 0, .14), rgba(0, 0, 0, .02));
+    pointer-events: none;
+}
+
+.insight-hero-inner {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    margin-left: 0;
+}
+
+.insight-hero-container {
+    margin-left: 0;
+}
+
+.insight-hero-panel {
+    position: relative;
+    z-index: 2;
+    width: 62rem;
+    padding: 6.4rem 8rem 6.4rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--white);
+}
+
+.insight-hero-panel-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: calc(abs(100vw - 1440px)/2*-1 - 8rem);
+    pointer-events: none;
+    background: var(--linear-primary);
+    z-index: -1;
+    --cut: 8rem;
+}
+
+.insight-breadcrumb {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    margin-bottom: 2.4rem;
+    color: rgba(255, 255, 255, .72);
+}
+
+.insight-breadcrumb a {
+    color: var(--white);
+    opacity: .6;
+    transition: opacity var(--transition);
+}
+
+.insight-hero-pagi-devi {
+    color: var(--white);
+    opacity: .6;
+}
+
+
+.insight-breadcrumb .current {
+    color: var(--white);
+}
+
+.insight-breadcrumb a:hover {
+    opacity: 1;
+}
+
+.insight-hero-title {
+    color: var(--white);
+}
+
+
+@media screen and (max-width: 991px) {
+    .insight-hero-panel {
+        padding-block: 3.2rem;
+    }
+
+    .insight-hero-title {
+        margin-top: 1.6rem;
+    }
+
+    .insight-hero-panel-bg {
+        --cut: 6rem;
+    }
+
+    .insight-hero {
+        margin-top: 6.3rem;
+    }
+
+
+    .insight-hero .container {
+        padding-right: 0;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .insight-hero-panel-bg {
+        background: linear-gradient(94deg, rgba(32, 183, 198, 1) -3.94%, rgba(11, 111, 126, 1) 174.46%);
+    }
+
+    .insight-hero {
+        margin-top: 6.6rem;
+    }
+
+    .insight-hero-panel {
+        width: 100%;
+        padding-right: 0;
+        min-height: unset;
+    }
+
+    .insight-breadcrumb {
+        margin-bottom: 0;
+    }
+
+    .insight-hero-content-bg {
+        --cut: 4.8rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2. Category Sections Layout & Structure
+   -------------------------------------------------------------------------- */
+.insight-categories {
+    position: relative;
+}
+
+.insight-category {
+    padding-block: 8rem;
+    background-color: var(--white);
+    position: relative;
+}
+
+.insight-category:nth-child(even) {
+    background-color: #F6F7FA;
+}
+
+/* Category Top Bar (Industrial Tag + Line + View All) */
+.insight-category-bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: var(--1px) solid #E8EBF0;
+    margin-bottom: 3.2rem;
+    position: relative;
+}
+
+.insight-category-tag {
+    background: var(--linear-primary);
+    color: var(--white);
+    padding: 1.1rem 3.2rem;
+    --cut: 2.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: calc(-1 * var(--1px));
+}
+
+.insight-category-tag-text {
+    color: var(--white);
+    text-transform: uppercase;
+}
+
+.insight-view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--txt-icon-primary);
+    padding-bottom: 1.2rem;
+    transition: color var(--transition);
+    text-decoration: none;
+}
+
+.insight-view-all-text {
+    color: inherit;
+    text-transform: uppercase;
+}
+
+.insight-view-all-icon {
+    width: 0.8rem;
+    height: 1.2rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform var(--transition);
+}
+
+.insight-view-all:hover {
+    color: var(--primary-1);
+}
+
+.insight-view-all:hover .insight-view-all-icon {
+    transform: translateX(0.4rem);
+}
+
+/* --------------------------------------------------------------------------
+   3. Category Articles Grid Layout
+   -------------------------------------------------------------------------- */
+.insight-category-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4.8rem;
+    align-items: stretch;
+}
+
+/* Left Column: Featured Post */
+.insight-featured-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.insight-card-img {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background-color: #E8EBF0;
+}
+
+.insight-featured-card .insight-card-img {
+    --cut: 3.2rem;
+    margin-bottom: 2.4rem;
+}
+
+.insight-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.insight-featured-card .insight-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.insight-featured-card .insight-card-title {
+    color: var(--txt-icon-primary);
+    margin-bottom: 1.2rem;
+    transition: color var(--transition);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.insight-featured-card:hover .insight-card-title {
+    color: var(--secondary-2);
+}
+
+.insight-featured-card .insight-card-excerpt {
+    color: var(--txt-icon-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Right Column: 2x2 Subgrid (4 Articles) */
+.insight-subgrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3.2rem 2.4rem;
+}
+
+.insight-grid-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.insight-grid-card .insight-card-img {
+    --cut: 2.4rem;
+    margin-bottom: 1.6rem;
+}
+
+.insight-grid-card .insight-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.insight-grid-card .insight-card-title {
+    color: var(--txt-icon-primary);
+    transition: color var(--transition);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.insight-grid-card:hover .insight-card-title {
+    color: var(--secondary-2);
+}
+
+@media screen and (max-width: 1199px) {
+    .insight-hero-box {
+        max-width: min(72rem, 70vw);
+    }
+
+    .insight-category-grid {
+        gap: 3.2rem;
+    }
+
+    .insight-subgrid {
+        gap: 2.4rem 1.8rem;
+    }
+}
+
+@media screen and (max-width: 991px) {
+
+    .insight-category {
+        padding-block: 6.4rem;
+    }
+
+    .insight-category-grid {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+
+    .insight-featured-card .insight-card-img {
+        --cut: 2.8rem;
+        margin-bottom: 2rem;
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+    .insight-category {
+        padding-block: 4.8rem;
+    }
+
+    .insight-featured-card .insight-card-img {
+        --cut: 3.2rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .insight-category-grid {
+        gap: 2.4rem;
+    }
+
+    .insight-featured-card .insight-card-title {
+        margin-bottom: 0;
+    }
+
+    .insight-category-bar {
+        margin-bottom: 2.4rem;
+    }
+
+    .insight-category-tag {
+        padding: 0.8rem 2.4rem;
+        --cut: 1.6rem;
+    }
+
+    .insight-subgrid {
+        grid-template-columns: 1fr;
+        gap: 1.6rem;
+    }
+
+    .insight-grid-card {
+        flex-direction: row;
+        gap: 1.6rem;
+    }
+
+    .insight-grid-card .insight-card-img {
+        --cut: 1.2rem;
+        width: 10rem;
+    }
+}

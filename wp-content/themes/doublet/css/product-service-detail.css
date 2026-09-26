@@ -1,0 +1,804 @@
+/* ==========================================================================
+   Product Service Detail Page Styles - Double T
+   Complies strictly with design.md and AGENTS.md rules
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Header Customization for Detail Page (Solid White Header matching mockup)
+   -------------------------------------------------------------------------- */
+body.product-service-detail-page .header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-default);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+body.product-service-detail-page .header-top {
+    border-bottom-color: var(--border-default);
+}
+
+body.product-service-detail-page .header-top-slogan,
+body.product-service-detail-page .header-top-link,
+body.product-service-detail-page .header-lang-trigger {
+    color: var(--txt-icon-secondary);
+}
+
+body.product-service-detail-page .header-top-divider {
+    background-color: var(--border-default);
+}
+
+body.product-service-detail-page .header-logo img {
+    filter: none;
+}
+
+body.product-service-detail-page .header-menu-item {
+    color: var(--txt-icon-primary);
+}
+
+body.product-service-detail-page .header-menu-item:hover {
+    color: var(--primary-1);
+}
+
+body.product-service-detail-page .header-cta-wrap:after,
+body.product-service-detail-page .header-cta-wrap:before {
+    background-color: var(--border-default);
+}
+
+/* --------------------------------------------------------------------------
+   Common Badges & Section Headers (Industrial Tag & Baseline Separator)
+   -------------------------------------------------------------------------- */
+.psd-section-head {
+    display: flex;
+    align-items: flex-end;
+    border-bottom: var(--1px) solid #DCDFE8;
+    margin-bottom: 3.2rem;
+    position: relative;
+}
+
+.psd-section-tag {
+    background: var(--linear-primary);
+    color: var(--white);
+    padding: 1.1rem 3.2rem;
+    --cut: 2.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: calc(-1 * var(--1px));
+}
+
+.psd-section-line {
+    display: none;
+}
+
+/* --------------------------------------------------------------------------
+   1. Hero Banner (Split Diagonal Hero)
+   -------------------------------------------------------------------------- */
+.psd-hero {
+    --hero-cut: 88%;
+    --hero-line: 0.4rem;
+    position: relative;
+    overflow: hidden;
+    background-color: #0A5A66;
+    margin-top: 10.4rem;
+}
+
+.psd-hero-inner {
+    position: relative;
+    min-height: 40rem;
+    display: flex;
+    align-items: stretch;
+    isolation: isolate;
+}
+
+.psd-hero-panel {
+    position: relative;
+    z-index: 2;
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 6rem;
+    background: var(--linear-primary);
+    clip-path: polygon(0 0, var(--hero-cut) 0, 100% 100%, 0 100%);
+}
+
+/* Diagonal Separator Line matching the clip-path slope */
+.psd-hero-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-color: var(--primary-1);
+    clip-path: polygon(calc(var(--hero-cut) - var(--hero-line)) 0, 100% 0, 100% 100%, calc(100% - var(--hero-line)) 100%);
+}
+
+.psd-hero-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding-right: 12rem;
+}
+
+.psd-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 2.4rem;
+    color: var(--white);
+}
+
+.psd-breadcrumb a {
+    color: inherit;
+    opacity: .6;
+    transition: opacity var(--transition);
+}
+
+.psd-breadcrumb a:hover {
+    opacity: 1;
+}
+
+.psd-breadcrumb .current {
+    color: var(--white);
+    max-width: 23.6rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-wrap: nowrap;
+    height: 100%;
+    max-height: 2.3rem;
+}
+
+.psd-breadcrumb-devi {
+    opacity: .6;
+}
+
+.psd-hero-title {
+    color: var(--white);
+    margin-bottom: 0;
+    text-transform: uppercase;
+}
+
+.psd-hero-media {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 48%;
+    z-index: 1;
+}
+
+@media screen and (max-width: 991px) {
+    .psd-hero-title br {
+        display: none;
+    }
+
+    .psd-hero-inner {
+        flex-direction: column;
+        min-height: unset;
+    }
+
+    .psd-hero-panel {
+        clip-path: none;
+        padding-block: 10rem 8rem;
+    }
+
+    .psd-hero-media {
+        position: unset;
+    }
+
+    .psd-hero-panel::after {
+        content: none;
+    }
+
+
+    .psd-hero-panel,
+    .psd-hero-media {
+        width: 100%;
+    }
+
+    .psd-hero {
+        background-color: unset;
+        margin-top: 6.3rem;
+    }
+
+    .psd-hero-media {
+        padding: 4.8rem 3.2rem;
+    }
+
+    .psd-hero-panel {
+        min-height: 55rem;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .psd-hero {
+        margin-top: 8rem;
+    }
+
+    .psd-breadcrumb .current {
+        max-width: 24rem;
+    }
+
+    .psd-hero-container {
+        padding-right: 1.5rem;
+    }
+
+    .psd-hero-panel {
+        padding-block: 6.8rem 3.2rem;
+        min-height: 26.4rem;
+        align-items: end;
+    }
+
+    .psd-breadcrumb {
+        flex-wrap: nowrap;
+        margin-bottom: 1.6rem;
+    }
+
+    .psd-hero-media {
+        padding: 3.2rem 1.5rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2. Specification Section
+   -------------------------------------------------------------------------- */
+.psd-spec {
+    padding-block: 8rem;
+    background-color: var(--white);
+}
+
+.psd-spec-layout {
+    display: grid;
+    grid-template-columns: 1.12fr 0.88fr;
+    gap: 6.4rem;
+    align-items: flex-start;
+    position: relative;
+}
+
+/* Left Column: Spec list with faint watermark */
+.psd-spec-content {
+    position: relative;
+}
+
+.psd-spec-watermark {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44rem;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.psd-spec-watermark img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.psd-spec-list {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    row-gap: 1.6rem;
+}
+
+.psd-spec-item {
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid #ECEEF3;
+}
+
+.psd-spec-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.psd-spec-name {
+    color: var(--txt-icon-primary);
+    margin-bottom: 0.8rem;
+}
+
+.psd-spec-desc {
+    color: var(--txt-icon-secondary);
+    line-height: 1.65em;
+    margin-bottom: 0;
+}
+
+.psd-spec-desc strong {
+    color: var(--txt-icon-primary);
+}
+
+/* Right Column: Visual Frame with Red Bracket & Floating Card */
+.psd-spec-visual {
+    position: sticky;
+    top: 12rem;
+    padding-bottom: 6rem;
+}
+
+.psd-spec-frame-wrap {
+    position: relative;
+    width: 100%;
+}
+
+/* Red Industrial Chamfer Bracket on Top-Left */
+.psd-spec-bracket {
+    position: absolute;
+    top: -1.4rem;
+    left: -1.4rem;
+    width: 14rem;
+    height: 14rem;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.psd-spec-frame {
+    --cut: 6.4rem;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.psd-spec-frame::before {
+    position: absolute;
+    content: "";
+    bottom: 0;
+    right: 0;
+    width: 8rem;
+    height: 8rem;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    background-color: #fff;
+}
+
+.psd-spec-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Overlaid Tech Specs Card with White Perimeter Border & Drop Shadow */
+.psd-spec-card-wrap {
+    position: absolute;
+    bottom: -2.5rem;
+    left: -1.2rem;
+    z-index: 4;
+    width: 33rem;
+    max-width: 90%;
+}
+
+.psd-spec-card {
+    --cut: 4rem;
+    --border-w: 2.5px;
+    --cut-corner: calc(var(--cut) + 1px);
+    position: relative;
+    width: 100%;
+    padding: 4rem 4.8rem;
+    background-color: var(--white);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+
+.psd-spec-card::before {
+    content: '';
+    position: absolute;
+    inset: .4rem;
+    background: var(--linear-primary);
+    clip-path: polygon(var(--cut-corner) var(--border-w),
+            calc(100% - var(--border-w)) var(--border-w),
+            calc(100% - var(--border-w)) calc(100% - var(--cut-corner)),
+            calc(100% - var(--cut-corner)) calc(100% - var(--border-w)),
+            var(--border-w) calc(100% - var(--border-w)),
+            var(--border-w) var(--cut-corner));
+    z-index: 1;
+    pointer-events: none;
+}
+
+.psd-spec-card-row {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.psd-spec-card-label {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.psd-spec-card-value {
+    color: var(--white);
+}
+
+@media screen and (max-width:991px) {
+    .psd-spec {
+        padding-top: 0;
+    }
+}
+
+@media screen and (max-width:767px) {
+    .psd-spec-frame::before {
+        height: 5.2rem;
+        width: 5.2rem;
+    }
+
+    .psd-spec {
+        overflow: hidden;
+    }
+
+    .psd-spec-card-wrap {
+        width: 21rem;
+        bottom: -1.2rem;
+        left: -.2rem;
+    }
+
+    .psd-spec-card::before {
+        inset: .2rem;
+    }
+
+    .psd-section-head {
+        margin-bottom: 1.6rem;
+    }
+
+    .psd-spec-item {
+        padding-bottom: 1.2rem;
+    }
+
+    .psd-section-tag {
+        padding: 1rem 1.6rem;
+        --cut: 1.6rem;
+    }
+
+    .psd-spec {
+        padding-block: 0rem 4rem;
+    }
+
+    .psd-spec-bracket {
+        display: none;
+    }
+
+    .psd-spec-list {
+        row-gap: 1.2rem;
+    }
+
+    .psd-spec-frame {
+        --cut: 4rem;
+    }
+
+    .psd-spec-card {
+        --cut: 2.4rem;
+        padding: 2.4rem 2rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   3. Application Examples Section
+   -------------------------------------------------------------------------- */
+.psd-app {
+    padding-block: 8rem;
+    background-color: #F6F7FA;
+}
+
+.psd-app-desc {
+    color: var(--txt-icon-secondary);
+    margin-bottom: 3.2rem;
+    /* max-width: 72rem; */
+}
+
+.psd-app-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3.2rem;
+}
+
+.psd-app-card {
+    --cut: 3.2rem;
+    position: relative;
+    aspect-ratio: 1 / 0.72;
+    display: block;
+    overflow: hidden;
+    color: var(--white);
+    background-color: var(--primary-2);
+    box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.06);
+}
+
+.psd-app-card-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.psd-app-card-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.psd-app-card-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.50) 100%);
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.psd-app-card-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 100%, rgba(0, 0, 0, 0.20) 100%);
+    opacity: 1;
+    transition: opacity var(--transition);
+}
+
+.psd-app-card:hover .psd-app-card-overlay::before {
+    opacity: 1;
+}
+
+.psd-app-card:hover .psd-app-card-overlay::after {
+    opacity: 0;
+}
+
+.psd-app-card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(1rem);
+    transition: background-color var(--transition);
+}
+
+.psd-app-card-title {
+    color: var(--white);
+    margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. Other Products Section (Swiper Carousel)
+   -------------------------------------------------------------------------- */
+.psd-other {
+    padding-block: 8rem;
+    background-color: var(--white);
+}
+
+.psd-other-slider-wrap {
+    position: relative;
+    margin-top: 4.8rem;
+}
+
+.psd-other-slider {
+    overflow: hidden;
+    padding-bottom: 5.6rem;
+}
+
+/* Product Card Styling (Identical to home-product-item / ps-product-card) */
+.ps-product-card {
+    position: relative;
+    height: auto;
+    display: block;
+}
+
+.ps-product-card-img {
+    position: relative;
+    --cut: 3.2rem;
+}
+
+.ps-product-card-img-block {
+    padding-top: 100%;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 76.8%, rgba(0, 0, 0, 0.20) 100%);
+    pointer-events: none;
+}
+
+.ps-product-card-content {
+    padding: 2rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.10);
+    backdrop-filter: blur(1.2rem);
+    color: var(--white);
+    overflow: hidden;
+    z-index: 3;
+}
+
+.ps-product-card-content::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 3.2rem;
+    height: 3.2rem;
+    background: var(--secondary);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    transform-origin: bottom right;
+    transition: transform var(--transition), background-color var(--transition);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.ps-product-card-title {
+    position: relative;
+    z-index: 2;
+}
+
+.ps-product-card-title .heading {
+    color: var(--white);
+}
+
+/* Hover: Red Expanding Sweep */
+.ps-product-card:hover .ps-product-card-content::before {
+    transform: scale(45);
+    background-color: var(--secondary-2);
+}
+
+/* Hover: Second Gradient Fade-in */
+.ps-product-card-img-block::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.50) 100%);
+    opacity: 0;
+    transition: opacity var(--transition);
+    pointer-events: none;
+}
+
+.ps-product-card:hover .ps-product-card-img-block::after {
+    opacity: 1;
+}
+
+/* Navigation Controls */
+.psd-other-nav {
+    position: absolute;
+    top: 38%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 4.4rem;
+    height: 4.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white);
+    color: var(--primary-2);
+    border: 1px solid #E2E5EC;
+    box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.psd-other-prev {
+    left: -2.2rem;
+}
+
+.psd-other-next {
+    right: -2.2rem;
+}
+
+.psd-other-nav:hover {
+    background-color: var(--secondary);
+    color: var(--white);
+    border-color: var(--secondary);
+    transform: translateY(-50%) scale(1.06);
+}
+
+.psd-other-nav.swiper-button-disabled {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Pagination Dots */
+.psd-other-pagination {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+    z-index: 5;
+}
+
+.psd-other-pagination .swiper-pagination-bullet {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background-color: #DCDFE8;
+    opacity: 1;
+    margin: 0 !important;
+    cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition);
+}
+
+.psd-other-pagination .swiper-pagination-bullet-active {
+    background-color: var(--primary-2);
+    transform: scale(1.3);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Styles
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 1199px) {
+    .psd-spec-layout {
+        gap: 4rem;
+    }
+}
+
+@media screen and (max-width: 991px) {
+
+    .psd-spec-layout {
+        grid-template-columns: 1fr;
+        gap: 5.6rem;
+    }
+
+    .psd-spec-visual {
+        position: static;
+        max-width: 60rem;
+        margin: 0 auto;
+        padding-bottom: 4rem;
+    }
+
+
+
+    .psd-app-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2.4rem;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .psd-app {
+        padding-block: 4.8rem;
+    }
+
+    .psd-app-grid {
+        grid-template-columns: 1fr;
+        gap: 2.4rem;
+    }
+
+    .psd-app-card {
+        --cut: 2.4rem;
+        aspect-ratio: 16 / 10;
+    }
+
+    .psd-other {
+        padding-block: 4.8rem;
+    }
+
+    .psd-other-nav {
+        display: none;
+    }
+
+    .ps-product-card-img {
+        --cut: 2.4rem;
+    }
+
+    .ps-product-card-content {
+        padding: 1.6rem 2rem;
+    }
+
+    .ps-product-card-content::before {
+        width: 2.4rem;
+        height: 2.4rem;
+    }
+
+    .psd-spec-layout {
+        gap: 3.2rem;
+    }
+
+    .psd-other-slider {
+        padding-bottom: 3rem;
+    }
+}

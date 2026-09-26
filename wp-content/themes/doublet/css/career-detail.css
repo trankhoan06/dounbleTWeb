@@ -1,0 +1,537 @@
+/* ==========================================================================
+   Career Detail Page Styles
+   ========================================================================== */
+
+/* --- Hero Section --- */
+.career-detail-hero {
+    background: var(--linear-primary);
+    padding: 8rem 0;
+    position: relative;
+    color: var(--white);
+    margin-top: 10.4rem;
+}
+
+.career-detail-hero-content {
+    max-width: 800px;
+}
+
+.career-detail-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 2.4rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.career-detail-breadcrumb a {
+    color: rgba(255, 255, 255, 0.8);
+    transition: color var(--transition);
+}
+
+.career-detail-breadcrumb a:hover {
+    color: var(--white);
+}
+
+.career-detail-breadcrumb-sep {
+    font-size: 1.2rem;
+}
+
+.career-detail-breadcrumb-current {
+    color: var(--white);
+    font-weight: 500;
+}
+
+.career-detail-hero-title {
+    color: var(--white);
+    margin: 0;
+}
+
+.career-detail-breadcrumb-current {
+    max-width: 24rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 991px) {
+    .career-detail-hero {
+        margin-top: 6.3rem;
+        min-height: 50rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+    }
+
+}
+
+@media screen and (max-width: 767px) {
+    .career-detail-hero {
+        margin-top: 6.6rem;
+        min-height: 33rem;
+        padding-block: 3.2rem;
+        justify-content: end;
+    }
+
+    .career-detail-breadcrumb-current {
+        max-width: 20rem;
+        max-height: 20.4rem;
+
+    }
+}
+
+/* --- Main Layout --- */
+.career-detail-main {
+    padding: 8rem 0;
+    background: linear-gradient(180deg, #FFF 0%, #F6F7FA 100%);
+
+}
+
+.career-detail-grid {
+    display: grid;
+    grid-template-columns: 4rem 1fr 30rem;
+    gap: 3.2rem;
+    align-items: start;
+}
+
+/* --- Share Sidebar --- */
+.career-detail-share {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    position: sticky;
+    top: 10rem;
+}
+
+.career-detail-share-title {
+    color: var(--txt-icon-primary);
+}
+
+.career-detail-share-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.career-detail-share-btn {
+    width: 4.8rem;
+    height: 4.8rem;
+    border: 1px solid var(--border-default);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--txt-icon-primary);
+    background: transparent;
+    transition: all var(--transition);
+    cursor: pointer;
+}
+
+.career-detail-share-btn:hover {
+    border-color: var(--primary-2);
+    color: var(--primary-2);
+}
+
+.detail-share-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.detail-share-btn {
+    width: 4.8rem;
+    height: 4.8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    --cut: 1.2rem;
+    background-color: #D6DFE8;
+    clip-path: polygon(var(--cut) 0%, 100% 0%, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0% 100%, 0% var(--cut));
+    border: none;
+    color: var(--primary-2);
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    transition: background-color var(--transition), color var(--transition), transform var(--transition);
+}
+
+.detail-share-btn::before {
+    content: '';
+    position: absolute;
+    inset: var(--1px);
+    background-color: var(--white);
+    clip-path: polygon(calc(var(--cut) - var(--1px)) 0%,
+            100% 0%,
+            100% calc(100% - (var(--cut) - var(--1px))),
+            calc(100% - (var(--cut) - var(--1px))) 100%,
+            0% 100%,
+            0% calc(var(--cut) - var(--1px)));
+    transition: background-color var(--transition);
+    z-index: 1;
+}
+
+.detail-share-btn svg {
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    z-index: 2;
+    transition: transform var(--transition), color var(--transition);
+}
+
+.detail-share-btn:hover {
+    background-color: var(--secondary-2);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.detail-share-btn:hover::before {
+    background-color: var(--secondary-2);
+}
+
+.detail-share-btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* --- Content Area --- */
+.career-detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3.2rem;
+    padding-inline: 3.2rem;
+}
+
+.career-detail-section-title {
+    color: var(--txt-icon-primary);
+    margin-bottom: 1.2rem;
+}
+
+.career-detail-content p,
+.career-detail-content ul {
+    color: var(--txt-icon-secondary);
+}
+
+.career-detail-content ul {
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.career-detail-content li {
+    list-style-type: disc;
+}
+
+/* --- Info Card Sidebar --- */
+.detail-toc-col {
+    position: sticky;
+    top: 10rem;
+    background-color: var(--border-default);
+    border: none;
+    padding: 3.2rem;
+    --cut: 3.2rem;
+    clip-path: polygon(var(--cut) 0%, 100% 0%, 100% 100%, 0% 100%, 0% var(--cut));
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.career-detail-info-card {
+    background: #FFF;
+    /* Light gray background */
+    --cut: 3.2rem;
+    position: relative;
+}
+
+.detail-toc-col::before {
+    content: '';
+    position: absolute;
+    inset: var(--1px);
+    background-color: var(--white);
+    clip-path: polygon(calc(var(--cut) - var(--1px)) 0%, 100% 0%, 100% 100%, 0% 100%, 0% calc(var(--cut) - var(--1px)));
+    z-index: 0;
+    pointer-events: none;
+}
+
+.detail-toc-col::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 3.2rem;
+    height: 3.2rem;
+    background-color: var(--secondary);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.career-info-item {
+    margin-bottom: 2.4rem;
+}
+
+.career-info-item:last-of-type {
+    margin-bottom: 3.2rem;
+}
+
+.career-info-label {
+    color: var(--txt-icon-tertiary);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    display: block;
+}
+
+.career-info-value {
+    color: var(--txt-icon-primary);
+    display: block;
+}
+
+.career-detail-info-card .btn-primary {
+    /* width: 100%; */
+    justify-content: center;
+    padding: 1.2rem 2rem;
+}
+
+/* --- Apply Form Section --- */
+
+.career-apply-title {
+    color: var(--secondary-2);
+    margin-bottom: 2.4rem !important;
+}
+
+.career-apply-form {
+    background: #FFF;
+    padding: 3.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.4rem;
+}
+
+@media (max-width: 767px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-label {
+    color: var(--txt-icon-primary);
+    font-weight: 600;
+}
+
+.form-label .req {
+    color: var(--secondary);
+}
+
+.form-control {
+    height: 4.8rem;
+    border: 1px solid var(--border-default);
+    padding: 0 1.6rem;
+    font-family: 'Mona Sans', sans-serif;
+    color: var(--txt-icon-primary);
+    background: var(--white);
+    outline: none;
+    transition: border-color var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary-2);
+}
+
+textarea.form-control {
+    height: 12rem;
+    padding: 1.6rem;
+    resize: vertical;
+}
+
+/* Upload Area */
+.upload-area {
+    border: 1px dashed var(--border-default);
+    background: var(--white);
+    padding: 2.4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.6rem;
+    cursor: pointer;
+    transition: border-color var(--transition);
+}
+
+.upload-area:hover {
+    border-color: var(--primary-2);
+}
+
+.upload-icon {
+    color: var(--primary-2);
+}
+
+.upload-text {
+    color: var(--txt-icon-secondary);
+}
+
+
+.form-submit-wrap .btn-primary {
+    width: 100%;
+    justify-content: center;
+    border: 0;
+}
+
+.form-submit-wrap .btn-primary:hover::before {
+    transform: scale(50);
+}
+
+.form-subtext {
+    text-align: center;
+    color: var(--txt-icon-secondary);
+    margin-top: -.6rem;
+    font-style: italic;
+}
+
+@media screen and (max-width: 991px) {
+    .career-detail-grid {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .career-detail-share {
+        position: unset;
+        order: 3;
+
+    }
+
+    .detail-toc-col {
+        order: 1;
+        position: relative;
+        width: 100%;
+        inset: unset;
+        padding: 4.8rem;
+    }
+
+    .career-detail-content {
+        order: 2;
+        padding-inline: 0;
+    }
+
+    .detail-share-list {
+        flex-direction: row;
+    }
+
+    .career-detail-share {
+        position: unset;
+        order: 3;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .career-detail-share-title {
+        margin-bottom: 0;
+    }
+
+    .career-detail-main {
+        padding-block: 4.8rem;
+    }
+
+    .career-detail-info-card {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 3.2rem;
+        align-items: center;
+    }
+
+    .career-detail-info-card .btn-primary {
+        width: 50%;
+    }
+
+    .career-info-item {
+        width: 25%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .detail-toc-col {
+        padding: 3.2rem;
+    }
+
+    .career-detail-main {
+        padding-block: 3.2rem 4.8rem;
+    }
+
+    .career-info-item {
+        width: 50%;
+        align-items: start;
+        margin-bottom: 0 !important;
+        text-align: left;
+    }
+
+    .career-detail-content {
+        gap: 2.4rem;
+    }
+
+    .career-detail-info-card .btn-primary {
+        width: 100%;
+        margin-top: 0.8rem;
+    }
+
+    .career-detail-content ul {
+        gap: 0;
+    }
+
+    .career-detail-share-title {
+        margin-bottom: 0.4rem;
+    }
+
+    .career-detail-section-title {
+        margin-bottom: .8rem !important;
+    }
+
+    .career-apply-title {
+        margin-bottom: 2.4rem !important;
+    }
+
+    .form-row {
+        gap: 1.6rem;
+    }
+
+    .career-detail-info-card {
+        row-gap: 2.4rem;
+    }
+
+    .detail-share-list {
+        gap: .8rem;
+    }
+
+    .form-control {
+        font-size: 1.4rem;
+    }
+
+    .form-submit-wrap .btn-primary {
+        margin-top: 1.6rem;
+    }
+
+    .upload-area {
+        padding: 2rem;
+    }
+
+    textarea.form-control {
+        height: 8.4rem;
+    }
+
+    .career-apply-form {
+        padding: 1.6rem;
+    }
+}

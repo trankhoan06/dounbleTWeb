@@ -1,0 +1,772 @@
+/* ==========================================================================
+   Insight Category Listing Page Styles - Double T
+   Complies strictly with design.md and AGENTS.md rules
+   NO custom font-size, line-height, letter-spacing, or font-weight declarations (Rule 6)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Header Overrides for Category Page (Solid White Header)
+   -------------------------------------------------------------------------- */
+body .header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-default);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+body .header-top {
+    border-bottom-color: var(--border-default);
+}
+
+body .header-top-slogan,
+body .header-top-link,
+body .header-lang-trigger {
+    color: var(--txt-icon-secondary);
+}
+
+body .header-top-divider {
+    background-color: var(--border-default);
+}
+
+body .header-logo img {
+    filter: none;
+}
+
+body .header-menu-item {
+    color: var(--txt-icon-primary);
+}
+
+body .header-menu-item:hover,
+body .header-menu-item.active {
+    color: var(--primary-1);
+}
+
+body .header-cta-wrap:after,
+body .header-cta-wrap:before {
+    background-color: var(--border-default);
+}
+
+/* --------------------------------------------------------------------------
+   1. Hero Banner (Split Diagonal Hero with Container Aligned Content)
+   -------------------------------------------------------------------------- */
+.psd-section-head {
+    display: flex;
+    align-items: flex-end;
+    border-bottom: var(--1px) solid #DCDFE8;
+    margin-bottom: 3.2rem;
+    position: relative;
+}
+
+.psd-section-tag {
+    background: var(--linear-primary);
+    color: var(--white);
+    padding: 1.1rem 3.2rem;
+    --cut: 2.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: calc(-1 * var(--1px));
+}
+
+.psd-section-line {
+    display: none;
+}
+
+/* --------------------------------------------------------------------------
+   1. Hero Banner (Split Diagonal Hero)
+   -------------------------------------------------------------------------- */
+.cat-hero {
+    --hero-cut: 88%;
+    --hero-line: 0.4rem;
+    position: relative;
+    overflow: hidden;
+    background-color: #0A5A66;
+    margin-top: 10.4rem;
+}
+
+.cat-hero-inner {
+    position: relative;
+    min-height: 40rem;
+    display: flex;
+    align-items: stretch;
+    isolation: isolate;
+}
+
+.cat-hero-panel {
+    position: relative;
+    z-index: 2;
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 6rem;
+    background: var(--linear-primary);
+    clip-path: polygon(0 0, var(--hero-cut) 0, 100% 100%, 0 100%);
+}
+
+/* Diagonal Separator Line matching the clip-path slope */
+.cat-hero-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-color: var(--primary-1);
+    clip-path: polygon(calc(var(--hero-cut) - var(--hero-line)) 0, 100% 0, 100% 100%, calc(100% - var(--hero-line)) 100%);
+}
+
+.cat-hero-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding-right: 8rem;
+}
+
+.cat-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 2.4rem;
+    color: var(--white);
+}
+
+.cat-breadcrumb a {
+    color: inherit;
+    opacity: .6;
+    transition: opacity var(--transition);
+}
+
+.cat-breadcrumb a:hover {
+    opacity: 1;
+}
+
+.cat-breadcrumb .current {
+    color: var(--white);
+    max-width: 23.6rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-wrap: nowrap;
+    height: 100%;
+    max-height: 2.3rem;
+}
+
+.cat-breadcrumb-devi {
+    opacity: .6;
+}
+
+.cat-hero-title {
+    color: var(--white);
+    margin-bottom: 0;
+    text-transform: uppercase;
+}
+
+.cat-hero-media {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 48%;
+    z-index: 1;
+}
+
+@media screen and (max-width: 991px) {
+    .cat-hero-title br {
+        display: none;
+    }
+
+    .cat-hero-inner {
+        flex-direction: column;
+        min-height: unset;
+    }
+
+    .cat-hero-panel {
+        clip-path: none;
+        padding-block: 10rem 8rem;
+    }
+
+    .cat-hero-media {
+        position: unset;
+    }
+
+    .cat-hero-panel::after {
+        content: none;
+    }
+
+    .cat-hero-panel,
+    .cat-hero-media {
+        width: 100%;
+    }
+
+    .cat-hero {
+        background-color: unset;
+        margin-top: 6.3rem;
+        flex-direction: column;
+        min-height: unset;
+    }
+
+    .cat-hero-media {
+        padding: 4.8rem 3.2rem;
+    }
+
+    .cat-hero-panel {
+        min-height: 55rem;
+        align-items: center;
+        display: flex;
+    }
+
+    .cat-hero-inner {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .cat-hero {
+        margin-top: 8rem;
+    }
+
+    .cat-breadcrumb .current {
+        max-width: 24rem;
+    }
+
+    .cat-hero-container {
+        padding-right: 1.5rem;
+    }
+
+    .cat-hero-panel {
+        padding-block: 6.8rem 3.2rem;
+        min-height: 26.4rem;
+        align-items: end;
+    }
+
+    .cat-breadcrumb {
+        flex-wrap: nowrap;
+        margin-bottom: 1.6rem;
+    }
+
+    .cat-hero-media {
+        padding: 3.2rem 1.5rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2. Main Category Listing Layout (3x4 Grid + Right Sidebar)
+   -------------------------------------------------------------------------- */
+.cat-listing-section {
+    padding-block: 8rem;
+    background: linear-gradient(180deg, #FFF 0%, #F6F7FA 100%);
+
+    position: relative;
+}
+
+.cat-listing-layout {
+    display: grid;
+    grid-template-columns: 1fr 34rem;
+    gap: 4.8rem;
+    align-items: flex-start;
+}
+
+/* --------------------------------------------------------------------------
+   3. Main Articles 3-Column Grid
+   -------------------------------------------------------------------------- */
+.cat-main-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4.8rem;
+}
+
+.cat-articles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3.6rem 2.4rem;
+}
+
+.cat-article-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.cat-article-img {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background-color: #E8EBF0;
+    --cut: 2.4rem;
+    margin-bottom: 1.6rem;
+}
+
+.cat-article-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition);
+}
+
+.cat-article-card:hover .cat-article-img img {
+    transform: scale(1.08);
+}
+
+.cat-article-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.cat-article-title {
+    color: var(--txt-icon-primary);
+    transition: color var(--transition);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cat-article-card:hover .cat-article-title {
+    color: var(--secondary-2);
+}
+
+/* --------------------------------------------------------------------------
+   4. Pagination Bar (Single connected bar with cut-diagonal & smooth before transition)
+   -------------------------------------------------------------------------- */
+.cat-pagination-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.cat-pagination {
+    display: inline-flex;
+    align-items: stretch;
+    background-color: var(--white);
+    --cut: 1.2rem;
+    position: relative;
+    user-select: none;
+    overflow: hidden;
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.06));
+}
+
+.cat-page-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    color: var(--txt-icon-secondary);
+    text-decoration: none;
+    isolation: isolate;
+    transition: color var(--transition);
+    overflow: hidden;
+}
+
+.cat-page-btn:first-child {
+    /* --cut: 30%  ;
+    clip-path: polygon(var(--cut) 0%, 100% 0%, 100% 100%, 0% 100%, 0% var(--cut)); */
+    -webkit-backface-visibility: hidden;
+    outline: 1px solid transparent;
+}
+
+.cat-page-btn:last-child {
+    --cut: 1.8rem;
+    clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0% 100%);
+    -webkit-backface-visibility: hidden;
+    outline: 1px solid transparent;
+}
+
+/* Pseudo-element ::before for buttery-smooth background fade transition */
+.cat-page-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--secondary-2);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity var(--transition);
+}
+
+.cat-page-btn:hover::before,
+.cat-page-btn.active::before {
+    opacity: 1;
+}
+
+.cat-page-btn:hover,
+.cat-page-btn.active {
+    color: var(--white);
+}
+
+.cat-page-dots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    color: var(--txt-icon-secondary);
+    pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   5. Sidebar Widgets
+   -------------------------------------------------------------------------- */
+.cat-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 4.8rem;
+}
+
+/* Widget 1: Promo Banner Card */
+.cat-promo-card {
+    --promo-cut: 7.2rem;
+    --promo-line: 0.4rem;
+    position: relative;
+    overflow: hidden;
+    --cut: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white);
+    box-shadow: 0 10px 30px rgba(11, 111, 126, 0.08);
+}
+
+.cat-promo-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background-color: #0A5A66;
+}
+
+.cat-promo-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 85% 90%;
+    display: block;
+    transition: transform var(--transition);
+}
+
+.cat-promo-card:hover .cat-promo-img-wrap img {
+    transform: scale(1.05);
+}
+
+.cat-promo-content {
+    background: var(--linear-primary);
+    margin-top: calc(-1 * var(--promo-cut));
+    clip-path: polygon(0 0, 100% var(--promo-cut), 100% 100%, 0 100%);
+    padding: 7.4rem 2.8rem 3.2rem;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Diagonal Separator Line running along the clip path */
+.cat-promo-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--primary-1);
+    clip-path: polygon(0 0,
+            100% var(--promo-cut),
+            100% calc(var(--promo-cut) + var(--promo-line)),
+            0 var(--promo-line));
+    z-index: 2;
+    pointer-events: none;
+}
+
+.cat-promo-watermark {
+    position: absolute;
+    bottom: -2rem;
+    right: -2rem;
+    width: 16rem;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cat-promo-badge {
+    margin-bottom: 1.6rem;
+    position: relative;
+    z-index: 1;
+    --cut: 1.2rem;
+}
+
+.cat-promo-title {
+    color: var(--white);
+    margin-bottom: 2.4rem;
+    position: relative;
+    z-index: 1;
+}
+
+.cat-promo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    color: var(--white);
+}
+
+.cat-promo-btn-text {
+    color: inherit;
+    text-transform: uppercase;
+}
+
+
+/* Widget 2: Other Category Card */
+.cat-sidebar-widget {
+    padding: 2.4rem;
+    --cut: 2rem;
+}
+
+.cat-widget-head {
+    display: flex;
+    align-items: flex-end;
+    border-bottom: var(--1px) solid #E8EBF0;
+    margin-bottom: 2.4rem;
+}
+
+.cat-widget-tag {
+    background: var(--linear-primary);
+    color: var(--white);
+    padding: 0.8rem 2rem;
+    --cut: 1.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: calc(-1 * var(--1px));
+}
+
+.cat-widget-tag-text {
+    color: var(--white);
+    text-transform: uppercase;
+}
+
+.cat-widget-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    margin-bottom: 1.6rem;
+}
+
+.cat-mini-card {
+    display: grid;
+    grid-template-columns: 8.8rem 1fr;
+    gap: 1.4rem;
+    align-items: flex-start;
+    text-decoration: none;
+    color: inherit;
+}
+
+.cat-mini-img {
+    position: relative;
+    width: 8.8rem;
+    overflow: hidden;
+    background-color: #E8EBF0;
+    --cut: 1.4rem;
+}
+
+.cat-mini-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition);
+}
+
+.cat-mini-card:hover .cat-mini-img img {
+    transform: scale(1.08);
+}
+
+.cat-mini-title {
+    color: var(--txt-icon-primary);
+    transition: color var(--transition);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cat-mini-card:hover .cat-mini-title {
+    color: var(--secondary-2);
+}
+
+.cat-widget-footer {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cat-widget-footer::before {
+    position: absolute;
+    height: 1px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 19rem;
+    background-color: #DCDFE8;
+    content: "";
+}
+
+.cat-widget-viewall {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--txt-icon-primary);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+.cat-widget-viewall-text {
+    color: inherit;
+    text-transform: uppercase;
+}
+
+.cat-widget-viewall-icon {
+    width: 0.8rem;
+    height: 1.2rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform var(--transition);
+}
+
+.cat-widget-viewall:hover {
+    color: var(--primary-2);
+}
+
+.cat-widget-viewall:hover .cat-widget-viewall-icon {
+    transform: translateX(0.4rem);
+}
+
+/* --------------------------------------------------------------------------
+   6. Responsive Styles
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 1199px) {
+    .cat-listing-layout {
+        grid-template-columns: 1fr 30rem;
+        gap: 3.2rem;
+    }
+
+    .cat-articles-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 3.2rem 2rem;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .cat-listing-section {
+        padding-block: 6.4rem;
+    }
+
+    .cat-listing-layout {
+        grid-template-columns: 1fr;
+        gap: 5.6rem;
+    }
+
+    .cat-sidebar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 3.2rem;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .cat-listing-section {
+        padding-block: 3.2rem 4.8rem;
+    }
+
+    .cat-articles-grid {
+        grid-template-columns: 1fr;
+        gap: 2.4rem;
+    }
+
+    .cat-sidebar {
+        grid-template-columns: 1fr;
+        gap: 4.8rem;
+    }
+
+    .cat-promo-card {
+        --promo-cut: 9.8rem;
+    }
+
+    .cat-sidebar-widget {
+        padding: 0;
+        --cut: 1.6rem;
+        position: relative;
+    }
+
+    .cat-widget-tag {
+        padding: 1rem 1.6rem;
+    }
+
+    .cat-widget-footer::before {
+        content: none;
+    }
+
+    .cat-promo-img-wrap {
+        aspect-ratio: 16 / 13;
+    }
+
+    .cat-mini-card {
+        display: flex;
+        gap: 1.6rem;
+        align-items: center;
+    }
+
+    .cat-widget-list {
+        margin-bottom: 0;
+    }
+
+    .cat-mini-img {
+        flex: none;
+        width: 10rem;
+    }
+
+    .cat-pagination {
+        --cut: 1.4rem;
+    }
+
+    .cat-listing-layout {
+        gap: 4.8rem;
+    }
+
+    .cat-main-col {
+        gap: 3.2rem;
+    }
+
+    .cat-page-btn {
+        width: 4.4rem;
+        height: 4.4rem;
+    }
+
+    .cat-page-dots {
+        width: 3.6rem;
+        height: 4.4rem;
+    }
+
+    .cat-widget-footer {
+        position: absolute;
+        top: 0.7rem;
+        right: 0;
+    }
+
+    .cat-promo-watermark img {
+        width: 100%;
+    }
+
+    .cat-promo-watermark {
+        width: 18.8rem;
+        height: 19.2rem;
+        opacity: .6;
+        right: -7.6rem;
+    }
+
+    .cat-promo-content {
+        background: linear-gradient(-3deg, var(--primary-1) 0%, var(--primary-2) 100%);
+        ;
+
+    }
+}

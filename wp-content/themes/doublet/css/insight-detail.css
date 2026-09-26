@@ -1,0 +1,1034 @@
+/* ==========================================================================
+   Insight Category Listing Page Styles - Double T
+   Complies strictly with design.md and AGENTS.md rules
+   NO custom font-size, line-height, letter-spacing, or font-weight declarations (Rule 6)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Header Overrides for Category Page (Solid White Header)
+   -------------------------------------------------------------------------- */
+body .header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-default);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+body .header-top {
+    border-bottom-color: var(--border-default);
+}
+
+body .header-top-slogan,
+body .header-top-link,
+body .header-lang-trigger {
+    color: var(--txt-icon-secondary);
+}
+
+body .header-top-divider {
+    background-color: var(--border-default);
+}
+
+body .header-logo img {
+    filter: none;
+}
+
+body .header-menu-item {
+    color: var(--txt-icon-primary);
+}
+
+body .header-menu-item:hover,
+body .header-menu-item.active {
+    color: var(--primary-1);
+}
+
+body .header-cta-wrap:after,
+body .header-cta-wrap:before {
+    background-color: var(--border-default);
+}
+
+/* --------------------------------------------------------------------------
+   1. Hero Banner (Split Diagonal Hero with Container Aligned Content)
+   -------------------------------------------------------------------------- */
+.psd-section-head {
+    display: flex;
+    align-items: flex-end;
+    border-bottom: var(--1px) solid #DCDFE8;
+    margin-bottom: 3.2rem;
+    position: relative;
+}
+
+.psd-section-tag {
+    background: var(--linear-primary);
+    color: var(--white);
+    padding: 1.1rem 3.2rem;
+    --cut: 2.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: calc(-1 * var(--1px));
+}
+
+.psd-section-line {
+    display: none;
+}
+
+/* --------------------------------------------------------------------------
+   1. Hero Banner (Split Diagonal Hero)
+   -------------------------------------------------------------------------- */
+.detail-hero {
+    --hero-cut: 88%;
+    --hero-line: 0.4rem;
+    position: relative;
+    overflow: hidden;
+    background-color: #0A5A66;
+    margin-top: 10.4rem;
+}
+
+.detail-hero-inner {
+    position: relative;
+    min-height: 40rem;
+    display: flex;
+    align-items: stretch;
+    isolation: isolate;
+}
+
+.detail-hero-panel {
+    position: relative;
+    z-index: 2;
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 6rem;
+    background: var(--linear-primary);
+    clip-path: polygon(0 0, var(--hero-cut) 0, 100% 100%, 0 100%);
+}
+
+/* Diagonal Separator Line matching the clip-path slope */
+.detail-hero-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-color: var(--primary-1);
+    clip-path: polygon(calc(var(--hero-cut) - var(--hero-line)) 0, 100% 0, 100% 100%, calc(100% - var(--hero-line)) 100%);
+}
+
+.detail-hero-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding-right: 12rem;
+}
+
+.detail-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 2.4rem;
+    color: var(--white);
+}
+
+.detail-breadcrumb a {
+    color: inherit;
+    opacity: .6;
+    transition: opacity var(--transition);
+}
+
+.detail-breadcrumb a:hover {
+    opacity: 1;
+}
+
+.detail-breadcrumb .current {
+    color: var(--white);
+    max-width: 23.6rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-wrap: nowrap;
+    height: 100%;
+    max-height: 2.3rem;
+}
+
+.detail-breadcrumb-devi {
+    opacity: .6;
+}
+
+.detail-hero-title {
+    color: var(--white);
+    margin-bottom: 0;
+    text-transform: uppercase;
+}
+
+.detail-hero-media {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 48%;
+    z-index: 1;
+}
+
+@media screen and (max-width: 991px) {
+    .detail-hero-title br {
+        display: none;
+    }
+
+    .detail-hero-inner {
+        flex-direction: column;
+        min-height: unset;
+    }
+
+    .detail-hero-panel {
+        clip-path: none;
+        padding-block: 10rem 8rem;
+    }
+
+    .detail-hero-media {
+        position: unset;
+    }
+
+    .detail-hero-panel::after {
+        content: none;
+    }
+
+    .detail-hero-panel,
+    .detail-hero-media {
+        width: 100%;
+    }
+
+    .detail-hero {
+        background-color: unset;
+        margin-top: 6.3rem;
+        flex-direction: column;
+        min-height: unset;
+    }
+
+    .detail-hero-media {
+        padding: 4.8rem 3.2rem;
+    }
+
+    .detail-hero-panel {
+        min-height: 55rem;
+        align-items: center;
+        display: flex;
+    }
+
+    .detail-hero-inner {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .detail-hero {
+        margin-top: 8rem;
+    }
+
+    .detail-breadcrumb .current {
+        max-width: 24rem;
+    }
+
+    .detail-hero-container {
+        padding-right: 1.5rem;
+    }
+
+    .detail-hero-panel {
+        padding-block: 6.8rem 3.2rem;
+        min-height: 26.4rem;
+        align-items: end;
+    }
+
+    .detail-breadcrumb {
+        flex-wrap: nowrap;
+        margin-bottom: 1.6rem;
+    }
+
+    .detail-hero-media {
+        padding: 2.4rem 1.5rem;
+    }
+
+}
+
+/* --------------------------------------------------------------------------
+   2. Main Article Section (3-Column Layout: Share | Article | TOC)
+   -------------------------------------------------------------------------- */
+.detail-main-section {
+    padding-block: 8rem;
+    background-color: var(--white);
+    position: relative;
+}
+
+.detail-layout {
+    display: grid;
+    grid-template-columns: 5.6rem minmax(0, 1fr) 34rem;
+    gap: 4.8rem;
+    align-items: stretch;
+}
+
+/* --------------------------------------------------------------------------
+   3. Column 1: Sticky Social Share Bar
+   -------------------------------------------------------------------------- */
+.detail-share-col {
+    position: relative;
+    height: 100%;
+    align-self: stretch;
+}
+
+.detail-share-sticky {
+    position: sticky;
+    top: 14rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6rem;
+}
+
+.detail-share-label {
+    color: var(--txt-icon-secondary);
+    text-transform: uppercase;
+    display: block;
+    text-align: center;
+}
+
+.detail-share-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.detail-share-btn {
+    width: 4.8rem;
+    height: 4.8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    --cut: 1.2rem;
+    background-color: #D6DFE8;
+    clip-path: polygon(var(--cut) 0%, 100% 0%, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0% 100%, 0% var(--cut));
+    border: none;
+    color: var(--primary-2);
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    transition: background-color var(--transition), color var(--transition), transform var(--transition);
+}
+
+.detail-share-btn::before {
+    content: '';
+    position: absolute;
+    inset: var(--1px);
+    background-color: var(--white);
+    clip-path: polygon(calc(var(--cut) - var(--1px)) 0%,
+            100% 0%,
+            100% calc(100% - (var(--cut) - var(--1px))),
+            calc(100% - (var(--cut) - var(--1px))) 100%,
+            0% 100%,
+            0% calc(var(--cut) - var(--1px)));
+    transition: background-color var(--transition);
+    z-index: 1;
+}
+
+.detail-share-btn svg {
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    z-index: 2;
+    transition: transform var(--transition), color var(--transition);
+}
+
+.detail-share-btn:hover {
+    background-color: var(--secondary-2);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.detail-share-btn:hover::before {
+    background-color: var(--secondary-2);
+}
+
+.detail-share-btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* --------------------------------------------------------------------------
+   4. Column 2: Main Article Content
+   -------------------------------------------------------------------------- */
+.detail-article-col {
+    position: relative;
+    max-width: 76rem;
+}
+
+.detail-featured-img-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: #0A5A66;
+    margin-bottom: 4.8rem;
+    --cut: 2.4rem;
+}
+
+.detail-featured-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.detail-article-header {
+    margin-bottom: 1.6rem;
+}
+
+.detail-article-headline {
+    color: var(--txt-heading);
+    margin-bottom: 1.6rem;
+}
+
+.detail-article-lead {
+    color: var(--txt-body);
+}
+
+.detail-article-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-section {
+    margin-bottom: 4.8rem;
+    scroll-margin-top: 14rem;
+}
+
+.detail-section-title {
+    color: var(--txt-icon-secondary);
+    margin-bottom: 1.6rem;
+}
+
+.detail-section p {
+    color: var(--txt-body);
+    margin-bottom: 1.6rem;
+}
+
+.detail-p:last-child {
+    margin-bottom: 0;
+}
+
+/* Industrial Feature Callout Box */
+.detail-callout {
+    background-color: #FAFBFD;
+    border: 1px solid #E8EBF0;
+    padding: 2.8rem 3.2rem 2.8rem 3.6rem;
+    margin-block: 3.2rem;
+    position: relative;
+    --cut: 2rem;
+    overflow: hidden;
+}
+
+.detail-callout-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0.4rem;
+    background-color: var(--primary-1);
+}
+
+.detail-callout-quote {
+    color: var(--primary-2);
+    font-style: italic;
+    margin-bottom: 1.2rem;
+}
+
+.detail-callout-author {
+    color: var(--secondary);
+    display: block;
+    text-transform: uppercase;
+}
+
+/* Inline Article Figure */
+.detail-inline-figure {
+    margin-top: 4.8rem;
+}
+
+.detail-inline-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    --cut: 2rem;
+    background-color: #0A5A66;
+}
+
+.detail-inline-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.detail-caption {
+    color: var(--txt-icon-secondary);
+    margin-top: 1rem;
+    font-style: italic;
+    text-align: center;
+    margin-top: 1.6rem;
+}
+
+/* Industrial Bullet List */
+.detail-bullet-list {
+    list-style: none;
+    padding: 0;
+    margin-block: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.detail-bullet-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    color: var(--txt-body);
+}
+
+.detail-bullet-icon {
+    width: 0.8rem;
+    height: 0.8rem;
+    min-width: 0.8rem;
+    background-color: var(--primary-1);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    margin-top: 0.7rem;
+}
+
+/* --------------------------------------------------------------------------
+   4.1. Previous / Next Article Navigation Bar
+   -------------------------------------------------------------------------- */
+.detail-article-nav {
+    padding-top: 3.2rem;
+    border-top: 1px solid #E8EBF0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4.8rem;
+}
+
+.detail-nav-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform var(--transition);
+}
+
+.detail-nav-prev {
+    align-items: flex-start;
+    text-align: left;
+}
+
+.detail-nav-prev:hover {
+    transform: translateX(-4px);
+}
+
+.detail-nav-next {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.detail-nav-next:hover {
+    transform: translateX(4px);
+}
+
+.detail-nav-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.detail-nav-arrow {
+    width: 0.8rem;
+    height: 1.2rem;
+    stroke: var(--primary-1);
+    stroke-width: 2.2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform var(--transition);
+}
+
+.detail-nav-prev:hover .detail-nav-arrow {
+    transform: translateX(-3px);
+}
+
+.detail-nav-next:hover .detail-nav-arrow {
+    transform: translateX(3px);
+}
+
+.detail-nav-tag {
+    color: var(--txt-heading);
+    text-transform: uppercase;
+    transition: color var(--transition);
+}
+
+.detail-nav-title {
+    color: var(--txt-heading);
+    margin-bottom: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color var(--transition);
+}
+
+.detail-nav-item:hover .detail-nav-tag,
+.detail-nav-item:hover .detail-nav-title {
+    color: var(--primary-2);
+}
+
+/* --------------------------------------------------------------------------
+   5. Column 3: Sticky Table of Contents Card
+   -------------------------------------------------------------------------- */
+.detail-toc-col {
+    position: relative;
+    height: 100%;
+    align-self: stretch;
+}
+
+.detail-toc-sticky {
+    position: sticky;
+    top: 14rem;
+}
+
+.detail-toc-card {
+    background-color: #DCDFE8;
+    border: none;
+    padding: 3.2rem;
+    position: relative;
+    --cut: 3.2rem;
+    clip-path: polygon(var(--cut) 0%, 100% 0%, 100% 100%, 0% 100%, 0% var(--cut));
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+/* Inner white background clipped with offset to preserve continuous 1px border */
+.detail-toc-card::before {
+    content: '';
+    position: absolute;
+    inset: var(--1px);
+    background-color: var(--white);
+    clip-path: polygon(calc(var(--cut) - var(--1px)) 0%,
+            100% 0%,
+            100% 100%,
+            0% 100%,
+            0% calc(var(--cut) - var(--1px)));
+    z-index: 0;
+    pointer-events: none;
+}
+
+.detail-toc-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 3.2rem;
+    height: 3.2rem;
+    background-color: var(--secondary);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.detail-toc-head,
+.detail-toc-list {
+    position: relative;
+    z-index: 1;
+}
+
+.detail-toc-head {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 1.6rem;
+}
+
+.detail-toc-icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--primary-2);
+}
+
+.detail-toc-title {
+    color: #14171F;
+    text-transform: uppercase;
+    margin-bottom: 0;
+}
+
+.detail-toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.detail-toc-item {
+    position: relative;
+}
+
+.detail-toc-link {
+    display: block;
+    color: #14171F;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: color var(--transition), border-color var(--transition), background-color var(--transition);
+    border-radius: 0 4px 4px 0;
+}
+
+.detail-toc-link:hover {
+    color: var(--primary-2);
+}
+
+.detail-toc-link.active {
+    color: var(--primary-2);
+    /* background-color: rgba(0, 165, 181, 0.06); */
+}
+
+.detail-toc-link.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -1.6rem;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--primary-2);
+}
+
+.detail-toc-list::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -1.6rem;
+    bottom: 0;
+    width: 2px;
+    background-color: #EDEFF4;
+}
+
+@media screen and (max-width:991px) {
+    .detail-share-col {
+        order: 2;
+    }
+
+    .detail-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .detail-toc-link.active {
+        color: #14171F;
+    }
+
+    .detail-toc-link.active::before {
+        content: none;
+    }
+
+    .detail-main-section {
+        padding-block: 0 6.4rem;
+    }
+
+
+    /* Move share bar horizontal */
+    .detail-share-sticky {
+        position: static;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1.6rem;
+        padding-bottom: 2.4rem;
+        border-bottom: 1px solid #E8EBF0;
+    }
+
+    .detail-share-list {
+        flex-direction: row;
+    }
+
+    .detail-toc-col {
+        order: -1;
+    }
+
+    .detail-toc-sticky {
+        position: static;
+    }
+
+    .detail-toc-card {
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .detail-layout {
+        grid-template-columns: 1fr;
+        gap: 3.2rem;
+    }
+
+    .detail-section {
+        margin-bottom: 3.2rem;
+    }
+
+    .detail-share-col {
+        margin-top: -3.2rem;
+    }
+
+    .detail-toc-card {
+        padding: 3.2rem;
+    }
+
+    .detail-toc-list {
+        gap: .8rem;
+    }
+
+    .detail-toc-list::before {
+        content: none;
+    }
+
+    .detail-featured-img-wrap {
+        margin-bottom: 3.2rem;
+    }
+
+    .detail-article-header {
+        margin-bottom: 1.2rem;
+    }
+
+    .detail-section-title {
+        margin-bottom: 1.2rem;
+    }
+
+    .detail-section p {
+        margin-bottom: 1.2rem;
+    }
+
+    .detail-inline-figure {
+        margin-top: 3.2rem;
+    }
+}
+
+/* Bottom-Right Red Accent Triangle moved to ::after of .detail-toc-card */
+
+/* --------------------------------------------------------------------------
+   6. Related Articles Section
+   -------------------------------------------------------------------------- */
+.detail-related-section {
+    padding-block: 8rem 12rem;
+    background-color: #FAFBFD;
+    border-top: 1px solid #E8EBF0;
+    overflow: hidden;
+}
+
+.detail-related-bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 1px solid #E8EBF0;
+    margin-bottom: 4rem;
+}
+
+.detail-related-tag {
+    background: var(--linear-primary);
+    color: var(--white);
+    padding: 0.8rem 2.4rem;
+    --cut: 1.8rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: -1px;
+}
+
+.detail-related-tag-text {
+    color: var(--white);
+    text-transform: uppercase;
+}
+
+.detail-related-viewall {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--primary-2);
+    text-decoration: none;
+    padding-bottom: 0.8rem;
+    transition: color var(--transition), transform var(--transition);
+}
+
+.detail-related-viewall:hover {
+    color: var(--primary-1);
+    transform: translateX(4px);
+}
+
+.detail-related-viewall-text {
+    color: var(--txt-icon-primary);
+    text-transform: uppercase;
+}
+
+.detail-related-viewall-icon {
+    width: 0.8rem;
+    height: 1.2rem;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.detail-related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3.6rem 2.4rem;
+}
+
+.detail-related-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    text-decoration: none;
+    height: 100%;
+    color: var(--txt-icon-primary);
+}
+
+.detail-related-img {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: #0A5A66;
+    --cut: 2rem;
+}
+
+.detail-related-title {
+    color: var(--txt-heading);
+    transition: color var(--transition);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.detail-related-card:hover .detail-related-title {
+    color: var(--secondary-2);
+}
+
+
+/* Navigation Controls */
+.detail-related-wrap {
+    position: relative;
+}
+
+.psd-other-nav {
+    position: absolute;
+    top: 38%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 4.4rem;
+    height: 4.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white);
+    color: var(--primary-2);
+    border: 1px solid #E2E5EC;
+    box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition), border-color var(--transition), transform var(--transition), opacity var(--transition);
+}
+
+.psd-other-prev {
+    left: -2.2rem;
+}
+
+.psd-other-next {
+    right: -2.2rem;
+}
+
+.psd-other-nav:hover {
+    background-color: var(--secondary);
+    color: var(--white);
+    border-color: var(--secondary);
+    transform: translateY(-50%) scale(1.06);
+}
+
+.psd-other-nav.swiper-button-disabled {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. Floating Copy Toast Notification
+   -------------------------------------------------------------------------- */
+.detail-toast {
+    position: fixed;
+    bottom: 3.2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(2rem);
+    background-color: var(--primary-2);
+    color: var(--white);
+    padding: 1.2rem 2.4rem;
+    border-radius: 9999px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition), transform var(--transition);
+    z-index: 999;
+}
+
+.detail-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.detail-toast-icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--primary-1);
+}
+
+.detail-toast-text {
+    color: var(--white);
+}
+
+/* --------------------------------------------------------------------------
+   8. Responsive Media Queries
+   -------------------------------------------------------------------------- */
+
+@media screen and (max-width: 991px) {
+    .detail-related-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 3.2rem 2rem;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .detail-related-section {
+        padding-block: 4.8rem;
+    }
+
+    .detail-related-grid {
+        grid-template-columns: 1fr;
+        gap: 2.8rem;
+    }
+
+    .detail-article-nav {
+        grid-template-columns: 1fr;
+        gap: 3.2rem;
+        margin-top: 4rem;
+        padding-top: 3.2rem;
+    }
+
+    .detail-nav-next {
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .detail-related-tag {
+        padding: 1rem 1.6rem;
+    }
+}
