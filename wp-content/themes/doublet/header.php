@@ -35,7 +35,27 @@
         <?php wp_head(); ?>
 </head>
 
-<body>
+<?php
+// Header settings from TypeRocket Theme Options
+$header_slogan = tr_options_field('tr_theme_options.header_slogan') ?: 'Professional steel supplying & processing';
+
+$header_profile_file = tr_options_field('tr_theme_options.header_profile_file');
+$header_profile_url = $header_profile_file ? wp_get_attachment_url($header_profile_file) : (tr_options_field('tr_theme_options.header_profile_link') ?: '#');
+
+$header_vr360_url = tr_options_field('tr_theme_options.header_vr360_link') ?: '#';
+
+$header_logo_id = tr_options_field('tr_theme_options.header_logo');
+$header_logo_url = $header_logo_id ? wp_get_attachment_image_url($header_logo_id, 'full') : (get_template_directory_uri() . '/imgs/logo.png');
+
+$header_cta_text = tr_options_field('tr_theme_options.header_cta_text') ?: 'FREE CONSULTATION';
+$header_cta_link = tr_options_field('tr_theme_options.header_cta_link') ?: '#';
+
+// Nav menu items
+$menu_locations = get_nav_menu_locations();
+$header_menu_id = isset($menu_locations['header_menu']) ? $menu_locations['header_menu'] : 0;
+$header_nav_items = $header_menu_id ? wp_get_nav_menu_items($header_menu_id) : false;
+?>
+<body <?php body_class(); ?>>
 
     <!-- Header -->
     <header class="header">
@@ -43,13 +63,12 @@
         <div class="header-top desktop">
             <div class="container header-top-inner">
                 <div class="header-top-left">
-                    <span class="txt txt-13 txt-italic header-top-slogan">Professional steel supplying &amp;
-                        processing</span>
+                    <span class="txt txt-13 txt-italic header-top-slogan"><?php echo esc_html($header_slogan); ?></span>
                 </div>
                 <div class="header-top-right">
-                    <a href="#" class="header-top-link txt txt-13 txt-med">2T Profile</a>
+                    <a href="<?php echo esc_url($header_profile_url); ?>" <?php if ($header_profile_file) echo 'target="_blank" download'; ?> class="header-top-link txt txt-13 txt-med">2T Profile</a>
                     <span class="header-top-divider"></span>
-                    <a href="#" class="header-top-link txt txt-13 txt-med">VR360</a>
+                    <a href="<?php echo esc_url($header_vr360_url); ?>" <?php if ($header_vr360_url !== '#') echo 'target="_blank" rel="noopener"'; ?> class="header-top-link txt txt-13 txt-med">VR360</a>
                     <span class="header-top-divider"></span>
                     <div class="header-lang" id="headerLang" tabindex="0" role="button" aria-haspopup="true"
                         aria-expanded="false" aria-label="Select language">
@@ -124,15 +143,15 @@
         <!-- Header Main Bar -->
         <div class="header-main">
             <div class="container grid header-main-inner">
-                <a href="./index.html" class="header-logo">
-                    <img src="<?php echo get_template_directory_uri(); ?>/imgs/logo.png" class="img-basic" alt="Double T Logo">
+                <a href="<?php echo esc_url(home_url('/')); ?>" class="header-logo">
+                    <img src="<?php echo esc_url($header_logo_url); ?>" class="img-basic" alt="Double T Logo">
                 </a>
                 <nav class="header-menu">
                     <div class="header-top tablet">
                         <div class="header-top-inner">
                             <div class="header-top-right">
-                                <a href="#" class="header-top-link txt txt-13 txt-med">2T Profile</a>
-                                <a href="#" class="header-top-link txt txt-13 txt-med">VR360</a>
+                                <a href="<?php echo esc_url($header_profile_url); ?>" <?php if ($header_profile_file) echo 'target="_blank" download'; ?> class="header-top-link txt txt-13 txt-med">2T Profile</a>
+                                <a href="<?php echo esc_url($header_vr360_url); ?>" <?php if ($header_vr360_url !== '#') echo 'target="_blank" rel="noopener"'; ?> class="header-top-link txt txt-13 txt-med">VR360</a>
                                 <div class="header-lang" id="headerLang" tabindex="0" role="button" aria-haspopup="true"
                                     aria-expanded="false" aria-label="Select language">
                                     <div class="header-lang-trigger">
@@ -211,30 +230,40 @@
                             </div>
                         </div>
                     </div>
-                    <a href="./index.html" class="header-menu-item">
-                        <span class="txt txt-14 txt-med">HOME</span>
-                    </a>
-                    <a href="./commitment.html" class="header-menu-item">
-                        <span class="txt txt-14 txt-med">OUR COMMITMENT</span>
-                    </a>
-                    <a href="./product-service.html" class="header-menu-item">
-                        <span class="txt txt-14 txt-med">PRODUCT &amp; SERVICE</span>
-                    </a>
-                    <a href="./insight.html" class="header-menu-item">
-                        <span class="txt txt-14 txt-med">INSIGHT</span>
-                    </a>
-                    <a href="./careers.html" class="header-menu-item">
-                        <span class="txt txt-14 txt-med">CAREERS</span>
-                    </a>
-                    <a href="#" class="header-menu-item">
-                        <span class="txt txt-14 txt-med">CONTACT</span>
-                    </a>
+                    <?php if (!empty($header_nav_items)) : ?>
+                        <?php foreach ($header_nav_items as $item) : 
+                            $is_current = (untrailingslashit($item->url) === untrailingslashit(home_url($_SERVER['REQUEST_URI'] ?? ''))) ? ' active' : '';
+                        ?>
+                            <a href="<?php echo esc_url($item->url); ?>" class="header-menu-item<?php echo $is_current; ?>" <?php if (!empty($item->target)) echo 'target="' . esc_attr($item->target) . '"'; ?>>
+                                <span class="txt txt-14 txt-med"><?php echo esc_html(mb_strtoupper($item->title, 'UTF-8')); ?></span>
+                            </a>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <a href="<?php echo esc_url(home_url('/')); ?>" class="header-menu-item<?php if (is_front_page()) echo ' active'; ?>">
+                            <span class="txt txt-14 txt-med">HOME</span>
+                        </a>
+                        <a href="<?php echo esc_url(home_url('/commitment/')); ?>" class="header-menu-item<?php if (is_page('commitment')) echo ' active'; ?>">
+                            <span class="txt txt-14 txt-med">OUR COMMITMENT</span>
+                        </a>
+                        <a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="header-menu-item<?php if (is_page('product-service')) echo ' active'; ?>">
+                            <span class="txt txt-14 txt-med">PRODUCT &amp; SERVICE</span>
+                        </a>
+                        <a href="<?php echo esc_url(home_url('/insight/')); ?>" class="header-menu-item<?php if (is_page('insight') || is_category() || is_singular('post')) echo ' active'; ?>">
+                            <span class="txt txt-14 txt-med">INSIGHT</span>
+                        </a>
+                        <a href="<?php echo esc_url(home_url('/careers/')); ?>" class="header-menu-item<?php if (is_page('careers') || is_singular('career')) echo ' active'; ?>">
+                            <span class="txt txt-14 txt-med">CAREERS</span>
+                        </a>
+                        <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="header-menu-item<?php if (is_page('contact')) echo ' active'; ?>">
+                            <span class="txt txt-14 txt-med">CONTACT</span>
+                        </a>
+                    <?php endif; ?>
                     <div class="header-cta-wrap tablet">
-                        <a href="#" class="header-cta btn btn-primary">
-                            <span class="txt txt-14 txt-semi">FREE CONSULTATION</span>
+                        <a href="<?php echo esc_url($header_cta_link); ?>" class="header-cta btn btn-primary" <?php if ($header_cta_link === '#' || empty($header_cta_link)) echo 'data-modal-target="consultationModal"'; ?>>
+                            <span class="txt txt-14 txt-semi"><?php echo esc_html($header_cta_text); ?></span>
                         </a>
                     </div>
-                    <div class="header_menu_caption tablet">Professional steel supplying & processing</div>
+                    <div class="header_menu_caption tablet"><?php echo esc_html($header_slogan); ?></div>
                 </nav>
                 <div class="header-iconmenu tablet">
                     <span></span>
@@ -242,8 +271,8 @@
                     <span></span>
                 </div>
                 <div class="header-cta-wrap desktop">
-                    <a href="#" class="header-cta btn btn-primary">
-                        <span class="txt txt-14 txt-semi">FREE CONSULTATION</span>
+                    <a href="<?php echo esc_url($header_cta_link); ?>" class="header-cta btn btn-primary" <?php if ($header_cta_link === '#' || empty($header_cta_link)) echo 'data-modal-target="consultationModal"'; ?>>
+                        <span class="txt txt-14 txt-semi"><?php echo esc_html($header_cta_text); ?></span>
                     </a>
                 </div>
             </div>

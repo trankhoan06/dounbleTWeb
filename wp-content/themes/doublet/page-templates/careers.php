@@ -2,25 +2,110 @@
 /**
  * Template Name: Careers
  */
-get_header(); ?>
+get_header();
 
+// 1. Hero Section Fields
+$careers_hero_bg_id = tr_posts_field('careers_hero_bg');
+$careers_hero_bg_url = $careers_hero_bg_id ? wp_get_attachment_image_url($careers_hero_bg_id, 'full') : get_template_directory_uri() . '/imgs/product-banner.jpg';
+$careers_hero_breadcrumb = tr_posts_field('careers_hero_breadcrumb') ?: 'Careers';
+$careers_hero_title = tr_posts_field('careers_hero_title') ?: 'JOB OPPORTUNITIES';
 
+// 2. Introduction & Working Environment Gallery Fields
+$careers_intro_desc = tr_posts_field('careers_intro_desc') ?: "At Double T, your skills and ideas directly shape your career and our industry. Whether you’re an engineer, technician, strategist, or a graduate starting your first role, you’ll take on challenging projects, learn from industry leaders, and grow in a company that invests in your development. From cutting-edge steel plants to innovative green steel and digital operations, your work here has real impact – on your career and on India’s steel industry.";
+
+$careers_gallery_img_1_id = tr_posts_field('careers_gallery_img_1');
+$careers_gallery_img_1_url = $careers_gallery_img_1_id ? wp_get_attachment_image_url($careers_gallery_img_1_id, 'full') : get_template_directory_uri() . '/imgs/career-gallery-1.jpg';
+
+$careers_gallery_img_2_id = tr_posts_field('careers_gallery_img_2');
+$careers_gallery_img_2_url = $careers_gallery_img_2_id ? wp_get_attachment_image_url($careers_gallery_img_2_id, 'full') : get_template_directory_uri() . '/imgs/video-thumb.jpg';
+
+$careers_gallery_img_3_id = tr_posts_field('careers_gallery_img_3');
+$careers_gallery_img_3_url = $careers_gallery_img_3_id ? wp_get_attachment_image_url($careers_gallery_img_3_id, 'full') : get_template_directory_uri() . '/imgs/product-banner.jpg';
+
+$careers_gallery_img_4_id = tr_posts_field('careers_gallery_img_4');
+$careers_gallery_img_4_url = $careers_gallery_img_4_id ? wp_get_attachment_image_url($careers_gallery_img_4_id, 'full') : get_template_directory_uri() . '/imgs/commit-vison.jpg';
+
+$careers_gallery_stat_number = tr_posts_field('careers_gallery_stat_number') ?: '20+';
+
+// 3. Job Openings Fields
+$careers_openings_label = tr_posts_field('careers_openings_label') ?: 'JOB OPENINGS';
+$careers_openings_title = tr_posts_field('careers_openings_title') ?: 'Career Development';
+$careers_th_position = tr_posts_field('careers_th_position') ?: 'POSITION';
+$careers_th_location = tr_posts_field('careers_th_location') ?: 'LOCATION';
+$careers_th_deadline = tr_posts_field('careers_th_deadline') ?: 'DEADLINE';
+
+$careers_jobs_list = tr_posts_field('careers_jobs_list');
+if (!is_array($careers_jobs_list) || empty($careers_jobs_list)) {
+    $careers_jobs_list = [
+        [
+            'title' => 'Steel Production Engineer',
+            'location' => 'Office',
+            'deadline' => '20/10/2026',
+            'link' => '#',
+            'btn_text' => 'VIEW DETAIL'
+        ],
+        [
+            'title' => 'Steel Quality Control Engineer',
+            'location' => 'Headquarters',
+            'deadline' => '20/10/2026',
+            'link' => '#',
+            'btn_text' => 'VIEW DETAIL'
+        ],
+        [
+            'title' => 'Steel Sales Manager',
+            'location' => 'Office',
+            'deadline' => '20/10/2026',
+            'link' => '#',
+            'btn_text' => 'VIEW DETAIL'
+        ],
+        [
+            'title' => 'Steel Fabrication Supervisor',
+            'location' => 'Office',
+            'deadline' => '20/10/2026',
+            'link' => '#',
+            'btn_text' => 'VIEW DETAIL'
+        ],
+        [
+            'title' => 'Project Engineer – Steel Structures',
+            'location' => 'Headquarters',
+            'deadline' => '20/10/2026',
+            'link' => '#',
+            'btn_text' => 'VIEW DETAIL'
+        ]
+    ];
+}
+
+// 4. Cultural Stats Banner Fields
+$careers_success_title = tr_posts_field('careers_success_title') ?: 'Together We Build<br><span class="careers-success-accent">Success</span>';
+$careers_success_bg_id = tr_posts_field('careers_success_bg');
+$careers_success_bg_url = $careers_success_bg_id ? wp_get_attachment_image_url($careers_success_bg_id, 'full') : get_template_directory_uri() . '/imgs/hero-img.jpg';
+
+$careers_success_stats = tr_posts_field('careers_success_stats');
+if (!is_array($careers_success_stats) || empty($careers_success_stats)) {
+    $careers_success_stats = [
+        ['number' => '10+', 'label' => 'Year of Development'],
+        ['number' => '100+', 'label' => 'Human Resources'],
+        ['number' => '2', 'label' => 'Branch']
+    ];
+}
+?>
 
     <main class="main">
+        <!-- 1. Hero Section -->
         <section class="careers-hero" aria-labelledby="careersHeroTitle">
             <div class="careers-hero-bg">
-                <img src="<?php echo get_template_directory_uri(); ?>/imgs/product-banner.jpg" class="img-fill" alt="Double T steel processing factory">
+                <img src="<?php echo esc_url($careers_hero_bg_url); ?>" class="img-fill" alt="Double T steel processing factory">
             </div>
             <div class="container careers-hero-inner">
-                <div class="careers-hero-panel ">
-                    <div class="careers-hero-panel-bg cut-tr "></div>
+                <div class="careers-hero-panel">
+                    <div class="careers-hero-panel-bg cut-tr"></div>
                     <nav class="careers-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
-                        <a href="./index.html">Home</a>
-                        <span class="commit-hero-pagi-devi " aria-hidden="true">/</span>
-                        <span class="current">Careers</span>
+                        <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
+                        <span class="commit-hero-pagi-devi" aria-hidden="true">/</span>
+                        <span class="current"><?php echo esc_html($careers_hero_breadcrumb); ?></span>
                     </nav>
                     <h1 class="heading h1 h3_mb careers-hero-title" id="careersHeroTitle">
-                        JOB OPPORTUNITIES
+                        <?php echo esc_html($careers_hero_title); ?>
                     </h1>
                 </div>
             </div>
@@ -30,40 +115,38 @@ get_header(); ?>
         <section class="careers-intro">
             <div class="container">
                 <p class="careers-intro-copy txt txt-16 txt-14_tb txt-14_mb txt-med">
-                    At Double T, your skills and ideas directly shape your career and our industry. Whether you’re an
-                    engineer, technician, strategist, or a graduate starting your first role, you’ll take on
-                    challenging projects, learn from industry leaders, and grow in a company that invests in your
-                    development. From cutting-edge steel plants to innovative green steel and digital operations, your
-                    work here has real impact – on your career and on India’s steel industry.
+                    <?php echo wp_kses_post(nl2br($careers_intro_desc)); ?>
                 </p>
 
-                <!-- 4-Image Grid matching design mockup -->
+                <!-- 4-Image Grid -->
                 <div class="careers-gallery">
                     <!-- Column 1: Tall Portrait Operator Photo -->
                     <figure class="careers-gallery-item careers-gallery-tall hover-img">
-                        <img src="<?php echo get_template_directory_uri(); ?>/imgs/career-gallery-1.jpg" class="img-fill"
+                        <img src="<?php echo esc_url($careers_gallery_img_1_url); ?>" class="img-fill"
                             alt="Double T engineers and machine operators on the production line" loading="lazy">
                     </figure>
 
                     <!-- Column 2-3 Row 1: Wide Aerial View of Complex -->
                     <figure class="careers-gallery-item careers-gallery-wide hover-img">
-                        <img src="<?php echo get_template_directory_uri(); ?>/imgs/video-thumb.jpg" class="img-fill"
+                        <img src="<?php echo esc_url($careers_gallery_img_2_url); ?>" class="img-fill"
                             alt="Aerial view of Double T steel processing manufacturing complex" loading="lazy">
                     </figure>
 
                     <!-- Column 2 Row 2: Slitting Line Machinery Operation -->
                     <figure class="careers-gallery-item careers-gallery-sub hover-img">
-                        <img src="<?php echo get_template_directory_uri(); ?>/imgs/product-banner.jpg" class="img-fill"
+                        <img src="<?php echo esc_url($careers_gallery_img_3_url); ?>" class="img-fill"
                             alt="Automated coil slitting line operation" loading="lazy">
                     </figure>
 
-                    <!-- Column 3 Row 2: Operator with 20+ Stats Overlay -->
+                    <!-- Column 3 Row 2: Operator with Stats Overlay -->
                     <figure class="careers-gallery-item careers-gallery-sub careers-gallery-stat hover-img">
-                        <img src="<?php echo get_template_directory_uri(); ?>/imgs/commit-vison.jpg" class="img-fill"
+                        <img src="<?php echo esc_url($careers_gallery_img_4_url); ?>" class="img-fill"
                             alt="Double T technician at the precision control console" loading="lazy">
-                        <div class="careers-gallery-overlay">
-                            <span class="heading h1 h2_tb h3_mb txt-bold careers-gallery-stat-number">20+</span>
-                        </div>
+                        <?php if ($careers_gallery_stat_number): ?>
+                            <div class="careers-gallery-overlay">
+                                <span class="heading h1 h2_tb h3_mb txt-bold careers-gallery-stat-number"><?php echo esc_html($careers_gallery_stat_number); ?></span>
+                            </div>
+                        <?php endif; ?>
                     </figure>
                 </div>
             </div>
@@ -74,70 +157,37 @@ get_header(); ?>
             <div class="container">
                 <div class="careers-section-heading">
                     <div class="label red-light cut-diagonal cut-sm">
-                        <span class="txt txt-13 txt-semi">JOB OPENINGS</span>
+                        <span class="txt txt-13 txt-semi"><?php echo esc_html($careers_openings_label); ?></span>
                     </div>
-                    <h2 class="heading h2 h3_tb h4_mb careers-section-title">Career Development</h2>
+                    <h2 class="heading h2 h3_tb h4_mb careers-section-title"><?php echo esc_html($careers_openings_title); ?></h2>
                 </div>
 
                 <div class="careers-jobs" role="list">
                     <!-- Table Header -->
                     <div class="careers-job careers-job-head txt txt-13 txt-med" aria-hidden="true">
-                        <div>POSITION</div>
-                        <div>LOCATION</div>
-                        <div>DEADLINE</div>
+                        <div><?php echo esc_html($careers_th_position); ?></div>
+                        <div><?php echo esc_html($careers_th_location); ?></div>
+                        <div><?php echo esc_html($careers_th_deadline); ?></div>
                         <div></div>
                     </div>
 
-                    <!-- Job Row 1 -->
-                    <a href="#" class="careers-job" role="listitem">
-                        <h3 class="heading h6 careers-job-title">Steel Production Engineer</h3>
-                        <div class="txt txt-16 txt-14_mb careers-job-location">Office</div>
-                        <div class="txt txt-16 txt-14_mb careers-job-deadline">20/10/2026</div>
-                        <div class="careers-job-btn btn" aria-label="View details for Steel Production Engineer">
-                            <span class="txt txt-14 txt-13_mb txt-semi">VIEW DETAIL</span>
-                        </div>
-                    </a>
-
-                    <!-- Job Row 2 -->
-                    <a href="#" class="careers-job" role="listitem">
-                        <h3 class="heading h6 careers-job-title">Steel Quality Control Engineer</h3>
-                        <div class="txt txt-16 txt-14_mb careers-job-location">Headquarters</div>
-                        <div class="txt txt-16 txt-14_mb careers-job-deadline">20/10/2026</div>
-                        <div class="careers-job-btn btn" aria-label="View details for Steel Quality Control Engineer">
-                            <span class="txt txt-14 txt-13_mb txt-semi">VIEW DETAIL</span>
-                        </div>
-                    </a>
-
-                    <!-- Job Row 3 -->
-                    <a href="#" class="careers-job" role="listitem">
-                        <h3 class="heading h6 careers-job-title">Steel Sales Manager</h3>
-                        <div class="txt txt-16 txt-14_mb careers-job-location">Office</div>
-                        <div class="txt txt-16 txt-14_mb careers-job-deadline">20/10/2026</div>
-                        <div class="careers-job-btn btn" aria-label="View details for Steel Sales Manager">
-                            <span class="txt txt-14 txt-13_mb txt-semi">VIEW DETAIL</span>
-                        </div>
-                    </a>
-
-                    <!-- Job Row 4 -->
-                    <a href="#" class="careers-job" role="listitem">
-                        <h3 class="heading h6 careers-job-title">Steel Fabrication Supervisor</h3>
-                        <div class="txt txt-16 txt-14_mb careers-job-location">Office</div>
-                        <div class="txt txt-16 txt-14_mb careers-job-deadline">20/10/2026</div>
-                        <div class="careers-job-btn btn" aria-label="View details for Steel Fabrication Supervisor">
-                            <span class="txt txt-14 txt-13_mb txt-semi">VIEW DETAIL</span>
-                        </div>
-                    </a>
-
-                    <!-- Job Row 5 -->
-                    <a href="#" class="careers-job" role="listitem">
-                        <h3 class="heading h6 careers-job-title">Project Engineer – Steel Structures</h3>
-                        <div class="txt txt-16 txt-14_mb careers-job-location">Headquarters</div>
-                        <div class="txt txt-16 txt-14_mb careers-job-deadline">20/10/2026</div>
-                        <div class="careers-job-btn btn"
-                            aria-label="View details for Project Engineer – Steel Structures">
-                            <span class="txt txt-14 txt-13_mb txt-semi">VIEW DETAIL</span>
-                        </div>
-                    </a>
+                    <!-- Job Rows -->
+                    <?php foreach ($careers_jobs_list as $job): 
+                        $j_title = !empty($job['title']) ? $job['title'] : '';
+                        $j_location = !empty($job['location']) ? $job['location'] : '';
+                        $j_deadline = !empty($job['deadline']) ? $job['deadline'] : '';
+                        $j_link = !empty($job['link']) ? $job['link'] : '#';
+                        $j_btn = !empty($job['btn_text']) ? $job['btn_text'] : 'VIEW DETAIL';
+                    ?>
+                        <a href="<?php echo esc_url($j_link); ?>" class="careers-job" role="listitem">
+                            <h3 class="heading h6 careers-job-title"><?php echo esc_html($j_title); ?></h3>
+                            <div class="txt txt-16 txt-14_mb careers-job-location"><?php echo esc_html($j_location); ?></div>
+                            <div class="txt txt-16 txt-14_mb careers-job-deadline"><?php echo esc_html($j_deadline); ?></div>
+                            <div class="careers-job-btn btn" aria-label="<?php echo esc_attr($j_btn . ' for ' . $j_title); ?>">
+                                <span class="txt txt-14 txt-13_mb txt-semi"><?php echo esc_html($j_btn); ?></span>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </section>
@@ -149,46 +199,39 @@ get_header(); ?>
                 <div class="careers-success-header">
                     <div class="careers-success-heading">
                         <h2 class="heading h1 h3_tb h3_mb careers-success-title">
-                            Together We Build<br><span class="careers-success-accent">Success</span>
+                            <?php echo wp_kses_post($careers_success_title); ?>
                         </h2>
                     </div>
                 </div>
 
-                <!-- Floating Teal Stats Card with Top-Left Chamfer and Bottom-Right Red Accent -->
+                <!-- Floating Stats Card -->
                 <div class="careers-success-card-wrap">
-
-                    <div class="careers-success-deco " aria-hidden="true">
-                        <img class="mobile" src="/imgs/icon_deco.svg" alt="">
-                        <img class="middle" src="/imgs/icon_deco_desktop.svg" alt="">
+                    <div class="careers-success-deco" aria-hidden="true">
+                        <img class="mobile" src="<?php echo get_template_directory_uri(); ?>/imgs/icon_deco.svg" alt="">
+                        <img class="middle" src="<?php echo get_template_directory_uri(); ?>/imgs/icon_deco_desktop.svg" alt="">
                     </div>
                     <div class="careers-success-card">
                         <div class="careers-success-body">
-                            <div class="careers-stat">
-                                <strong class="heading h0 h2_tb careers-stat-num">10+</strong>
-                                <span class="txt txt-18 txt-14_tb txt-14_mb txt-med careers-stat-label">Year of
-                                    Development</span>
-                            </div>
-                            <div class="careers-stat">
-                                <strong class="heading h0 h2_tb careers-stat-num">100+</strong>
-                                <span class="txt txt-18 txt-14_tb txt-14_mb txt-med careers-stat-label">Human
-                                    Resources</span>
-                            </div>
-                            <div class="careers-stat">
-                                <strong class="heading h0 h2_tb careers-stat-num">2</strong>
-                                <span class="txt txt-18 txt-14_tb txt-14_mb txt-med careers-stat-label">Branch</span>
-                            </div>
+                            <?php foreach ($careers_success_stats as $stat): 
+                                $s_num = !empty($stat['number']) ? $stat['number'] : '';
+                                $s_label = !empty($stat['label']) ? $stat['label'] : '';
+                            ?>
+                                <div class="careers-stat">
+                                    <strong class="heading h0 h2_tb careers-stat-num"><?php echo esc_html($s_num); ?></strong>
+                                    <span class="txt txt-18 txt-14_tb txt-14_mb txt-med careers-stat-label"><?php echo esc_html($s_label); ?></span>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                         <div class="careers-success-card-accent" aria-hidden="true"></div>
                     </div>
                 </div>
             </div>
-            <!-- Factory Image & Floating Stats Card Wrapper -->
+
+            <!-- Factory Image Background -->
             <div class="careers-success-media">
-                <img src="<?php echo get_template_directory_uri(); ?>/imgs/hero-img.jpg" class="img-fill" alt="Double T automated steel manufacturing facility"
-                    loading="lazy">
+                <img src="<?php echo esc_url($careers_success_bg_url); ?>" class="img-fill" alt="Double T automated steel manufacturing facility" loading="lazy">
             </div>
         </section>
     </main>
 
-    
 <?php get_footer(); ?>

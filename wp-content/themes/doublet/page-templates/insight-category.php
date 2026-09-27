@@ -119,25 +119,7 @@ get_header(); ?>
             </div>
         </section>
 
-        <section class="consultation-cta">
-            <div class="consultation-cta-inner">
-                <div class="consultation-cta-bg">
-                    <img src="<?php echo get_template_directory_uri(); ?>/imgs/cta.jpg" alt="Steel Manufacturing Line" class="img-abs">
-                </div>
-                <div class="consultation-cta-content">
-                    <h2 class="heading consultation-cta-title h3">Request A Consultation</h2>
-                    <p class="txt txt-16 consultation-cta-desc txt-14_mb">
-                        Our team is ready to understand your requirements, provide expert recommendations, and help
-                        you find the most suitable steel products and solutions.
-                    </p>
-                    <div class="consultation-cta-action">
-                        <a href="#" class="btn btn-outline consultation-cta-btn" data-modal-target="consultationModal">
-                            <span class="txt txt-14 txt-semi">FREE CONSULTATION</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <?php render_consultation_cta(); ?>
 
     </main>
 

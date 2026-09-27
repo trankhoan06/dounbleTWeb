@@ -48,7 +48,7 @@ function themax_enqueue_assets() {
     wp_enqueue_script('global-js', $theme_dir . '/js/global.js', array('jquery-3.7.1'), '1.0.0', true);
 
     // Template specific CSS & JS
-    if (is_page_template('page-templates/career-detail.php')) {
+    if (is_page_template('page-templates/career-detail.php') || is_singular('career') || is_singular('careers')) {
         wp_enqueue_style('doublet-career-detail', $theme_dir . '/css/career-detail.css', array(), '1.0.0');
         wp_enqueue_script('doublet-career-detail-js', $theme_dir . '/js/career-detail.js', array('global-js'), '1.0.0', true);
     }
@@ -62,23 +62,15 @@ function themax_enqueue_assets() {
     elseif (is_page_template('page-templates/contact.php')) {
         wp_enqueue_style('doublet-contact', $theme_dir . '/css/contact.css', array(), '1.0.0');
     }
-    elseif (is_page_template('page-templates/index.php') || is_front_page() || is_home()) {
+    elseif (is_page_template('page-templates/index.php') || is_page_template('page-templates/template.php') || is_front_page() || is_home()) {
         wp_enqueue_style('doublet-home', $theme_dir . '/css/home.css', array(), '1.0.0');
         wp_enqueue_script('doublet-home-js', $theme_dir . '/js/home.js', array('global-js'), '1.0.0', true);
     }
-    elseif (is_page_template('page-templates/insight-category.php')) {
+    elseif (is_page_template('page-templates/insight-category.php') || is_category() || is_archive()) {
         wp_enqueue_style('doublet-insight-category', $theme_dir . '/css/insight-category.css', array(), '1.0.0');
         wp_enqueue_script('doublet-insight-category-js', $theme_dir . '/js/insight-category.js', array('global-js'), '1.0.0', true);
     }
-    elseif (is_page_template('page-templates/insight-detail.php')) {
-        wp_enqueue_style('doublet-insight-detail', $theme_dir . '/css/insight-detail.css', array(), '1.0.0');
-        wp_enqueue_script('doublet-insight-detail-js', $theme_dir . '/js/insight-detail.js', array('global-js'), '1.0.0', true);
-    }
-    elseif (is_page_template('page-templates/insight.php')) {
-        wp_enqueue_style('doublet-insight', $theme_dir . '/css/insight.css', array(), '1.0.0');
-        wp_enqueue_script('doublet-insight-js', $theme_dir . '/js/insight.js', array('global-js'), '1.0.0', true);
-    }
-    elseif (is_page_template('page-templates/product-service-detail.php')) {
+    elseif (is_page_template('page-templates/product-service-detail.php') || is_singular('productandservice') || is_singular('product-service') || is_singular('product_service')) {
         wp_enqueue_style('doublet-product-service-detail', $theme_dir . '/css/product-service-detail.css', array(), '1.0.0');
         wp_enqueue_script('doublet-product-service-detail-js', $theme_dir . '/js/product-service-detail.js', array('global-js'), '1.0.0', true);
     }
@@ -86,8 +78,39 @@ function themax_enqueue_assets() {
         wp_enqueue_style('doublet-product-service', $theme_dir . '/css/product-service.css', array(), '1.0.0');
         wp_enqueue_script('doublet-product-service-js', $theme_dir . '/js/product-service.js', array('global-js'), '1.0.0', true);
     }
+    elseif (is_page_template('page-templates/insight.php')) {
+        wp_enqueue_style('doublet-insight', $theme_dir . '/css/insight.css', array(), '1.0.0');
+        wp_enqueue_script('doublet-insight-js', $theme_dir . '/js/insight.js', array('global-js'), '1.0.0', true);
+    }
+    elseif (is_page_template('page-templates/insight-detail.php') || is_singular('post') || is_single()) {
+        wp_enqueue_style('doublet-insight-detail', $theme_dir . '/css/insight-detail.css', array(), '1.0.0');
+        wp_enqueue_script('doublet-insight-detail-js', $theme_dir . '/js/insight-detail.js', array('global-js'), '1.0.0', true);
+    }
 }
 add_action('wp_enqueue_scripts', 'themax_enqueue_assets');
+
+add_filter('body_class', 'themax_custom_body_classes');
+function themax_custom_body_classes($classes) {
+    if (is_page_template('page-templates/product-service-detail.php') || is_singular('productandservice') || is_singular('product-service') || is_singular('product_service')) {
+        $classes[] = 'product-service-detail-page';
+    }
+    elseif (is_page_template('page-templates/careers.php')) {
+        $classes[] = 'careers-page';
+    }
+    elseif (is_page_template('page-templates/career-detail.php') || is_singular('career') || is_singular('careers')) {
+        $classes[] = 'career-detail-page';
+    }
+    elseif (is_page_template('page-templates/insight.php')) {
+        $classes[] = 'insight-page';
+    }
+    elseif (is_page_template('page-templates/insight-category.php') || is_category() || is_archive()) {
+        $classes[] = 'insight-category-page';
+    }
+    elseif (is_page_template('page-templates/insight-detail.php') || is_singular('post') || is_single()) {
+        $classes[] = 'insight-detail-page';
+    }
+    return $classes;
+}
 
 add_filter('script_loader_tag', 'themax_add_defer_to_scripts', 10, 2);
 function themax_add_defer_to_scripts($tag, $handle) {

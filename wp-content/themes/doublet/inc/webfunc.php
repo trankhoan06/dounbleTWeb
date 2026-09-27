@@ -196,5 +196,39 @@ function defaultAnimation($delay=0,$animationName ="fadeInUpShort"){
     return $animationName." animated delay-".(500 + 250 * $delay);
   }
   return $animationName." animated";
-  
 }
+
+/**
+ * Render Global Consultation CTA Section from Theme Options
+ */
+function render_consultation_cta() {
+    $cta_bg_id = tr_options_field('theme_options.global_cta_bg');
+    $cta_bg_url = $cta_bg_id ? wp_get_attachment_image_url($cta_bg_id, 'full') : get_template_directory_uri() . '/imgs/cta.jpg';
+    $cta_title = tr_options_field('theme_options.global_cta_title') ?: 'Request A Consultation';
+    $cta_desc = tr_options_field('theme_options.global_cta_desc') ?: 'Our team is ready to understand your requirements, provide expert recommendations, and help you find the most suitable steel products and solutions.';
+    $cta_btn_text = tr_options_field('theme_options.global_cta_btn_text') ?: 'FREE CONSULTATION';
+    $cta_btn_link = tr_options_field('theme_options.global_cta_btn_link') ?: '';
+    $cta_has_link = (!empty($cta_btn_link) && $cta_btn_link !== '#');
+    ?>
+    <section class="consultation-cta">
+        <div class="consultation-cta-inner">
+            <div class="consultation-cta-bg">
+                <img src="<?php echo esc_url($cta_bg_url); ?>" alt="Steel Manufacturing Line" class="img-abs">
+            </div>
+            <div class="consultation-cta-content">
+                <h2 class="heading consultation-cta-title h3"><?php echo esc_html($cta_title); ?></h2>
+                <p class="txt txt-16 consultation-cta-desc txt-14_mb">
+                    <?php echo wp_kses_post(nl2br($cta_desc)); ?>
+                </p>
+                <div class="consultation-cta-action">
+                    <a href="<?php echo esc_url($cta_btn_link ?: '#'); ?>" 
+                       class="btn btn-outline consultation-cta-btn" 
+                       <?php if (!$cta_has_link): ?>data-modal-target="consultationModal"<?php endif; ?>>
+                        <span class="txt txt-14 txt-semi"><?php echo esc_html($cta_btn_text); ?></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php
+}

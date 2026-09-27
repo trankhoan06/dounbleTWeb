@@ -1,14 +1,11 @@
 <?php
-/**
- * Template Name: Product Service Detail
- */
 get_header();
 
 // 1. Hero Section Fields
 $psd_hero_img_id = tr_posts_field('psd_hero_img');
-$psd_hero_img_url = $psd_hero_img_id ? wp_get_attachment_image_url($psd_hero_img_id, 'full') : get_template_directory_uri() . '/imgs/hero-img.jpg';
-$psd_hero_breadcrumb = tr_posts_field('psd_hero_breadcrumb') ?: 'Hot Rrolled - HR/ Hot Rolled Pickled and oiled - hrpo';
-$psd_hero_title = tr_posts_field('psd_hero_title') ?: 'HOT ROLLED - HR/ HOT ROLLED<br>PICKLED AND OILED - HRPO';
+$psd_hero_img_url = $psd_hero_img_id ? wp_get_attachment_image_url($psd_hero_img_id, 'full') : (get_the_post_thumbnail_url(get_the_ID(), 'full') ?: get_template_directory_uri() . '/imgs/hero-img.jpg');
+$psd_hero_breadcrumb = tr_posts_field('psd_hero_breadcrumb') ?: (get_the_title() ?: 'Hot Rrolled - HR/ Hot Rolled Pickled and oiled - hrpo');
+$psd_hero_title = tr_posts_field('psd_hero_title') ?: (get_the_title() ?: 'HOT ROLLED - HR/ HOT ROLLED<br>PICKLED AND OILED - HRPO');
 
 // 2. Specification Fields
 $psd_spec_label = tr_posts_field('psd_spec_label') ?: 'SPECIFICATION';
@@ -74,14 +71,13 @@ $psd_other_label = tr_posts_field('psd_other_label') ?: 'OTHER PRODUCTS';
 $psd_other_items = tr_posts_field('psd_other_items');
 if (!is_array($psd_other_items) || empty($psd_other_items)) {
     $psd_other_items = [
-        ['title' => 'Cold-Rolled', 'link' => './product-service-detail.html', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/cta.jpg'],
-        ['title' => 'Hot-Dip Galvanized', 'link' => './product-service-detail.html', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/service-item1.jpg'],
-        ['title' => 'Electrical Steel-Es', 'link' => './product-service-detail.html', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/home-service.webp'],
-        ['title' => 'Electrical Galvanized Steel-Eg', 'link' => './product-service-detail.html', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/product.jpg'],
-        ['title' => 'Stainless Steel-Inox', 'link' => './product-service-detail.html', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/hero-img.jpg']
+        ['title' => 'Cold-Rolled', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/cta.jpg'],
+        ['title' => 'Hot-Dip Galvanized', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/service-item1.jpg'],
+        ['title' => 'Electrical Steel-Es', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/home-service.webp'],
+        ['title' => 'Electrical Galvanized Steel-Eg', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/product.jpg'],
+        ['title' => 'Stainless Steel-Inox', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/hero-img.jpg']
     ];
 }
-
 ?>
 
     <main class="main">
@@ -143,8 +139,9 @@ if (!is_array($psd_other_items) || empty($psd_other_items)) {
                     <!-- Right Column: Visual Frame & Overlaid Specs Card -->
                     <div class="psd-spec-visual">
                         <div class="psd-spec-frame-wrap">
-                            <div class="psd-spec-frame">
-                                <img src="<?php echo esc_url($psd_spec_visual_img_url); ?>" class="img-fill" alt="Technician operating control panel">
+                            <div class="psd-spec-frame ">
+                                <img src="<?php echo esc_url($psd_spec_visual_img_url); ?>" class="img-fill"
+                                    alt="Technician operating control panel">
                             </div>
 
                             <!-- Overlaid Specs Floating Card -->
@@ -152,11 +149,11 @@ if (!is_array($psd_other_items) || empty($psd_other_items)) {
                                 <div class="psd-spec-card cut-diagonal">
                                     <?php foreach ($psd_spec_card_rows as $row): 
                                         $r_label = !empty($row['label']) ? $row['label'] : '';
-                                        $r_value = !empty($row['value']) ? $row['value'] : '';
+                                        $r_val = !empty($row['value']) ? $row['value'] : '';
                                     ?>
                                         <div class="psd-spec-card-row">
                                             <span class="txt txt-16 txt-10_mb txt-14_tb txt-med psd-spec-card-label"><?php echo esc_html($r_label); ?></span>
-                                            <span class="txt txt-16 txt-10_mb txt-14_tb txt-bold psd-spec-card-value"><?php echo esc_html($r_value); ?></span>
+                                            <span class="txt txt-16 txt-10_mb txt-14_tb txt-bold psd-spec-card-value"><?php echo esc_html($r_val); ?></span>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
@@ -181,18 +178,11 @@ if (!is_array($psd_other_items) || empty($psd_other_items)) {
                 </p>
 
                 <div class="psd-app-grid">
-                    <?php foreach ($psd_app_items as $app): 
-                        $a_title = !empty($app['title']) ? $app['title'] : '';
-                        $a_img_url = '';
-                        if (!empty($app['image'])) {
-                            $a_img_url = wp_get_attachment_image_url($app['image'], 'full');
-                        }
-                        if (!$a_img_url && !empty($app['default_image'])) {
-                            $a_img_url = $app['default_image'];
-                        }
-                        if (!$a_img_url) {
-                            $a_img_url = get_template_directory_uri() . '/imgs/application.jpg';
-                        }
+                    <?php foreach ($psd_app_items as $item): 
+                        $a_title = !empty($item['title']) ? $item['title'] : '';
+                        $a_img_id = !empty($item['image']) ? $item['image'] : null;
+                        $a_default_img = !empty($item['default_image']) ? $item['default_image'] : '';
+                        $a_img_url = $a_img_id ? wp_get_attachment_image_url($a_img_id, 'full') : $a_default_img;
                     ?>
                         <article class="psd-app-card hover-img cut-tl">
                             <div class="psd-app-card-media">
@@ -211,57 +201,64 @@ if (!is_array($psd_other_items) || empty($psd_other_items)) {
         </section>
 
         <!-- 4. Other Products Section (Swiper Carousel) -->
-        <section class="psd-other" id="otherProducts" aria-labelledby="psdOtherLabel">
+        <section class="psd-other" aria-labelledby="psdOtherLabel">
             <div class="container">
-                <div class="psd-section-head">
-                    <div class="psd-section-tag cut-tl" id="psdOtherLabel">
+                <div class="psd-other-bar">
+                    <div class="psd-other-tag cut-tl" id="psdOtherLabel">
                         <span class="txt txt-16 txt-14_tb txt-semi"><?php echo esc_html($psd_other_label); ?></span>
+                    </div>
+                    <div class="psd-other-controls middle">
+                        <button class="psd-other-nav psd-other-prev cut-diagonal cut-sm" id="psdOtherPrev"
+                            aria-label="Previous products">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M7.5 2.5L4 6L7.5 9.5" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="psd-other-nav psd-other-next cut-diagonal cut-sm" id="psdOtherNext"
+                            aria-label="Next products">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
-                <div class="psd-other-slider-wrap">
-                    <div class="swiper psd-other-slider" id="psdOtherSlider">
-                        <div class="swiper-wrapper">
-                            <?php foreach ($psd_other_items as $other): 
-                                $o_title = !empty($other['title']) ? $other['title'] : '';
-                                $o_link = !empty($other['link']) ? $other['link'] : '#';
-                                $o_img_url = '';
-                                if (!empty($other['image'])) {
-                                    $o_img_url = wp_get_attachment_image_url($other['image'], 'full');
-                                }
-                                if (!$o_img_url && !empty($other['default_image'])) {
-                                    $o_img_url = $other['default_image'];
-                                }
-                                if (!$o_img_url) {
-                                    $o_img_url = get_template_directory_uri() . '/imgs/product.jpg';
-                                }
-                            ?>
-                                <div class="swiper-slide">
-                                    <a href="<?php echo esc_url($o_link); ?>" class="ps-product-card hover-img">
-                                        <div class="ps-product-card-img cut-tl">
-                                            <div class="ps-product-card-img-block"></div>
-                                            <img src="<?php echo esc_url($o_img_url); ?>" class="img-abs img-fill" alt="<?php echo esc_attr($o_title); ?>">
-                                        </div>
-                                        <div class="ps-product-card-content">
-                                            <div class="ps-product-card-title">
-                                                <div class="heading h5 h6_tb"><?php echo esc_html($o_title); ?></div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
+                <div class="swiper psd-other-swiper" id="psdOtherSwiper">
+                    <div class="swiper-wrapper">
+                        <?php foreach ($psd_other_items as $prod): 
+                            $p_title = !empty($prod['title']) ? $prod['title'] : '';
+                            $p_link = !empty($prod['link']) ? $prod['link'] : '#';
+                            $p_img_id = !empty($prod['image']) ? $prod['image'] : null;
+                            $p_default_img = !empty($prod['default_image']) ? $prod['default_image'] : '';
+                            $p_img_url = $p_img_id ? wp_get_attachment_image_url($p_img_id, 'full') : $p_default_img;
+                        ?>
+                            <div class="swiper-slide">
+                                <a href="<?php echo esc_url($p_link); ?>" class="psd-other-card hover-img cut-tl">
+                                    <div class="psd-other-card-media">
+                                        <img src="<?php echo esc_url($p_img_url); ?>" class="img-fill" alt="<?php echo esc_attr($p_title); ?>">
+                                        <div class="psd-other-card-overlay"></div>
+                                    </div>
+                                    <div class="psd-other-card-content">
+                                        <h3 class="txt txt-16 txt-14_tb txt-semi psd-other-card-title">
+                                            <?php echo esc_html($p_title); ?>
+                                        </h3>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
 
-                    <!-- Slider Arrow Controls -->
-                    <button class="psd-other-nav psd-other-prev cut-diagonal cut-sm" id="psdOtherPrev"
+                    <!-- Mobile Carousel Controls -->
+                    <button class="psd-other-nav mobile psd-other-prev cut-diagonal cut-sm" id="psdOtherPrevMobile"
                         aria-label="Previous products">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                             <path d="M7.5 2.5L4 6L7.5 9.5" stroke="currentColor" stroke-width="1.8"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </button>
-                    <button class="psd-other-nav psd-other-next cut-diagonal cut-sm" id="psdOtherNext"
+                    <button class="psd-other-nav mobile psd-other-next cut-diagonal cut-sm" id="psdOtherNextMobile"
                         aria-label="Next products">
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                             <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" stroke-width="1.8"

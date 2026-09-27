@@ -1,7 +1,4 @@
 <?php
-/**
- * Template Name: Career Detail
- */
 get_header();
 
 $post_id = get_the_ID();
@@ -56,7 +53,7 @@ $career_ben_content = tr_posts_field('career_ben_content') ?: '<ul class="txt tx
 </ul>';
 ?>
 
-<main class="main">
+<main class="main default-single-page" data-namespace="singlePost">
     <!-- Hero Section -->
     <section class="career-detail-hero">
         <div class="container">
