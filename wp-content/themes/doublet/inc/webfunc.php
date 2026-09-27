@@ -202,12 +202,22 @@ function defaultAnimation($delay=0,$animationName ="fadeInUpShort"){
  * Render Global Consultation CTA Section from Theme Options
  */
 function render_consultation_cta() {
-    $cta_bg_id = tr_options_field('theme_options.global_cta_bg');
+    $current_lang = function_exists('pll_current_language') ? pll_current_language('slug') : 'en';
+    $current_lang = strtolower($current_lang ?: 'en');
+
+    $cta_bg_id = tr_options_field('tr_theme_options.global_cta_bg') ?: tr_options_field('theme_options.global_cta_bg');
     $cta_bg_url = $cta_bg_id ? wp_get_attachment_image_url($cta_bg_id, 'full') : get_template_directory_uri() . '/imgs/cta.jpg';
-    $cta_title = tr_options_field('theme_options.global_cta_title') ?: 'Request A Consultation';
-    $cta_desc = tr_options_field('theme_options.global_cta_desc') ?: 'Our team is ready to understand your requirements, provide expert recommendations, and help you find the most suitable steel products and solutions.';
-    $cta_btn_text = tr_options_field('theme_options.global_cta_btn_text') ?: 'FREE CONSULTATION';
-    $cta_btn_link = tr_options_field('theme_options.global_cta_btn_link') ?: '';
+
+    if ($current_lang === 'vi') {
+        $cta_title = tr_options_field('tr_theme_options.global_cta_title_vi') ?: 'Đăng Ký Tư Vấn';
+        $cta_desc = tr_options_field('tr_theme_options.global_cta_desc_vi') ?: 'Đội ngũ chuyên gia của chúng tôi luôn sẵn sàng lắng nghe nhu cầu, tư vấn chuyên sâu và hỗ trợ bạn lựa chọn sản phẩm cũng như giải pháp thép tối ưu nhất.';
+        $cta_btn_text = tr_options_field('tr_theme_options.global_cta_btn_text_vi') ?: 'TƯ VẤN MIỄN PHÍ';
+    } else {
+        $cta_title = tr_options_field('tr_theme_options.global_cta_title') ?: (tr_options_field('theme_options.global_cta_title') ?: 'Request A Consultation');
+        $cta_desc = tr_options_field('tr_theme_options.global_cta_desc') ?: (tr_options_field('theme_options.global_cta_desc') ?: 'Our team is ready to understand your requirements, provide expert recommendations, and help you find the most suitable steel products and solutions.');
+        $cta_btn_text = tr_options_field('tr_theme_options.global_cta_btn_text') ?: (tr_options_field('theme_options.global_cta_btn_text') ?: 'FREE CONSULTATION');
+    }
+    $cta_btn_link = tr_options_field('tr_theme_options.global_cta_btn_link') ?: (tr_options_field('theme_options.global_cta_btn_link') ?: '');
     $cta_has_link = (!empty($cta_btn_link) && $cta_btn_link !== '#');
     ?>
     <section class="consultation-cta">

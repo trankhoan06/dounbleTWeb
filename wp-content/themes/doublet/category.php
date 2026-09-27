@@ -6,7 +6,20 @@
  * @subpackage doublet
  */
 
-get_header(); ?>
+get_header(); 
+
+$current_lang = function_exists('pll_current_language') ? pll_current_language('slug') : 'en';
+$current_lang = strtolower($current_lang ?: 'en');
+
+$breadcrumb_home = $current_lang === 'vi' ? 'Trang chủ' : 'Home';
+$breadcrumb_insight = $current_lang === 'vi' ? 'Tin tức' : 'Insights';
+$insight_url = home_url($current_lang === 'vi' ? '/insight/' : '/insight/');
+$prod_url = home_url($current_lang === 'vi' ? '/product-service/' : '/product-service/');
+$view_all_prod_text = $current_lang === 'vi' ? 'XEM TẤT CẢ SẢN PHẨM' : 'VIEW ALL PRODUCTS';
+$recent_articles_text = $current_lang === 'vi' ? 'BÀI VIẾT GẦN ĐÂY' : 'RECENT ARTICLES';
+$view_all_text = $current_lang === 'vi' ? 'XEM TẤT CẢ' : 'VIEW ALL';
+$empty_text = $current_lang === 'vi' ? 'Chưa có bài viết nào trong chuyên mục này.' : 'No articles found in this category.';
+?>
 
     <main class="main" id="mainContent">
         <section class="cat-hero" aria-labelledby="catHeroTitle">
@@ -14,9 +27,9 @@ get_header(); ?>
                 <div class="cat-hero-panel">
                     <div class="container cat-hero-container">
                         <nav class="cat-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
-                            <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
+                            <a href="<?php echo esc_url(home_url('/')); ?>"><?php echo esc_html($breadcrumb_home); ?></a>
                             <span class="cat-breadcrumb-devi" aria-hidden="true">/</span>
-                            <a class="middle" href="<?php echo esc_url(home_url('/insight/')); ?>">Insights</a>
+                            <a class="middle" href="<?php echo esc_url($insight_url); ?>"><?php echo esc_html($breadcrumb_insight); ?></a>
                             <span class="cat-breadcrumb-devi" aria-hidden="true">/</span>
                             <span class="current" id="catBreadcrumbCurrent"><?php single_cat_title(); ?></span>
                         </nav>
@@ -56,7 +69,7 @@ get_header(); ?>
                             <?php endwhile; else : ?>
                                 <article class="cat-article-item">
                                     <div class="cat-article-body">
-                                        <p class="txt txt-16">Chưa có bài viết nào trong chuyên mục này.</p>
+                                        <p class="txt txt-16"><?php echo esc_html($empty_text); ?></p>
                                     </div>
                                 </article>
                             <?php endif; ?>
@@ -93,8 +106,8 @@ get_header(); ?>
                                 <h3 class="heading h5 h4_mb cat-promo-title">
                                     Professional steel supplier and processor.
                                 </h3>
-                                <a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="cat-promo-btn btn-outline btn">
-                                    <span class="txt txt-13 txt-semi cat-promo-btn-text">VIEW ALL PRODUCTS</span>
+                                <a href="<?php echo esc_url($prod_url); ?>" class="cat-promo-btn btn-outline btn">
+                                    <span class="txt txt-13 txt-semi cat-promo-btn-text"><?php echo esc_html($view_all_prod_text); ?></span>
                                     <span class="cat-promo-btn-accent" aria-hidden="true"></span>
                                 </a>
                             </div>
@@ -104,18 +117,22 @@ get_header(); ?>
                         <div class="cat-sidebar-widget cut-tl" id="catSidebarOtherWidget">
                             <div class="cat-widget-head">
                                 <div class="cat-widget-tag cut-tl" id="catWidgetTag">
-                                    <span class="txt txt-14 txt-semi cat-widget-tag-text" id="catWidgetTagText">RECENT ARTICLES</span>
+                                    <span class="txt txt-14 txt-semi cat-widget-tag-text" id="catWidgetTagText"><?php echo esc_html($recent_articles_text); ?></span>
                                 </div>
                             </div>
 
                             <div class="cat-widget-list" id="catWidgetList">
                                 <?php
-                                $sidebar_posts = get_posts(array(
+                                $sidebar_args = array(
                                     'post_type'      => 'post',
                                     'posts_per_page' => 4,
                                     'post_status'    => 'publish',
                                     'exclude'        => array(get_the_ID()),
-                                ));
+                                );
+                                if (function_exists('pll_current_language')) {
+                                    $sidebar_args['lang'] = $current_lang;
+                                }
+                                $sidebar_posts = get_posts($sidebar_args);
                                 if ($sidebar_posts) :
                                     foreach ($sidebar_posts as $spost) :
                                 ?>
@@ -137,8 +154,8 @@ get_header(); ?>
                             </div>
 
                             <div class="cat-widget-footer">
-                                <a href="<?php echo esc_url(home_url('/insight/')); ?>" class="cat-widget-viewall" id="catWidgetViewAllLink" aria-label="View all related articles">
-                                    <span class="txt txt-14 txt-semi cat-widget-viewall-text">VIEW ALL</span>
+                                <a href="<?php echo esc_url($insight_url); ?>" class="cat-widget-viewall" id="catWidgetViewAllLink" aria-label="View all related articles">
+                                    <span class="txt txt-14 txt-semi cat-widget-viewall-text"><?php echo esc_html($view_all_text); ?></span>
                                     <svg class="cat-widget-viewall-icon" viewBox="0 0 8 12" aria-hidden="true">
                                         <path d="M1.5 1.5L6 6L1.5 10.5" />
                                     </svg>

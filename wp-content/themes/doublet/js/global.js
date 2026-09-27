@@ -178,27 +178,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         langItems.forEach((item) => {
-            item.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const selectedLang = item.dataset.lang;
-                const flagSvg = item.querySelector('.header-lang-flag').innerHTML;
-
-                // Sync all header langs
+            item.addEventListener('click', () => {
                 headerLangs.forEach(hl => {
-                    const hlTrigger = hl.querySelector('.header-lang-trigger');
-                    if (hlTrigger) {
-                        const hlFlag = hlTrigger.querySelector('.header-lang-flag');
-                        const hlCode = hlTrigger.querySelector('.header-lang-code');
-                        if (hlFlag) hlFlag.innerHTML = flagSvg;
-                        if (hlCode) hlCode.textContent = selectedLang;
-                    }
-
-                    const hlItems = hl.querySelectorAll('.header-lang-item');
-                    hlItems.forEach(i => {
-                        if (i.dataset.lang === selectedLang) i.classList.add('active');
-                        else i.classList.remove('active');
-                    });
-
                     hl.classList.remove('is-open');
                     hl.setAttribute('aria-expanded', 'false');
                 });

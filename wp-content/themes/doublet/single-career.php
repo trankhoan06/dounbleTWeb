@@ -163,25 +163,69 @@ $career_ben_content = tr_posts_field('career_ben_content') ?: '<ul class="txt tx
                     <?php endif; ?>
 
                     <!-- Apply Form Section -->
+                    <?php
+                    $current_lang = function_exists('pll_current_language') ? pll_current_language('slug') : 'en';
+                    $current_lang = strtolower($current_lang ?: 'en');
+
+                    if ($current_lang === 'vi') {
+                        $c_form_title = tr_options_field('tr_theme_options.career_form_title_vi') ?: 'Ứng Tuyển Vị Trí Này';
+                        $c_form_name_label = tr_options_field('tr_theme_options.career_form_name_label_vi') ?: 'Họ và tên';
+                        $c_form_name_placeholder = tr_options_field('tr_theme_options.career_form_name_placeholder_vi') ?: 'Họ và tên của bạn';
+                        $c_form_email_label = tr_options_field('tr_theme_options.career_form_email_label_vi') ?: 'Email';
+                        $c_form_email_placeholder = tr_options_field('tr_theme_options.career_form_email_placeholder_vi') ?: 'Nhập địa chỉ email';
+                        $c_form_phone_label = tr_options_field('tr_theme_options.career_form_phone_label_vi') ?: 'Số điện thoại';
+                        $c_form_phone_placeholder = tr_options_field('tr_theme_options.career_form_phone_placeholder_vi') ?: 'Nhập số điện thoại';
+                        $c_form_cv_label = tr_options_field('tr_theme_options.career_form_cv_label_vi') ?: 'Tải lên CV';
+                        $c_form_cv_placeholder = tr_options_field('tr_theme_options.career_form_cv_placeholder_vi') ?: 'Chọn hoặc kéo thả tập tin để tải lên';
+                        $c_form_intro_label = tr_options_field('tr_theme_options.career_form_intro_label_vi') ?: 'Giới thiệu bản thân';
+                        $c_form_intro_placeholder = tr_options_field('tr_theme_options.career_form_intro_placeholder_vi') ?: 'Nhập thông tin giới thiệu ngắn về bạn';
+                        $c_form_submit = tr_options_field('tr_theme_options.career_form_submit_vi') ?: 'NỘP ĐƠN ỨNG TUYỂN';
+                        $c_form_subtext = tr_options_field('tr_theme_options.career_form_subtext_vi') ?: 'Bạn sẽ nhận được email xác nhận và chúng tôi sẽ liên hệ trong vòng 5-7 ngày làm việc nếu bạn là ứng viên phù hợp.';
+                        $c_label_salary = tr_options_field('tr_theme_options.career_label_salary_vi') ?: 'MỨC LƯƠNG';
+                        $c_label_experience = tr_options_field('tr_theme_options.career_label_experience_vi') ?: 'KINH NGHIỆM';
+                        $c_label_quantity = tr_options_field('tr_theme_options.career_label_quantity_vi') ?: 'SỐ LƯỢNG';
+                        $c_label_deadline = tr_options_field('tr_theme_options.career_label_deadline_vi') ?: 'HẠN NỘP HỒ SƠ';
+                        $c_btn_apply = tr_options_field('tr_theme_options.career_btn_apply_vi') ?: 'ỨNG TUYỂN NGAY';
+                    } else {
+                        $c_form_title = tr_options_field('tr_theme_options.career_form_title') ?: 'Apply for this Position';
+                        $c_form_name_label = tr_options_field('tr_theme_options.career_form_name_label') ?: 'Full name';
+                        $c_form_name_placeholder = tr_options_field('tr_theme_options.career_form_name_placeholder') ?: 'Your name';
+                        $c_form_email_label = tr_options_field('tr_theme_options.career_form_email_label') ?: 'Email';
+                        $c_form_email_placeholder = tr_options_field('tr_theme_options.career_form_email_placeholder') ?: 'Enter your email';
+                        $c_form_phone_label = tr_options_field('tr_theme_options.career_form_phone_label') ?: 'Phone Number';
+                        $c_form_phone_placeholder = tr_options_field('tr_theme_options.career_form_phone_placeholder') ?: 'Enter your phone number';
+                        $c_form_cv_label = tr_options_field('tr_theme_options.career_form_cv_label') ?: 'Upload CV';
+                        $c_form_cv_placeholder = tr_options_field('tr_theme_options.career_form_cv_placeholder') ?: 'Select or drag and drop files to upload';
+                        $c_form_intro_label = tr_options_field('tr_theme_options.career_form_intro_label') ?: 'Introduce yourself';
+                        $c_form_intro_placeholder = tr_options_field('tr_theme_options.career_form_intro_placeholder') ?: 'Enter message';
+                        $c_form_submit = tr_options_field('tr_theme_options.career_form_submit') ?: 'APPLY NOW';
+                        $c_form_subtext = tr_options_field('tr_theme_options.career_form_subtext') ?: 'You will receive a confirmation email, and we will contact you within 5-7 business days if you are a potential candidate.';
+                        $c_label_salary = tr_options_field('tr_theme_options.career_label_salary') ?: 'SALARY';
+                        $c_label_experience = tr_options_field('tr_theme_options.career_label_experience') ?: 'EXPERIENCE';
+                        $c_label_quantity = tr_options_field('tr_theme_options.career_label_quantity') ?: 'QUANTITY';
+                        $c_label_deadline = tr_options_field('tr_theme_options.career_label_deadline') ?: 'DEADLINE';
+                        $c_btn_apply = tr_options_field('tr_theme_options.career_btn_apply') ?: 'APPLY NOW';
+                    }
+                    ?>
                     <div class="career-apply-section" id="apply-form">
-                        <h2 class="heading h3 h4_tb h5_mb career-apply-title">Apply for this Position</h2>
+                        <h2 class="heading h3 h4_tb h5_mb career-apply-title"><?php echo esc_html($c_form_title); ?></h2>
                         <form action="#" class="career-apply-form">
                             <div class="form-group">
-                                <label class="txt txt-14 form-label">Full name <span class="req">*</span></label>
-                                <input type="text" class="form-control" placeholder="Your name" required>
+                                <label class="txt txt-14 form-label"><?php echo esc_html($c_form_name_label); ?> <span class="req">*</span></label>
+                                <input type="text" class="form-control" placeholder="<?php echo esc_attr($c_form_name_placeholder); ?>" required>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label class="txt txt-14 form-label">Email <span class="req">*</span></label>
-                                    <input type="email" class="form-control" placeholder="Enter your email" required>
+                                    <label class="txt txt-14 form-label"><?php echo esc_html($c_form_email_label); ?> <span class="req">*</span></label>
+                                    <input type="email" class="form-control" placeholder="<?php echo esc_attr($c_form_email_placeholder); ?>" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="txt txt-14 form-label">Phone Number <span class="req">*</span></label>
-                                    <input type="tel" class="form-control" placeholder="Enter your phone number" required>
+                                    <label class="txt txt-14 form-label"><?php echo esc_html($c_form_phone_label); ?> <span class="req">*</span></label>
+                                    <input type="tel" class="form-control" placeholder="<?php echo esc_attr($c_form_phone_placeholder); ?>" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="txt txt-14 form-label">Upload CV <span class="req">*</span></label>
+                                <label class="txt txt-14 form-label"><?php echo esc_html($c_form_cv_label); ?> <span class="req">*</span></label>
                                 <div class="upload-area" id="cv-upload-area">
                                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -191,20 +235,20 @@ $career_ben_content = tr_posts_field('career_ben_content') ?: '<ul class="txt tx
                                     </svg>
                                     <input type="file" id="cv-upload-input" accept=".pdf,.doc,.docx"
                                         style="display: none;">
-                                    <span class="txt txt-14 upload-text" id="cv-upload-text">Select or drag and drop files to upload</span>
+                                    <span class="txt txt-14 upload-text" id="cv-upload-text"><?php echo esc_html($c_form_cv_placeholder); ?></span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="txt txt-14 form-label">Introduce yourself <span class="req">*</span></label>
-                                <textarea class="form-control" placeholder="Enter message" required></textarea>
+                                <label class="txt txt-14 form-label"><?php echo esc_html($c_form_intro_label); ?> <span class="req">*</span></label>
+                                <textarea class="form-control" placeholder="<?php echo esc_attr($c_form_intro_placeholder); ?>" required></textarea>
                             </div>
                             <div class="form-submit-wrap">
                                 <button type="submit" class="btn btn-primary">
-                                    <span class="txt txt-14 txt-semi">APPLY NOW</span>
+                                    <span class="txt txt-14 txt-semi"><?php echo esc_html($c_form_submit); ?></span>
                                 </button>
                             </div>
                             <div class="txt txt-13 form-subtext">
-                                You will receive a confirmation email, and we will contact you within 5-7 business days if you are a potential candidate.
+                                <?php echo esc_html($c_form_subtext); ?>
                             </div>
                         </form>
                     </div>
@@ -214,24 +258,24 @@ $career_ben_content = tr_posts_field('career_ben_content') ?: '<ul class="txt tx
                 <aside class="detail-toc-col">
                     <div class="career-detail-info-card">
                         <div class="career-info-item">
-                            <span class="txt txt-13 txt-med career-info-label">SALARY</span>
+                            <span class="txt txt-13 txt-med career-info-label"><?php echo esc_html($c_label_salary); ?></span>
                             <strong class="txt txt-16 txt-med career-info-value"><?php echo esc_html($career_salary); ?></strong>
                         </div>
                         <div class="career-info-item">
-                            <span class="txt txt-13 txt-med career-info-label">EXPERIENCE</span>
+                            <span class="txt txt-13 txt-med career-info-label"><?php echo esc_html($c_label_experience); ?></span>
                             <strong class="txt txt-16 txt-med career-info-value"><?php echo esc_html($career_experience); ?></strong>
                         </div>
                         <div class="career-info-item">
-                            <span class="txt txt-13 txt-med career-info-label">QUANTITY</span>
+                            <span class="txt txt-13 txt-med career-info-label"><?php echo esc_html($c_label_quantity); ?></span>
                             <strong class="txt txt-16 txt-med career-info-value"><?php echo esc_html($career_quantity); ?></strong>
                         </div>
                         <div class="career-info-item">
-                            <span class="txt txt-13 txt-med career-info-label">DEADLINE</span>
+                            <span class="txt txt-13 txt-med career-info-label"><?php echo esc_html($c_label_deadline); ?></span>
                             <strong class="txt txt-16 txt-med career-info-value"><?php echo esc_html($career_deadline); ?></strong>
                         </div>
 
                         <a href="#apply-form" class="btn btn-primary">
-                            <span class="txt txt-14 txt-semi">APPLY NOW</span>
+                            <span class="txt txt-14 txt-semi"><?php echo esc_html($c_btn_apply); ?></span>
                         </a>
                     </div>
                 </aside>

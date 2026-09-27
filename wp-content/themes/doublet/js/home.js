@@ -170,35 +170,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        const marketSliderEl = document.querySelector('.home-media-market-slider');
-        if (marketSliderEl) {
-            new Swiper(marketSliderEl, {
-                ...swiperCommonOptions,
-                navigation: {
-                    nextEl: '.home-media-market-next',
-                    prevEl: '.home-media-market-prev',
-                },
-                pagination: {
-                    el: '.home-media-market-pagination',
-                    clickable: true,
-                }
-            });
-        }
+        const mediaSliderWraps = document.querySelectorAll('.home-media-slider-wrap');
+        mediaSliderWraps.forEach(wrap => {
+            const sliderEl = wrap.querySelector('.home-media-slider');
+            if (!sliderEl) return;
+            const nextBtn = wrap.querySelector('.home-media-next');
+            const prevBtn = wrap.querySelector('.home-media-prev');
+            const paginationEl = wrap.querySelector('.home-media-pagination');
 
-        const opsSliderEl = document.querySelector('.home-media-ops-slider');
-        if (opsSliderEl) {
-            new Swiper(opsSliderEl, {
+            new Swiper(sliderEl, {
                 ...swiperCommonOptions,
                 navigation: {
-                    nextEl: '.home-media-ops-next',
-                    prevEl: '.home-media-ops-prev',
+                    nextEl: nextBtn,
+                    prevEl: prevBtn,
                 },
                 pagination: {
-                    el: '.home-media-ops-pagination',
+                    el: paginationEl,
                     clickable: true,
                 }
             });
-        }
+        });
     }
 });
 

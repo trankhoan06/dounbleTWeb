@@ -251,3 +251,54 @@ function themax_is_nav_item_active($item) {
 
     return false;
 }
+
+/**
+ * Lấy danh sách menu items theo ngôn ngữ hiện tại và location
+ */
+function themax_get_nav_menu_items($location = 'header_menu') {
+    $current_lang = function_exists('pll_current_language') ? pll_current_language('slug') : 'en';
+    $current_lang = strtolower($current_lang ?: 'en');
+
+    $menu_locations = get_nav_menu_locations();
+    $menu_id = !empty($menu_locations[$location]) ? $menu_locations[$location] : 0;
+
+    // Kiểm tra trực tiếp cấu hình Polylang để luôn đảm bảo đúng ngôn ngữ
+    if (function_exists('pll_current_language')) {
+        $pll_options = get_option('polylang');
+        $stylesheet = get_option('stylesheet');
+        
+        if (!empty($pll_options['nav_menus'][$stylesheet][$location][$current_lang])) {
+            $menu_id = $pll_options['nav_menus'][$stylesheet][$location][$current_lang];
+        } elseif ($location === 'footer_menu') {
+            if (!empty($pll_options['nav_menus'][$stylesheet]['footer_menu'][$current_lang])) {
+                $menu_id = $pll_options['nav_menus'][$stylesheet]['footer_menu'][$current_lang];
+            } elseif (!empty($pll_options['nav_menus'][$stylesheet]['header_menu'][$current_lang])) {
+                $menu_id = $pll_options['nav_menus'][$stylesheet]['header_menu'][$current_lang];
+            }
+        }
+    }
+
+    // Nếu là footer_menu và chưa có menu riêng trong locations, fallback về header_menu
+    if (!$menu_id && $location === 'footer_menu') {
+        $menu_id = !empty($menu_locations['header_menu']) ? $menu_locations['header_menu'] : 0;
+    }
+
+    // Fallback thủ công theo slug menu nếu vẫn chưa tìm thấy
+    if (!$menu_id) {
+        if ($current_lang === 'vi') {
+            $vi_menu = wp_get_nav_menu_object('header_vi') ?: wp_get_nav_menu_object('header-vi');
+            if ($vi_menu) {
+                $menu_id = $vi_menu->term_id;
+            }
+        }
+        if (!$menu_id) {
+            $en_menu = wp_get_nav_menu_object('header') ?: wp_get_nav_menu_object('header_en');
+            if ($en_menu) {
+                $menu_id = $en_menu->term_id;
+            }
+        }
+    }
+
+    $items = $menu_id ? wp_get_nav_menu_items($menu_id) : false;
+    return $items ?: [];
+}

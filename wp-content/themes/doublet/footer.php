@@ -1,4 +1,7 @@
 <?php
+$current_lang = function_exists('pll_current_language') ? pll_current_language('slug') : 'en';
+$current_lang = strtolower($current_lang ?: 'en');
+
 // Watermark & Logo
 $footer_watermark_id = tr_options_field('tr_theme_options.footer_watermark');
 $footer_watermark_url = $footer_watermark_id ? wp_get_attachment_image_url($footer_watermark_id, 'full') : (get_template_directory_uri() . '/imgs/logo_future.png');
@@ -9,7 +12,6 @@ $footer_logo_url = $footer_logo_id ? wp_get_attachment_image_url($footer_logo_id
 // Company Info
 $footer_company_name_red = tr_options_field('tr_theme_options.footer_company_name_red') ?: 'DOUBLE T';
 $footer_company_name_teal = tr_options_field('tr_theme_options.footer_company_name_teal') ?: 'METAL COMPANY LIMITED';
-$footer_company_desc = tr_options_field('tr_theme_options.footer_company_desc') ?: 'A leading provider and processor of steel plates and coils in Vietnam.';
 $footer_tax_id = tr_options_field('tr_theme_options.footer_tax_id') ?: '1101808892';
 
 // Socials
@@ -18,69 +20,103 @@ $footer_social_insta = tr_options_field('tr_theme_options.footer_social_insta') 
 $footer_social_x = tr_options_field('tr_theme_options.footer_social_x') ?: '#';
 $footer_social_yt = tr_options_field('tr_theme_options.footer_social_yt') ?: '#';
 
-// Headquarters
-$footer_hq_title = tr_options_field('tr_theme_options.footer_hq_title') ?: 'HEADQUARTERS';
-$footer_hq_address = tr_options_field('tr_theme_options.footer_hq_address') ?: 'Lot J9-10-17A-18, Road No. 6, Hai Son Industrial Park, Duc Hoa Commune, Tay Ninh Province, Vietnam';
-$footer_hq_phone = tr_options_field('tr_theme_options.footer_hq_phone') ?: '0272.249.6667 – 0272.249.6668 – 0272.249.6669';
+// Multilingual text fields for footer & modal
+if ($current_lang === 'vi') {
+    $footer_company_desc = tr_options_field('tr_theme_options.footer_company_desc_vi') ?: 'Doanh nghiệp hàng đầu trong cung cấp và gia công các loại thép tấm, thép cuộn tại Việt Nam.';
+    $footer_hq_title = tr_options_field('tr_theme_options.footer_hq_title_vi') ?: 'TRỤ SỞ CHÍNH';
+    $footer_hq_address = tr_options_field('tr_theme_options.footer_hq_address_vi') ?: 'Lô J9-10-17A-18, Đường số 6, KCN Hải Sơn, Xã Đức Hòa Hạ, Huyện Đức Hòa, Tỉnh Long An, Việt Nam';
+    $footer_hcm_title = tr_options_field('tr_theme_options.footer_hcm_title_vi') ?: 'VĂN PHÒNG TP. HỒ CHÍ MINH';
+    $footer_hcm_address = tr_options_field('tr_theme_options.footer_hcm_address_vi') ?: '221/6-8 Lê Trọng Tấn, Phường Sơn Kỳ, Quận Tân Phú, TP. Hồ Chí Minh';
+    $footer_col3_title = tr_options_field('tr_theme_options.footer_col3_title_vi') ?: 'LIÊN KẾT NHANH';
+    $footer_col4_title = tr_options_field('tr_theme_options.footer_col4_title_vi') ?: 'DỊCH VỤ';
+    $footer_copy_line1 = tr_options_field('tr_theme_options.footer_copy_line1_vi') ?: 'Bản quyền © 2009 thuộc về CÔNG TY TNHH KỸ THUẬT DOUBLE T';
+    $footer_copy_line2 = tr_options_field('tr_theme_options.footer_copy_line2_vi') ?: 'Tối đa hoá sức mạnh trực tuyến bởi <strong>THEMAX</strong>';
+    $footer_profile_text = tr_options_field('tr_theme_options.footer_profile_text_vi') ?: 'Hồ sơ 2T';
+    $footer_terms_text = tr_options_field('tr_theme_options.footer_terms_text_vi') ?: 'Điều khoản sử dụng';
+    $footer_terms_url = tr_options_field('tr_theme_options.footer_terms_link_vi') ?: '#';
+    $footer_privacy_text = tr_options_field('tr_theme_options.footer_privacy_text_vi') ?: 'Chính sách bảo mật';
+    $footer_privacy_url = tr_options_field('tr_theme_options.footer_privacy_link_vi') ?: '#';
+    $footer_custom_profile_link = tr_options_field('tr_theme_options.footer_profile_link_vi') ?: tr_options_field('tr_theme_options.header_profile_link_vi');
 
-// HCM Office
-$footer_hcm_title = tr_options_field('tr_theme_options.footer_hcm_title') ?: 'HO CHI MINH OFFICE';
-$footer_hcm_address = tr_options_field('tr_theme_options.footer_hcm_address') ?: '221/6-8 Le Trong Tan, Son Ky Ward, Ho Chi Minh City';
+    // Modal consultation
+    $modal_badge = tr_options_field('tr_theme_options.modal_badge_vi') ?: 'TƯ VẤN MIỄN PHÍ';
+    $modal_title = tr_options_field('tr_theme_options.modal_title_vi') ?: 'Tiếp Bước Thành Công<br> cùng <span class="txt-teal">Double</span> <span class="txt-red">T</span>';
+    $modal_desc = tr_options_field('tr_theme_options.modal_desc_vi') ?: 'Cung cấp các sản phẩm thép chất lượng cao và giải pháp đáng tin cậy, đảm bảo độ bền, chính xác và hiệu quả lâu dài cho mọi dự án.';
+    $modal_disclaimer = tr_options_field('tr_theme_options.modal_disclaimer_vi') ?: 'Chúng tôi cam kết bảo mật tuyệt đối thông tin và chỉ sử dụng dữ liệu cho mục đích tư vấn.';
+    $modal_submit_text = tr_options_field('tr_theme_options.modal_submit_text_vi') ?: 'GỬI THÔNG TIN';
+    $modal_subnote = tr_options_field('tr_theme_options.modal_subnote_vi') ?: 'Bạn sẽ nhận được email xác nhận trong thời gian sớm nhất.';
+
+    $modal_form_name_label = tr_options_field('tr_theme_options.modal_form_name_label_vi') ?: 'Họ và tên';
+    $modal_form_name_placeholder = tr_options_field('tr_theme_options.modal_form_name_placeholder_vi') ?: 'Nhập họ và tên của bạn';
+    $modal_form_email_label = tr_options_field('tr_theme_options.modal_form_email_label_vi') ?: 'Email';
+    $modal_form_email_placeholder = tr_options_field('tr_theme_options.modal_form_email_placeholder_vi') ?: 'Nhập địa chỉ email';
+    $modal_form_phone_label = tr_options_field('tr_theme_options.modal_form_phone_label_vi') ?: 'Số điện thoại';
+    $modal_form_phone_placeholder = tr_options_field('tr_theme_options.modal_form_phone_placeholder_vi') ?: 'Nhập số điện thoại';
+    $modal_form_company_label = tr_options_field('tr_theme_options.modal_form_company_label_vi') ?: 'Công ty / Đơn vị';
+    $modal_form_company_placeholder = tr_options_field('tr_theme_options.modal_form_company_placeholder_vi') ?: 'Nhập tên công ty';
+    $modal_form_service_label = tr_options_field('tr_theme_options.modal_form_service_label_vi') ?: 'Bạn đang quan tâm đến dịch vụ nào?';
+    $modal_form_service_placeholder = tr_options_field('tr_theme_options.modal_form_service_placeholder_vi') ?: 'Vui lòng chọn dịch vụ';
+
+    $modal_service_opt1 = tr_options_field('tr_theme_options.modal_service_opt1_vi') ?: 'Dây chuyền xẻ cuộn (Slitting Line)';
+    $modal_service_opt2 = tr_options_field('tr_theme_options.modal_service_opt2_vi') ?: 'Dây chuyền cắt tấm (Cut-to-Length)';
+    $modal_service_opt3 = tr_options_field('tr_theme_options.modal_service_opt3_vi') ?: 'Máy cắt Amada & Tấm Reshear Line';
+    $modal_service_opt4 = tr_options_field('tr_theme_options.modal_service_opt4_vi') ?: 'Dây chuyền cán vuốt thép La và Thép tròn đặc';
+    $modal_service_opt5 = tr_options_field('tr_theme_options.modal_service_opt5_vi') ?: 'Dịch vụ hỗ trợ kỹ thuật phụ trợ';
+    $modal_service_opt6 = tr_options_field('tr_theme_options.modal_service_opt6_vi') ?: 'Dịch vụ khác';
+} else {
+    $footer_company_desc = tr_options_field('tr_theme_options.footer_company_desc') ?: 'A leading provider and processor of steel plates and coils in Vietnam.';
+    $footer_hq_title = tr_options_field('tr_theme_options.footer_hq_title') ?: 'HEADQUARTERS';
+    $footer_hq_address = tr_options_field('tr_theme_options.footer_hq_address') ?: 'Lot J9-10-17A-18, Road No. 6, Hai Son Industrial Park, Duc Hoa Commune, Tay Ninh Province, Vietnam';
+    $footer_hcm_title = tr_options_field('tr_theme_options.footer_hcm_title') ?: 'HO CHI MINH OFFICE';
+    $footer_hcm_address = tr_options_field('tr_theme_options.footer_hcm_address') ?: '221/6-8 Le Trong Tan, Son Ky Ward, Ho Chi Minh City';
+    $footer_col3_title = tr_options_field('tr_theme_options.footer_col3_title') ?: 'QUICK LINKS';
+    $footer_col4_title = tr_options_field('tr_theme_options.footer_col4_title') ?: 'SERVICES';
+    $footer_copy_line1 = tr_options_field('tr_theme_options.footer_copy_line1') ?: 'Copyright © 2009 by DOUBLE T ENGINEERING CO., LTD';
+    $footer_copy_line2 = tr_options_field('tr_theme_options.footer_copy_line2') ?: 'Maximize Online Power by <strong>THEMAX</strong>';
+    $footer_profile_text = tr_options_field('tr_theme_options.footer_profile_text') ?: '2T Profile';
+    $footer_terms_text = tr_options_field('tr_theme_options.footer_terms_text') ?: 'Terms of Use';
+    $footer_terms_url = tr_options_field('tr_theme_options.footer_terms_link') ?: '#';
+    $footer_privacy_text = tr_options_field('tr_theme_options.footer_privacy_text') ?: 'Privacy Policy';
+    $footer_privacy_url = tr_options_field('tr_theme_options.footer_privacy_link') ?: '#';
+    $footer_custom_profile_link = tr_options_field('tr_theme_options.footer_profile_link') ?: tr_options_field('tr_theme_options.header_profile_link');
+
+    // Modal consultation
+    $modal_badge = tr_options_field('tr_theme_options.modal_badge') ?: 'FREE CONSULTATION';
+    $modal_title = tr_options_field('tr_theme_options.modal_title') ?: 'Powering Progress<br> with <span class="txt-teal">Double</span> <span class="txt-red">T</span>';
+    $modal_desc = tr_options_field('tr_theme_options.modal_desc') ?: 'Delivering high-quality steel products and reliable solutions engineered for strength, precision, and long-term performance across every project.';
+    $modal_disclaimer = tr_options_field('tr_theme_options.modal_disclaimer') ?: 'We are committed to maintaining the confidentiality of information and using the data solely for advisory purposes.';
+    $modal_submit_text = tr_options_field('tr_theme_options.modal_submit_text') ?: 'SEND INFORMATION';
+    $modal_subnote = tr_options_field('tr_theme_options.modal_subnote') ?: 'You will receive a confirmation email shortly.';
+
+    $modal_form_name_label = tr_options_field('tr_theme_options.modal_form_name_label') ?: 'Full name';
+    $modal_form_name_placeholder = tr_options_field('tr_theme_options.modal_form_name_placeholder') ?: 'Your name';
+    $modal_form_email_label = tr_options_field('tr_theme_options.modal_form_email_label') ?: 'Email';
+    $modal_form_email_placeholder = tr_options_field('tr_theme_options.modal_form_email_placeholder') ?: 'Enter your email';
+    $modal_form_phone_label = tr_options_field('tr_theme_options.modal_form_phone_label') ?: 'Phone Number';
+    $modal_form_phone_placeholder = tr_options_field('tr_theme_options.modal_form_phone_placeholder') ?: 'Enter your phone number';
+    $modal_form_company_label = tr_options_field('tr_theme_options.modal_form_company_label') ?: 'Company';
+    $modal_form_company_placeholder = tr_options_field('tr_theme_options.modal_form_company_placeholder') ?: 'Enter your company name';
+    $modal_form_service_label = tr_options_field('tr_theme_options.modal_form_service_label') ?: 'Which service are you interested in?';
+    $modal_form_service_placeholder = tr_options_field('tr_theme_options.modal_form_service_placeholder') ?: 'Please select a service';
+
+    $modal_service_opt1 = tr_options_field('tr_theme_options.modal_service_opt1') ?: 'Slitting Line';
+    $modal_service_opt2 = tr_options_field('tr_theme_options.modal_service_opt2') ?: 'Cut-to-Length Line';
+    $modal_service_opt3 = tr_options_field('tr_theme_options.modal_service_opt3') ?: 'Máy cắt Amada & Tấm Reshear Line';
+    $modal_service_opt4 = tr_options_field('tr_theme_options.modal_service_opt4') ?: 'Dây chuyền cán vuốt thép La và Thép tròn đặc';
+    $modal_service_opt5 = tr_options_field('tr_theme_options.modal_service_opt5') ?: 'Dịch vụ hỗ trợ kỹ thuật phụ trợ';
+    $modal_service_opt6 = tr_options_field('tr_theme_options.modal_service_opt6') ?: 'Other Services';
+}
+
+$footer_hq_phone = tr_options_field('tr_theme_options.footer_hq_phone') ?: '0272.249.6667 – 0272.249.6668 – 0272.249.6669';
 $footer_hcm_email = tr_options_field('tr_theme_options.footer_hcm_email') ?: '2t@2tsteel.com';
 $footer_hcm_phone = tr_options_field('tr_theme_options.footer_hcm_phone') ?: '028.3816.5435 – 028.3816.5436';
-
-// Copyright & Policy
-$footer_copy_line1 = tr_options_field('tr_theme_options.footer_copy_line1') ?: 'Copyright © 2009 by DOUBLE T ENGINEERING CO., LTD';
-$footer_copy_line2 = tr_options_field('tr_theme_options.footer_copy_line2') ?: 'Maximize Online Power by <strong>THEMAX</strong>';
-$header_profile_file = tr_options_field('tr_theme_options.header_profile_file');
-$footer_custom_profile_link = tr_options_field('tr_theme_options.footer_profile_link');
+$header_profile_file = ($current_lang === 'vi') ? (tr_options_field('tr_theme_options.header_profile_file_vi') ?: tr_options_field('tr_theme_options.header_profile_file')) : tr_options_field('tr_theme_options.header_profile_file');
 $footer_profile_url = $footer_custom_profile_link ?: ($header_profile_file ? wp_get_attachment_url($header_profile_file) : (tr_options_field('tr_theme_options.header_profile_link') ?: '#'));
-$footer_terms_url = tr_options_field('tr_theme_options.footer_terms_link') ?: '#';
-$footer_privacy_url = tr_options_field('tr_theme_options.footer_privacy_link') ?: '#';
 $footer_vr360_url = tr_options_field('tr_theme_options.header_vr360_link') ?: '#';
 
-// Policy & Column Titles from Theme Options
-$footer_col3_title = tr_options_field('tr_theme_options.footer_col3_title') ?: '';
-$footer_col4_title = tr_options_field('tr_theme_options.footer_col4_title') ?: '';
-$footer_profile_text = tr_options_field('tr_theme_options.footer_profile_text') ?: '';
-$footer_terms_text = tr_options_field('tr_theme_options.footer_terms_text') ?: '';
-$footer_privacy_text = tr_options_field('tr_theme_options.footer_privacy_text') ?: '';
-
 // Nav menus for footer
-$footer_menu_locations = get_nav_menu_locations();
-$header_menu_id = isset($footer_menu_locations['header_menu']) ? $footer_menu_locations['header_menu'] : 0;
-$footer_menu_id = isset($footer_menu_locations['footer_menu']) ? $footer_menu_locations['footer_menu'] : 0;
-$target_menu_id = $footer_menu_id ?: $header_menu_id;
-$footer_nav_items = $target_menu_id ? wp_get_nav_menu_items($target_menu_id) : false;
-
-// Consultation Modal Settings from TypeRocket
-$modal_badge = tr_options_field('tr_theme_options.modal_badge') ?: '';
-$modal_title = tr_options_field('tr_theme_options.modal_title') ?: '';
-$modal_desc = tr_options_field('tr_theme_options.modal_desc') ?: '';
-$modal_disclaimer = tr_options_field('tr_theme_options.modal_disclaimer') ?: '';
-$modal_submit_text = tr_options_field('tr_theme_options.modal_submit_text') ?: '';
-$modal_subnote = tr_options_field('tr_theme_options.modal_subnote') ?: '';
-
-// Form labels & placeholders
-$modal_form_name_label = tr_options_field('tr_theme_options.modal_form_name_label') ?: '';
-$modal_form_name_placeholder = tr_options_field('tr_theme_options.modal_form_name_placeholder') ?: '';
-$modal_form_email_label = tr_options_field('tr_theme_options.modal_form_email_label') ?: '';
-$modal_form_email_placeholder = tr_options_field('tr_theme_options.modal_form_email_placeholder') ?: '';
-$modal_form_phone_label = tr_options_field('tr_theme_options.modal_form_phone_label') ?: '';
-$modal_form_phone_placeholder = tr_options_field('tr_theme_options.modal_form_phone_placeholder') ?: '';
-$modal_form_company_label = tr_options_field('tr_theme_options.modal_form_company_label') ?: '';
-$modal_form_company_placeholder = tr_options_field('tr_theme_options.modal_form_company_placeholder') ?: '';
-$modal_form_service_label = tr_options_field('tr_theme_options.modal_form_service_label') ?: '';
-$modal_form_service_placeholder = tr_options_field('tr_theme_options.modal_form_service_placeholder') ?: '';
-
-$modal_service_opt1 = tr_options_field('tr_theme_options.modal_service_opt1') ?: '';
-$modal_service_opt2 = tr_options_field('tr_theme_options.modal_service_opt2') ?: '';
-$modal_service_opt3 = tr_options_field('tr_theme_options.modal_service_opt3') ?: '';
-$modal_service_opt4 = tr_options_field('tr_theme_options.modal_service_opt4') ?: '';
-$modal_service_opt5 = tr_options_field('tr_theme_options.modal_service_opt5') ?: '';
-$modal_service_opt6 = tr_options_field('tr_theme_options.modal_service_opt6') ?: '';
+$footer_nav_items = function_exists('themax_get_nav_menu_items') ? themax_get_nav_menu_items('footer_menu') : false;
 ?>
-<?php wp_footer(); ?>
     <footer class="footer">
         <div class="footer-main">
             <div class="footer-watermark">
@@ -220,12 +256,14 @@ $modal_service_opt6 = tr_options_field('tr_theme_options.modal_service_opt6') ?:
                         <h4 class="footer-col-title txt-15_mb"><?php echo esc_html($footer_col3_title); ?></h4>
                     <?php endif; ?>
                     <ul class="footer-links item1">
+                        <?php if (!empty($footer_nav_items)) : ?>
                             <?php foreach ($footer_nav_items as $item) : ?>
                                 <li><a href="<?php echo esc_url($item->url); ?>" class="txt txt-14" <?php if (!empty($item->target)) echo 'target="' . esc_attr($item->target) . '"'; ?>><?php echo esc_html($item->title); ?></a></li>
                             <?php endforeach; ?>
-                            <?php if (!empty($footer_vr360_url) && $footer_vr360_url !== '#') : ?>
-                                <li><a href="<?php echo esc_url($footer_vr360_url); ?>" target="_blank" rel="noopener" class="txt txt-14">VR360</a></li>
-                            <?php endif; ?>
+                        <?php endif; ?>
+                        <?php if (!empty($footer_vr360_url) && $footer_vr360_url !== '#') : ?>
+                            <li><a href="<?php echo esc_url($footer_vr360_url); ?>" target="_blank" rel="noopener" class="txt txt-14">VR360</a></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
 

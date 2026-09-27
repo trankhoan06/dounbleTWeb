@@ -730,10 +730,12 @@
 
  /* Dropdown Menu */
  .header-lang-dropdown {
+     display: flex;
+     flex-direction: column;
      position: absolute;
      top: calc(100% + 1rem);
      right: 0;
-     min-width: 15rem;
+     min-width: 17rem;
      background-color: var(--white);
      border: var(--1px) solid var(--border-default);
      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
@@ -759,6 +761,7 @@
      gap: 1rem;
      padding: 0.8rem 1.2rem;
      color: var(--txt-icon-primary);
+     text-decoration: none;
      cursor: pointer;
      transition: background-color var(--transition), color var(--transition);
  }
@@ -769,6 +772,7 @@
  }
 
  .header-lang-item.active {
+     order: -1;
      background-color: rgba(32, 183, 198, 0.12);
      color: var(--primary-2);
      font-weight: 600;

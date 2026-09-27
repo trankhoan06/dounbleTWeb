@@ -4,26 +4,42 @@
  */
 get_header();
 
+// Language detection
+$current_lang = function_exists('pll_current_language') ? pll_current_language('slug') : 'en';
+$current_lang = strtolower($current_lang ?: 'en');
+
 // 1. Hero Section Fields
 $insight_hero_bg_id = tr_posts_field('insight_hero_bg');
 $insight_hero_bg_url = $insight_hero_bg_id ? wp_get_attachment_image_url($insight_hero_bg_id, 'full') : get_template_directory_uri() . '/imgs/commit-vison.jpg';
-$insight_hero_breadcrumb = tr_posts_field('insight_hero_breadcrumb') ?: 'Insight';
-$insight_hero_title = tr_posts_field('insight_hero_title') ?: 'NEWS &amp; OPERATIONS';
 
-// 2. Fetch Categories & Articles from WordPress (Post Type: 'post', Taxonomy: 'category')
-$wp_categories = get_categories(array(
+if ($current_lang === 'vi') {
+    $insight_hero_breadcrumb = tr_posts_field('insight_hero_breadcrumb_vi') ?: (tr_posts_field('insight_hero_breadcrumb') ?: 'Góc nhìn & Tin tức');
+    $insight_hero_title = tr_posts_field('insight_hero_title_vi') ?: (tr_posts_field('insight_hero_title') ?: 'TIN TỨC &amp; HOẠT ĐỘNG');
+    $default_view_all = 'XEM TẤT CẢ';
+} else {
+    $insight_hero_breadcrumb = tr_posts_field('insight_hero_breadcrumb') ?: 'Insight';
+    $insight_hero_title = tr_posts_field('insight_hero_title') ?: 'NEWS &amp; OPERATIONS';
+    $default_view_all = 'VIEW ALL';
+}
+
+// 2. Fetch Categories & Articles from WordPress by current language
+$cat_query_args = array(
     'taxonomy'   => 'category',
     'orderby'    => 'name',
     'order'      => 'ASC',
-    'hide_empty' => true,
-));
+    'hide_empty' => false,
+);
+if (function_exists('pll_current_language')) {
+    $cat_query_args['lang'] = $current_lang;
+}
+$wp_categories = get_categories($cat_query_args);
 
 $insight_sections = array();
 
 if (!empty($wp_categories)) {
     foreach ($wp_categories as $cat) {
         // Query 5 posts per category (1 featured + 4 sub-posts)
-        $posts_query = new WP_Query(array(
+        $posts_args = array(
             'post_type'      => 'post',
             'post_status'    => 'publish',
             'tax_query'      => array(
@@ -36,7 +52,12 @@ if (!empty($wp_categories)) {
             'posts_per_page' => 5,
             'orderby'        => 'date',
             'order'          => 'DESC',
-        ));
+        );
+        if (function_exists('pll_current_language')) {
+            $posts_args['lang'] = $current_lang;
+        }
+
+        $posts_query = new WP_Query($posts_args);
 
         if ($posts_query->have_posts()) {
             $cat_posts = $posts_query->posts;
@@ -62,7 +83,7 @@ if (!empty($wp_categories)) {
             $insight_sections[] = array(
                 'tag'              => mb_strtoupper($cat->name, 'UTF-8'),
                 'slug'             => $cat->slug,
-                'view_all_text'    => 'VIEW ALL',
+                'view_all_text'    => $default_view_all,
                 'view_all_link'    => get_category_link($cat->term_id),
                 'featured_id'      => $feat_post->ID,
                 'featured_title'   => get_the_title($feat_post->ID),
@@ -71,99 +92,135 @@ if (!empty($wp_categories)) {
                 'featured_image'   => $feat_thumb ?: (get_template_directory_uri() . '/imgs/product.jpg'),
                 'sub_articles'     => $sub_articles,
             );
+        } else {
+            // Category has no posts yet: provide localized placeholder cards
+            if ($current_lang === 'vi') {
+                $f_placeholder_title = 'Cập nhật tin tức mới nhất về chuyên mục ' . $cat->name;
+                $f_placeholder_excerpt = 'Những thông tin thị trường, định hướng phát triển và phân tích chuyên sâu mới nhất từ Double T.';
+                $s_placeholder = [
+                    ['title' => 'Xu hướng thị trường và định hướng phát triển ngành thép', 'image' => get_template_directory_uri() . '/imgs/service-item1.jpg'],
+                    ['title' => 'Phân tích chuyên sâu về thị trường thép chất lượng cao tại Việt Nam', 'image' => get_template_directory_uri() . '/imgs/application.jpg'],
+                    ['title' => 'Giải pháp thép cuộn và thép tấm phục vụ các dự án trọng điểm', 'image' => get_template_directory_uri() . '/imgs/video-thumb.jpg'],
+                    ['title' => 'Tin tức hoạt động sản xuất và đổi mới công nghệ tại nhà máy Double T', 'image' => get_template_directory_uri() . '/imgs/cta.jpg'],
+                ];
+            } else {
+                $f_placeholder_title = 'Latest updates and insights on ' . $cat->name;
+                $f_placeholder_excerpt = 'Comprehensive market trends, operational milestones, and strategic perspectives from Double T.';
+                $s_placeholder = [
+                    ['title' => 'Global Steel Market Updates and Industry Insights', 'image' => get_template_directory_uri() . '/imgs/service-item1.jpg'],
+                    ['title' => 'Latest Trends Shaping the Global Steel Market', 'image' => get_template_directory_uri() . '/imgs/application.jpg'],
+                    ['title' => 'Steel Market Outlook and Emerging Industry Trends', 'image' => get_template_directory_uri() . '/imgs/video-thumb.jpg'],
+                    ['title' => 'Key Developments Across the Global Steel Industry', 'image' => get_template_directory_uri() . '/imgs/cta.jpg'],
+                ];
+            }
+
+            $sub_articles = [];
+            foreach ($s_placeholder as $s_idx => $s_item) {
+                $sub_articles[] = [
+                    'id'        => $cat->term_id . '-' . ($s_idx + 1),
+                    'title'     => $s_item['title'],
+                    'link'      => get_category_link($cat->term_id),
+                    'image_url' => $s_item['image'],
+                    'alt'       => $s_item['title'],
+                ];
+            }
+
+            $insight_sections[] = array(
+                'tag'              => mb_strtoupper($cat->name, 'UTF-8'),
+                'slug'             => $cat->slug,
+                'view_all_text'    => $default_view_all,
+                'view_all_link'    => get_category_link($cat->term_id),
+                'featured_id'      => $cat->term_id . '-feat',
+                'featured_title'   => $f_placeholder_title,
+                'featured_excerpt' => $f_placeholder_excerpt,
+                'featured_link'    => get_category_link($cat->term_id),
+                'featured_image'   => get_template_directory_uri() . '/imgs/product.jpg',
+                'sub_articles'     => $sub_articles,
+            );
         }
         wp_reset_postdata();
     }
 }
 
-// Fallback to TypeRocket / Mock data if no categories with posts are present
+// Fallback to TypeRocket / Mock data if no categories exist
 if (empty($insight_sections)) {
-    $fallback_categories = tr_posts_field('insight_categories');
+    $fallback_categories = tr_posts_field($current_lang === 'vi' ? 'insight_categories_vi' : 'insight_categories');
     if (!is_array($fallback_categories) || empty($fallback_categories)) {
-        $fallback_categories = [
-            [
-                'tag' => 'MARKET NEWS',
-                'slug' => 'market-news',
-                'view_all_text' => 'VIEW ALL',
-                'view_all_link' => '#',
-                'featured_title' => 'Lorem ipsum dolor sit amet consectetur. Nisl lobortis porta pharetra aliquam at.',
-                'featured_excerpt' => 'Lorem ipsum dolor sit amet consectetur. Sit nam amet tellus gravida risus tellus. Interdum duis sollicitudin arcu dignissim. Dolor dis mattis sed quam sagittis massa pulvinar volutpat enim.',
-                'featured_image' => '',
-                'default_featured_image' => get_template_directory_uri() . '/imgs/product.jpg',
-                'featured_link' => '#',
-                'sub_articles' => [
-                    [
-                        'title' => 'Global Steel Market Updates and Industry Insights',
-                        'link' => '#',
-                        'image' => '',
-                        'default_image' => get_template_directory_uri() . '/imgs/service-item1.jpg',
-                        'alt' => 'Modern automated steel manufacturing facility'
-                    ],
-                    [
-                        'title' => 'Latest Trends Shaping the Global Steel Market',
-                        'link' => '#',
-                        'image' => '',
-                        'default_image' => get_template_directory_uri() . '/imgs/application.jpg',
-                        'alt' => 'High quality finished steel coils'
-                    ],
-                    [
-                        'title' => 'Steel Market Outlook and Emerging Industry Trends',
-                        'link' => '#',
-                        'image' => '',
-                        'default_image' => get_template_directory_uri() . '/imgs/video-thumb.jpg',
-                        'alt' => 'Industrial structural steel beams and trusses'
-                    ],
-                    [
-                        'title' => 'Key Developments Across the Global Steel Industry',
-                        'link' => '#',
-                        'image' => '',
-                        'default_image' => get_template_directory_uri() . '/imgs/cta.jpg',
-                        'alt' => 'Infrastructure development and steel application'
+        if ($current_lang === 'vi') {
+            $fallback_categories = [
+                [
+                    'tag' => 'TIN TỨC THỊ TRƯỜNG',
+                    'slug' => 'thi-truong',
+                    'view_all_text' => 'XEM TẤT CẢ',
+                    'view_all_link' => '#',
+                    'featured_title' => 'Cập nhật diễn biến giá thép và xu hướng thị trường kim loại quý',
+                    'featured_excerpt' => 'Tổng hợp các biến động cung cầu, chính sách xuất nhập khẩu và phân tích triển vọng ngành thép công nghiệp tại Việt Nam và khu vực.',
+                    'featured_image' => '',
+                    'default_featured_image' => get_template_directory_uri() . '/imgs/product.jpg',
+                    'featured_link' => '#',
+                    'sub_articles' => [
+                        ['title' => 'Cập nhật tình hình thị trường thép toàn cầu và nhận định chuyên gia', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'alt' => 'Thị trường thép'],
+                        ['title' => 'Các xu hướng mới định hình ngành công nghiệp chế tạo kim loại', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/application.jpg', 'alt' => 'Xu hướng ngành'],
+                        ['title' => 'Dự báo triển vọng giá thép tấm và thép cuộn trong quý tới', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'alt' => 'Triển vọng giá'],
+                        ['title' => 'Phát triển thép xanh và các tiêu chuẩn bền vững mới trong xây dựng', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/cta.jpg', 'alt' => 'Thép xanh']
+                    ]
+                ],
+                [
+                    'tag' => 'HOẠT ĐỘNG DOANH NGHIỆP',
+                    'slug' => 'hoat-dong-doanh-nghiep',
+                    'view_all_text' => 'XEM TẤT CẢ',
+                    'view_all_link' => '#',
+                    'featured_title' => 'Double T nâng cấp công nghệ dây chuyền gia công thép hiện đại',
+                    'featured_excerpt' => 'Tiếp tục đầu tư máy móc tự động hóa và nâng cao năng lực gia công nhằm đáp ứng các tiêu chuẩn khắt khe nhất của khách hàng công nghiệp.',
+                    'featured_image' => '',
+                    'default_featured_image' => get_template_directory_uri() . '/imgs/hero-img.jpg',
+                    'featured_link' => '#',
+                    'sub_articles' => [
+                        ['title' => 'Nâng cao hiệu suất vận hành toàn diện tại nhà máy Double T', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'alt' => 'Vận hành nhà máy'],
+                        ['title' => 'Ứng dụng công nghệ mới trong kiểm soát chất lượng thép thành phẩm', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/application.jpg', 'alt' => 'Kiểm soát chất lượng'],
+                        ['title' => 'Mở rộng quy mô nhà xưởng và trung tâm dịch vụ khách hàng', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'alt' => 'Mở rộng quy mô'],
+                        ['title' => 'Chương trình đào tạo kỹ thuật viên và nâng cao an toàn lao động', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/home-service.webp', 'alt' => 'Đào tạo kỹ thuật']
                     ]
                 ]
-            ],
-            [
-                'tag' => 'COMPANY OPERATIONS',
-                'slug' => 'company-operations',
-                'view_all_text' => 'VIEW ALL',
-                'view_all_link' => '#',
-                'featured_title' => 'Lorem ipsum dolor sit amet consectetur. Nisl lobortis porta pharetra aliquam at.',
-                'featured_excerpt' => 'Lorem ipsum dolor sit amet consectetur. Sit nam amet tellus gravida risus tellus. Interdum duis sollicitudin arcu dignissim. Dolor dis mattis sed quam sagittis massa pulvinar volutpat enim.',
-                'featured_image' => '',
-                'default_featured_image' => get_template_directory_uri() . '/imgs/product.jpg',
-                'featured_link' => '#',
-                'sub_articles' => [
-                    [
-                        'title' => 'Global Steel Market Updates and Industry Insights',
-                        'link' => '#',
-                        'image' => '',
-                        'default_image' => get_template_directory_uri() . '/imgs/service-item1.jpg',
-                        'alt' => 'Modern automated steel manufacturing facility'
-                    ],
-                    [
-                        'title' => 'Latest Trends Shaping the Global Steel Market',
-                        'link' => '#',
-                        'image' => '',
-                        'default_image' => get_template_directory_uri() . '/imgs/application.jpg',
-                        'alt' => 'High quality finished steel coils'
-                    ],
-                    [
-                        'title' => 'Steel Market Outlook and Emerging Industry Trends',
-                        'link' => '#',
-                        'image' => '',
-                        'default_image' => get_template_directory_uri() . '/imgs/video-thumb.jpg',
-                        'alt' => 'Industrial structural steel beams and trusses'
-                    ],
-                    [
-                        'title' => 'Key Developments Across the Global Steel Industry',
-                        'link' => '#',
-                        'image' => '',
-                        'default_image' => get_template_directory_uri() . '/imgs/cta.jpg',
-                        'alt' => 'Infrastructure development and steel application'
+            ];
+        } else {
+            $fallback_categories = [
+                [
+                    'tag' => 'MARKET NEWS',
+                    'slug' => 'market-news',
+                    'view_all_text' => 'VIEW ALL',
+                    'view_all_link' => '#',
+                    'featured_title' => 'Lorem ipsum dolor sit amet consectetur. Nisl lobortis porta pharetra aliquam at.',
+                    'featured_excerpt' => 'Lorem ipsum dolor sit amet consectetur. Sit nam amet tellus gravida risus tellus. Interdum duis sollicitudin arcu dignissim. Dolor dis mattis sed quam sagittis massa pulvinar volutpat enim.',
+                    'featured_image' => '',
+                    'default_featured_image' => get_template_directory_uri() . '/imgs/product.jpg',
+                    'featured_link' => '#',
+                    'sub_articles' => [
+                        ['title' => 'Global Steel Market Updates and Industry Insights', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'alt' => 'Modern automated steel manufacturing facility'],
+                        ['title' => 'Latest Trends Shaping the Global Steel Market', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/application.jpg', 'alt' => 'High quality finished steel coils'],
+                        ['title' => 'Steel Market Outlook and Emerging Industry Trends', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'alt' => 'Industrial structural steel beams and trusses'],
+                        ['title' => 'Key Developments Across the Global Steel Industry', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/cta.jpg', 'alt' => 'Infrastructure development and steel application']
+                    ]
+                ],
+                [
+                    'tag' => 'COMPANY OPERATIONS',
+                    'slug' => 'company-operations',
+                    'view_all_text' => 'VIEW ALL',
+                    'view_all_link' => '#',
+                    'featured_title' => 'Lorem ipsum dolor sit amet consectetur. Nisl lobortis porta pharetra aliquam at.',
+                    'featured_excerpt' => 'Lorem ipsum dolor sit amet consectetur. Sit nam amet tellus gravida risus tellus. Interdum duis sollicitudin arcu dignissim. Dolor dis mattis sed quam sagittis massa pulvinar volutpat enim.',
+                    'featured_image' => '',
+                    'default_featured_image' => get_template_directory_uri() . '/imgs/product.jpg',
+                    'featured_link' => '#',
+                    'sub_articles' => [
+                        ['title' => 'Global Steel Market Updates and Industry Insights', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'alt' => 'Factory operations'],
+                        ['title' => 'Advancing Production with Modern Technology', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/application.jpg', 'alt' => 'Modern Technology'],
+                        ['title' => 'Quality Control Innovations at Double T Facilities', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'alt' => 'Quality Control'],
+                        ['title' => 'Expanding Logistics and Distribution Capabilities', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/cta.jpg', 'alt' => 'Logistics']
                     ]
                 ]
-            ]
-        ];
+            ];
+        }
     }
 
     foreach ($fallback_categories as $f_idx => $f_cat) {

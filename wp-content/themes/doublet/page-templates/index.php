@@ -166,36 +166,161 @@ if (!is_array($home_app_items) || empty($home_app_items)) {
     ];
 }
 
-// 7. Featured Media Fields
-$home_media_label = tr_posts_field('home_media_label') ?: 'NEWS EVENTS';
-$home_media_title = tr_posts_field('home_media_title') ?: 'Featured Media';
+// 7. Featured Media Fields by Language & Categories
+$current_lang = function_exists('pll_current_language') ? pll_current_language('slug') : 'en';
+$current_lang = strtolower($current_lang ?: 'en');
 
-$home_media_b1_tag = tr_posts_field('home_media_b1_tag') ?: 'MARKET NEWS';
-$home_media_b1_link = tr_posts_field('home_media_b1_link') ?: '#';
-$home_media_b1_items = tr_posts_field('home_media_b1_items');
-if (!is_array($home_media_b1_items) || empty($home_media_b1_items)) {
-    $home_media_b1_items = [
-        ['title' => 'Latest Trends Shaping the Global Steel Market', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/product.jpg', 'link' => '#'],
-        ['title' => 'Global Steel Market Updates and Industry Insights', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'link' => '#'],
-        ['title' => 'Steel Market Outlook and Emerging Industry Trends', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/application.jpg', 'link' => '#'],
-        ['title' => 'Key Developments Across the Global Steel Industry', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'link' => '#'],
-        ['title' => 'Sustainable Green Steel Initiatives in Global Construction', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg', 'link' => '#'],
-        ['title' => 'Innovations in High-Tensile Steel Material Sourcing', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/home-service.webp', 'link' => '#']
-    ];
+if ($current_lang === 'vi') {
+    $home_media_label = tr_posts_field('home_media_label_vi') ?: (tr_posts_field('home_media_label') ?: 'TIN TỨC SỰ KIỆN');
+    $home_media_title = tr_posts_field('home_media_title_vi') ?: (tr_posts_field('home_media_title') ?: 'Truyền thông nổi bật');
+    $home_view_all_text = 'XEM TẤT CẢ';
+} else {
+    $home_media_label = tr_posts_field('home_media_label') ?: 'NEWS EVENTS';
+    $home_media_title = tr_posts_field('home_media_title') ?: 'Featured Media';
+    $home_view_all_text = 'VIEW ALL';
 }
 
-$home_media_b2_tag = tr_posts_field('home_media_b2_tag') ?: 'COMPANY OPERATIONS';
-$home_media_b2_link = tr_posts_field('home_media_b2_link') ?: '#';
-$home_media_b2_items = tr_posts_field('home_media_b2_items');
-if (!is_array($home_media_b2_items) || empty($home_media_b2_items)) {
-    $home_media_b2_items = [
-        ['title' => 'Latest Developments in Our Steel Manufacturing Operations', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg', 'link' => '#'],
-        ['title' => 'Advancing Our Production with New Steel Technologies', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/application.jpg', 'link' => '#'],
-        ['title' => 'Strengthening Efficiency Across Our Steel Production Lines', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'link' => '#'],
-        ['title' => 'New Milestones in Steel Manufacturing and Production', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/product.jpg', 'link' => '#'],
-        ['title' => 'Expansion of Our High-Capacity Cold-Rolling Facilities', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'link' => '#'],
-        ['title' => 'Comprehensive Quality Assurance Testing Protocols', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/home-service.webp', 'link' => '#']
-    ];
+// Fetch categories for home media by current language
+$home_cat_args = array(
+    'taxonomy'   => 'category',
+    'orderby'    => 'name',
+    'order'      => 'ASC',
+    'hide_empty' => false,
+);
+if (function_exists('pll_current_language')) {
+    $home_cat_args['lang'] = $current_lang;
+}
+$home_categories = get_categories($home_cat_args);
+
+$home_media_blocks = array();
+
+if (!empty($home_categories)) {
+    foreach ($home_categories as $h_cat) {
+        $cat_posts_args = array(
+            'post_type'      => 'post',
+            'post_status'    => 'publish',
+            'tax_query'      => array(
+                array(
+                    'taxonomy' => 'category',
+                    'field'    => 'term_id',
+                    'terms'    => $h_cat->term_id,
+                ),
+            ),
+            'posts_per_page' => 8,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+        );
+        if (function_exists('pll_current_language')) {
+            $cat_posts_args['lang'] = $current_lang;
+        }
+
+        $c_query = new WP_Query($cat_posts_args);
+        $block_items = array();
+
+        if ($c_query->have_posts()) {
+            foreach ($c_query->posts as $cp) {
+                $cp_thumb = get_the_post_thumbnail_url($cp->ID, 'full');
+                $block_items[] = array(
+                    'title'       => get_the_title($cp->ID),
+                    'link'        => get_permalink($cp->ID),
+                    'image'       => '',
+                    'default_img' => $cp_thumb ?: (get_template_directory_uri() . '/imgs/product.jpg'),
+                );
+            }
+        } else {
+            // Category has no posts yet: localized sample cards
+            if ($current_lang === 'vi') {
+                $block_items = array(
+                    array('title' => 'Cập nhật tình hình thị trường thép toàn cầu và nhận định chuyên gia', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/product.jpg', 'link' => get_category_link($h_cat->term_id)),
+                    array('title' => 'Các xu hướng mới định hình ngành công nghiệp chế tạo kim loại', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'link' => get_category_link($h_cat->term_id)),
+                    array('title' => 'Dự báo triển vọng giá thép tấm và thép cuộn trong quý tới', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/application.jpg', 'link' => get_category_link($h_cat->term_id)),
+                    array('title' => 'Phát triển thép xanh và các tiêu chuẩn bền vững mới trong xây dựng', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'link' => get_category_link($h_cat->term_id)),
+                    array('title' => 'Đổi mới công nghệ dây chuyền cắt xẻ thép chính xác cao Double T', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg', 'link' => get_category_link($h_cat->term_id)),
+                    array('title' => 'Tiêu chuẩn kiểm soát chất lượng thép xuất khẩu và phục vụ nội địa', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/home-service.webp', 'link' => get_category_link($h_cat->term_id)),
+                );
+            } else {
+                $block_items = array(
+                    array('title' => 'Latest Trends Shaping the Global Steel Market', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/product.jpg', 'link' => get_category_link($h_cat->term_id)),
+                    array('title' => 'Global Steel Market Updates and Industry Insights', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'link' => get_category_link($h_cat->term_id)),
+                    array('title' => 'Steel Market Outlook and Emerging Industry Trends', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/application.jpg', 'link' => get_category_link($h_cat->term_id)),
+                    array('title' => 'Key Developments Across the Global Steel Industry', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'link' => get_category_link($h_cat->term_id)),
+                    array('title' => 'Sustainable Green Steel Initiatives in Global Construction', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg', 'link' => get_category_link($h_cat->term_id)),
+                    array('title' => 'Innovations in High-Tensile Steel Material Sourcing', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/home-service.webp', 'link' => get_category_link($h_cat->term_id)),
+                );
+            }
+        }
+        wp_reset_postdata();
+
+        $home_media_blocks[] = array(
+            'tag'       => mb_strtoupper($h_cat->name, 'UTF-8'),
+            'link'      => get_category_link($h_cat->term_id),
+            'items'     => $block_items,
+            'slider_id' => 'home-cat-' . $h_cat->slug,
+        );
+    }
+}
+
+// Fallback if no categories exist
+if (empty($home_media_blocks)) {
+    if ($current_lang === 'vi') {
+        $home_media_blocks = array(
+            array(
+                'tag'       => 'TIN TỨC THỊ TRƯỜNG',
+                'link'      => '#',
+                'slider_id' => 'home-cat-market',
+                'items'     => array(
+                    array('title' => 'Cập nhật tình hình thị trường thép toàn cầu và nhận định chuyên gia', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/product.jpg', 'link' => '#'),
+                    array('title' => 'Các xu hướng mới định hình ngành công nghiệp chế tạo kim loại', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'link' => '#'),
+                    array('title' => 'Dự báo triển vọng giá thép tấm và thép cuộn trong quý tới', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/application.jpg', 'link' => '#'),
+                    array('title' => 'Phát triển thép xanh và các tiêu chuẩn bền vững mới trong xây dựng', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'link' => '#'),
+                    array('title' => 'Đổi mới công nghệ dây chuyền cắt xẻ thép chính xác cao Double T', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg', 'link' => '#'),
+                    array('title' => 'Tiêu chuẩn kiểm soát chất lượng thép xuất khẩu và phục vụ nội địa', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/home-service.webp', 'link' => '#'),
+                )
+            ),
+            array(
+                'tag'       => 'HOẠT ĐỘNG DOANH NGHIỆP',
+                'link'      => '#',
+                'slider_id' => 'home-cat-ops',
+                'items'     => array(
+                    array('title' => 'Nâng cấp hệ thống máy móc sản xuất và gia công thép tiên tiến', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg', 'link' => '#'),
+                    array('title' => 'Tăng cường hiệu suất vận hành trên toàn bộ dây chuyền nhà máy', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/application.jpg', 'link' => '#'),
+                    array('title' => 'Mở rộng hệ thống kho vận đáp ứng nhu cầu cung ứng kịp thời', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'link' => '#'),
+                    array('title' => 'Đạt mốc sản lượng gia công thép mới với độ chính xác cao', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/product.jpg', 'link' => '#'),
+                    array('title' => 'Tập huấn kỹ năng vận hành công nghệ cán vuốt và xẻ cuộn hiện đại', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'link' => '#'),
+                    array('title' => 'Quy trình kiểm tra thử nghiệm cơ lý tính thép nghiêm ngặt', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/home-service.webp', 'link' => '#'),
+                )
+            )
+        );
+    } else {
+        $home_media_blocks = array(
+            array(
+                'tag'       => 'MARKET NEWS',
+                'link'      => '#',
+                'slider_id' => 'home-cat-market',
+                'items'     => array(
+                    array('title' => 'Latest Trends Shaping the Global Steel Market', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/product.jpg', 'link' => '#'),
+                    array('title' => 'Global Steel Market Updates and Industry Insights', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'link' => '#'),
+                    array('title' => 'Steel Market Outlook and Emerging Industry Trends', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/application.jpg', 'link' => '#'),
+                    array('title' => 'Key Developments Across the Global Steel Industry', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'link' => '#'),
+                    array('title' => 'Sustainable Green Steel Initiatives in Global Construction', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg', 'link' => '#'),
+                    array('title' => 'Innovations in High-Tensile Steel Material Sourcing', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/home-service.webp', 'link' => '#'),
+                )
+            ),
+            array(
+                'tag'       => 'COMPANY OPERATIONS',
+                'link'      => '#',
+                'slider_id' => 'home-cat-ops',
+                'items'     => array(
+                    array('title' => 'Latest Developments in Our Steel Manufacturing Operations', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg', 'link' => '#'),
+                    array('title' => 'Advancing Our Production with New Steel Technologies', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/application.jpg', 'link' => '#'),
+                    array('title' => 'Strengthening Efficiency Across Our Steel Production Lines', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg', 'link' => '#'),
+                    array('title' => 'New Milestones in Steel Manufacturing and Production', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/product.jpg', 'link' => '#'),
+                    array('title' => 'Expansion of Our High-Capacity Cold-Rolling Facilities', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/video-thumb.jpg', 'link' => '#'),
+                    array('title' => 'Comprehensive Quality Assurance Testing Protocols', 'image' => '', 'default_img' => get_template_directory_uri() . '/imgs/home-service.webp', 'link' => '#'),
+                )
+            )
+        );
+    }
 }
 
 // 8. Partners Fields
@@ -659,121 +784,69 @@ $home_partners_logos = tr_posts_field('home_partners_logos');
                     <h2 class="heading h1 home-media-title h3_mb"><?php echo esc_html($home_media_title); ?></h2>
                 </div>
 
-                <!-- Block 1: Market News -->
-                <div class="home-media-block">
-                    <div class="home-media-bar">
-                        <div class="home-media-tag cut-tl">
-                            <span class="txt txt-16 txt-semi txt-14_mb"><?php echo esc_html($home_media_b1_tag); ?></span>
-                        </div>
-                        <a href="<?php echo esc_url($home_media_b1_link); ?>" class="home-media-view-all">
-                            <span class="txt txt-14 txt-semi">VIEW ALL</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </a>
-                    </div>
-
-                    <div class="home-media-slider-wrap">
-                        <div class="swiper home-media-slider home-media-market-slider">
-                            <div class="swiper-wrapper">
-                                <?php foreach ($home_media_b1_items as $m_item): 
-                                    $m_img_url = '';
-                                    if (!empty($m_item['image'])) {
-                                        $m_img_url = wp_get_attachment_image_url($m_item['image'], 'full');
-                                    }
-                                    if (!$m_img_url && !empty($m_item['default_img'])) {
-                                        $m_img_url = $m_item['default_img'];
-                                    }
-                                    if (!$m_img_url) {
-                                        $m_img_url = get_template_directory_uri() . '/imgs/product.jpg';
-                                    }
-                                    $m_title = !empty($m_item['title']) ? $m_item['title'] : '';
-                                    $m_link = !empty($m_item['link']) ? $m_item['link'] : '#';
-                                ?>
-                                    <div class="swiper-slide home-media-card hover-img">
-                                        <div class="home-media-card-img cut-tl">
-                                            <img src="<?php echo esc_url($m_img_url); ?>" class="img-abs" alt="<?php echo esc_attr($m_title); ?>">
-                                        </div>
-                                        <h3 class="home-media-card-title">
-                                            <a href="<?php echo esc_url($m_link); ?>" class="txt txt-18 txt-bold"><?php echo esc_html($m_title); ?></a>
-                                        </h3>
-                                    </div>
-                                <?php endforeach; ?>
+                <?php foreach ($home_media_blocks as $b_idx => $block): 
+                    $b_tag = $block['tag'];
+                    $b_link = $block['link'];
+                    $b_items = $block['items'];
+                    $b_slider_id = !empty($block['slider_id']) ? $block['slider_id'] : ('home-media-slider-' . ($b_idx + 1));
+                ?>
+                    <div class="home-media-block">
+                        <div class="home-media-bar">
+                            <div class="home-media-tag cut-tl">
+                                <span class="txt txt-16 txt-semi txt-14_mb"><?php echo esc_html($b_tag); ?></span>
                             </div>
+                            <a href="<?php echo esc_url($b_link); ?>" class="home-media-view-all">
+                                <span class="txt txt-14 txt-semi"><?php echo esc_html($home_view_all_text); ?></span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </a>
                         </div>
 
-                        <button class="home-media-ctrl home-media-prev home-media-market-prev cut-diagonal" aria-label="Previous Slide">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="15 18 9 12 15 6"></polyline>
-                            </svg>
-                        </button>
-                        <button class="home-media-ctrl home-media-next home-media-market-next cut-diagonal" aria-label="Next Slide">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </button>
-
-                        <div class="home-media-pagination home-media-market-pagination swiper-pagination desktop"></div>
-                    </div>
-                </div>
-
-                <!-- Block 2: Company Operations -->
-                <div class="home-media-block">
-                    <div class="home-media-bar">
-                        <div class="home-media-tag cut-tl">
-                            <span class="txt txt-16 txt-semi txt-14_mb"><?php echo esc_html($home_media_b2_tag); ?></span>
-                        </div>
-                        <a href="<?php echo esc_url($home_media_b2_link); ?>" class="home-media-view-all">
-                            <span class="txt txt-14 txt-semi">VIEW ALL</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </a>
-                    </div>
-
-                    <div class="home-media-slider-wrap">
-                        <div class="swiper home-media-slider home-media-ops-slider">
-                            <div class="swiper-wrapper">
-                                <?php foreach ($home_media_b2_items as $m_item): 
-                                    $m_img_url = '';
-                                    if (!empty($m_item['image'])) {
-                                        $m_img_url = wp_get_attachment_image_url($m_item['image'], 'full');
-                                    }
-                                    if (!$m_img_url && !empty($m_item['default_img'])) {
-                                        $m_img_url = $m_item['default_img'];
-                                    }
-                                    if (!$m_img_url) {
-                                        $m_img_url = get_template_directory_uri() . '/imgs/hero-img.jpg';
-                                    }
-                                    $m_title = !empty($m_item['title']) ? $m_item['title'] : '';
-                                    $m_link = !empty($m_item['link']) ? $m_item['link'] : '#';
-                                ?>
-                                    <div class="swiper-slide home-media-card hover-img">
-                                        <div class="home-media-card-img cut-tl">
-                                            <img src="<?php echo esc_url($m_img_url); ?>" class="img-abs" alt="<?php echo esc_attr($m_title); ?>">
+                        <div class="home-media-slider-wrap">
+                            <div class="swiper home-media-slider <?php echo esc_attr($b_slider_id); ?>">
+                                <div class="swiper-wrapper">
+                                    <?php foreach ($b_items as $m_item): 
+                                        $m_img_url = '';
+                                        if (!empty($m_item['image'])) {
+                                            $m_img_url = wp_get_attachment_image_url($m_item['image'], 'full');
+                                        }
+                                        if (!$m_img_url && !empty($m_item['default_img'])) {
+                                            $m_img_url = $m_item['default_img'];
+                                        }
+                                        if (!$m_img_url) {
+                                            $m_img_url = get_template_directory_uri() . '/imgs/product.jpg';
+                                        }
+                                        $m_title = !empty($m_item['title']) ? $m_item['title'] : '';
+                                        $m_link = !empty($m_item['link']) ? $m_item['link'] : '#';
+                                    ?>
+                                        <div class="swiper-slide home-media-card hover-img">
+                                            <div class="home-media-card-img cut-tl">
+                                                <img src="<?php echo esc_url($m_img_url); ?>" class="img-abs" alt="<?php echo esc_attr($m_title); ?>">
+                                            </div>
+                                            <h3 class="home-media-card-title">
+                                                <a href="<?php echo esc_url($m_link); ?>" class="txt txt-18 txt-bold"><?php echo esc_html($m_title); ?></a>
+                                            </h3>
                                         </div>
-                                        <h3 class="home-media-card-title">
-                                            <a href="<?php echo esc_url($m_link); ?>" class="txt txt-18 txt-bold"><?php echo esc_html($m_title); ?></a>
-                                        </h3>
-                                    </div>
-                                <?php endforeach; ?>
+                                    <?php endforeach; ?>
+                                </div>
                             </div>
+
+                            <button class="home-media-ctrl home-media-prev cut-diagonal" aria-label="Previous Slide">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <button class="home-media-ctrl home-media-next cut-diagonal" aria-label="Next Slide">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+
+                            <div class="home-media-pagination swiper-pagination desktop"></div>
                         </div>
-
-                        <button class="home-media-ctrl home-media-prev home-media-ops-prev cut-diagonal" aria-label="Previous Slide">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="15 18 9 12 15 6"></polyline>
-                            </svg>
-                        </button>
-                        <button class="home-media-ctrl home-media-next home-media-ops-next cut-diagonal" aria-label="Next Slide">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </button>
-
-                        <div class="home-media-pagination home-media-ops-pagination swiper-pagination desktop"></div>
                     </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </section>
 
