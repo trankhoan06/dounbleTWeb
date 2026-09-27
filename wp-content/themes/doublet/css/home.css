@@ -1491,10 +1491,11 @@
 
 .home-media-view-all svg {
     transition: transform var(--transition), color var(--transition);
+    color: var(--primary-2);
 }
 
 .home-media-view-all:hover {
-    color: var(--secondary);
+    color: var(--secondary-2);
 }
 
 .home-media-view-all:hover .txt {

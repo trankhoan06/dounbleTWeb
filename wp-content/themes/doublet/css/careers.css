@@ -7,43 +7,6 @@
 /* --------------------------------------------------------------------------
    Header Overrides for Careers Page (Solid White Header)
    -------------------------------------------------------------------------- */
-body.careers-page .header {
-    background-color: var(--white);
-    border-bottom: 1px solid var(--border-default);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-}
-
-body.careers-page .header-top {
-    border-bottom-color: var(--border-default);
-}
-
-body.careers-page .header-top-slogan,
-body.careers-page .header-top-link,
-body.careers-page .header-lang-trigger {
-    color: var(--txt-icon-secondary);
-}
-
-body.careers-page .header-top-divider {
-    background-color: var(--border-default);
-}
-
-body.careers-page .header-logo img {
-    filter: none;
-}
-
-body.careers-page .header-menu-item {
-    color: var(--txt-icon-primary);
-}
-
-body.careers-page .header-menu-item:hover,
-body.careers-page .header-menu-item:nth-child(6) {
-    color: var(--primary-1);
-}
-
-body.careers-page .header-cta-wrap:after,
-body.careers-page .header-cta-wrap:before {
-    background-color: var(--border-default);
-}
 
 /* --------------------------------------------------------------------------
    1. Hero Banner: Industrial Factory with Diagonal Left-Pinned Teal Panel

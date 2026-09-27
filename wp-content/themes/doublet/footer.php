@@ -282,7 +282,7 @@ $modal_service_opt6 = tr_options_field('tr_theme_options.modal_service_opt6') ?:
     <div class="modal-backdrop" id="consultationModal" aria-hidden="true" role="dialog" aria-modal="true"
         aria-labelledby="modalTitle">
         <div class="modal-container">
-            <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">
+            <button class="modal-close-btn cut-diagonal" id="modalCloseBtn" aria-label="Close modal">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>

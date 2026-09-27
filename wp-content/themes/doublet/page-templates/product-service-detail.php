@@ -71,15 +71,67 @@ if (!is_array($psd_app_items) || empty($psd_app_items)) {
 
 // 4. Other Products Fields
 $psd_other_label = tr_posts_field('psd_other_label') ?: 'OTHER PRODUCTS';
-$psd_other_items = tr_posts_field('psd_other_items');
-if (!is_array($psd_other_items) || empty($psd_other_items)) {
-    $psd_other_items = [
-        ['title' => 'Cold-Rolled', 'link' => './product-service-detail.html', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/cta.jpg'],
-        ['title' => 'Hot-Dip Galvanized', 'link' => './product-service-detail.html', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/service-item1.jpg'],
-        ['title' => 'Electrical Steel-Es', 'link' => './product-service-detail.html', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/home-service.webp'],
-        ['title' => 'Electrical Galvanized Steel-Eg', 'link' => './product-service-detail.html', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/product.jpg'],
-        ['title' => 'Stainless Steel-Inox', 'link' => './product-service-detail.html', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/hero-img.jpg']
-    ];
+
+// Lấy tối đa 6 sản phẩm khác mới nhất từ Post Type 'product-and-service'
+$current_id = get_the_ID();
+$other_posts = get_posts([
+    'post_type'      => ['product-and-service', 'productandservice'],
+    'post_status'    => 'publish',
+    'posts_per_page' => 6,
+    'post__not_in'   => [$current_id],
+    'orderby'        => 'date',
+    'order'          => 'DESC'
+]);
+
+$psd_other_items = [];
+
+if (!empty($other_posts)) {
+    foreach ($other_posts as $o_post) {
+        $o_id = $o_post->ID;
+
+        // Ảnh theo psd_hero_img (TypeRocket) -> Featured Image -> ACF -> Fallback
+        $o_img_id = tr_posts_field('psd_hero_img', $o_id);
+        $o_img_url = '';
+        if (!empty($o_img_id)) {
+            $o_img_url = wp_get_attachment_image_url($o_img_id, 'full');
+        }
+        if (empty($o_img_url)) {
+            $o_img_url = get_the_post_thumbnail_url($o_id, 'full');
+        }
+        if (empty($o_img_url) && function_exists('get_field')) {
+            $acf_img = get_field('psd_hero_img', $o_id) ?: get_field('image', $o_id);
+            if (!empty($acf_img)) {
+                $o_img_url = is_array($acf_img) ? $acf_img['url'] : (is_numeric($acf_img) ? wp_get_attachment_image_url($acf_img, 'full') : $acf_img);
+            }
+        }
+        if (empty($o_img_url)) {
+            $o_img_url = get_template_directory_uri() . '/imgs/hero-img.jpg';
+        }
+
+        $psd_other_items[] = [
+            'title'         => get_the_title($o_id),
+            'link'          => get_permalink($o_id),
+            'image'         => $o_img_id,
+            'image_url'     => $o_img_url,
+            'default_image' => get_template_directory_uri() . '/imgs/hero-img.jpg'
+        ];
+    }
+}
+
+// Fallback nếu chưa có bài đăng nào khác trong Post Type
+if (empty($psd_other_items)) {
+    $tr_other = tr_posts_field('psd_other_items');
+    if (is_array($tr_other) && !empty($tr_other)) {
+        $psd_other_items = $tr_other;
+    } else {
+        $psd_other_items = [
+            ['title' => 'Cold-Rolled', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/cta.jpg'],
+            ['title' => 'Hot-Dip Galvanized', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/service-item1.jpg'],
+            ['title' => 'Electrical Steel-Es', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/home-service.webp'],
+            ['title' => 'Electrical Galvanized Steel-Eg', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/product.jpg'],
+            ['title' => 'Stainless Steel-Inox', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/hero-img.jpg']
+        ];
+    }
 }
 
 ?>
@@ -225,8 +277,8 @@ if (!is_array($psd_other_items) || empty($psd_other_items)) {
                             <?php foreach ($psd_other_items as $other): 
                                 $o_title = !empty($other['title']) ? $other['title'] : '';
                                 $o_link = !empty($other['link']) ? $other['link'] : '#';
-                                $o_img_url = '';
-                                if (!empty($other['image'])) {
+                                $o_img_url = !empty($other['image_url']) ? $other['image_url'] : '';
+                                if (!$o_img_url && !empty($other['image'])) {
                                     $o_img_url = wp_get_attachment_image_url($other['image'], 'full');
                                 }
                                 if (!$o_img_url && !empty($other['default_image'])) {

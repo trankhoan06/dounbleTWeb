@@ -6,6 +6,64 @@
  * 3. Scroll To Top button
  */
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. Ensure Active State for Header Navigation Items
+    const setupHeaderActiveNav = () => {
+        const menuItems = document.querySelectorAll('.header-menu-item');
+        if (!menuItems.length) return;
+
+        // If server already applied active class, no need to override
+        const hasServerActive = Array.from(menuItems).some(item => item.classList.contains('active'));
+        if (hasServerActive) return;
+
+        const path = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
+        const bodyClasses = document.body.className.toLowerCase();
+
+        menuItems.forEach(item => {
+            const href = (item.getAttribute('href') || '').toLowerCase().replace(/\/+$/, '');
+            if (!href) return;
+
+            // Home check
+            if (path === '/' || path === '') {
+                if (href === window.location.origin.toLowerCase() || href === '' || href.endsWith('/')) {
+                    item.classList.add('active');
+                }
+                return;
+            }
+
+            // Commitment
+            if (path.includes('commitment') && href.includes('commitment')) {
+                item.classList.add('active');
+            }
+            // Product & Service
+            else if ((path.includes('product') || bodyClasses.includes('product')) && (href.includes('product-service') || href.includes('product'))) {
+                item.classList.add('active');
+            }
+            // Insight
+            else if ((path.includes('insight') || bodyClasses.includes('insight') || path.includes('category')) && href.includes('insight')) {
+                item.classList.add('active');
+            }
+            // Careers
+            else if ((path.includes('career') || bodyClasses.includes('career')) && (href.includes('career') || href.includes('careers'))) {
+                item.classList.add('active');
+            }
+            // Contact
+            else if (path.includes('contact') && href.includes('contact')) {
+                item.classList.add('active');
+            }
+            // General exact path check
+            else {
+                try {
+                    const itemUrl = new URL(item.href, window.location.origin);
+                    const itemPath = itemUrl.pathname.toLowerCase().replace(/\/+$/, '');
+                    if (itemPath && itemPath !== '/' && path.startsWith(itemPath)) {
+                        item.classList.add('active');
+                    }
+                } catch (e) {}
+            }
+        });
+    };
+    setupHeaderActiveNav();
+
     // 1. Header Scroll State & Mobile Hide/Show Behavior
     const header = document.querySelector('.header');
     const headerLangs = document.querySelectorAll('.header-lang');

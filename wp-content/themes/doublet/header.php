@@ -232,29 +232,29 @@ $header_nav_items = $header_menu_id ? wp_get_nav_menu_items($header_menu_id) : f
                     </div>
                     <?php if (!empty($header_nav_items)) : ?>
                         <?php foreach ($header_nav_items as $item) : 
-                            $is_current = (untrailingslashit($item->url) === untrailingslashit(home_url($_SERVER['REQUEST_URI'] ?? ''))) ? ' active' : '';
+                            $is_current = function_exists('themax_is_nav_item_active') && themax_is_nav_item_active($item) ? ' active' : '';
                         ?>
                             <a href="<?php echo esc_url($item->url); ?>" class="header-menu-item<?php echo $is_current; ?>" <?php if (!empty($item->target)) echo 'target="' . esc_attr($item->target) . '"'; ?>>
                                 <span class="txt txt-14 txt-med"><?php echo esc_html(mb_strtoupper($item->title, 'UTF-8')); ?></span>
                             </a>
                         <?php endforeach; ?>
                     <?php else : ?>
-                        <a href="<?php echo esc_url(home_url('/')); ?>" class="header-menu-item<?php if (is_front_page()) echo ' active'; ?>">
+                        <a href="<?php echo esc_url(home_url('/')); ?>" class="header-menu-item<?php if (is_front_page() || is_home()) echo ' active'; ?>">
                             <span class="txt txt-14 txt-med">HOME</span>
                         </a>
-                        <a href="<?php echo esc_url(home_url('/commitment/')); ?>" class="header-menu-item<?php if (is_page('commitment')) echo ' active'; ?>">
+                        <a href="<?php echo esc_url(home_url('/commitment/')); ?>" class="header-menu-item<?php if (is_page('commitment') || is_page_template('page-templates/commitment.php') || is_page_template('commitment.php')) echo ' active'; ?>">
                             <span class="txt txt-14 txt-med">OUR COMMITMENT</span>
                         </a>
-                        <a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="header-menu-item<?php if (is_page('product-service')) echo ' active'; ?>">
+                        <a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="header-menu-item<?php if (is_page('product-service') || is_page_template('page-templates/product-service.php') || is_page_template('product-service.php') || is_page_template('page-templates/product-service-detail.php') || is_page_template('product-service-detail.php') || is_singular('product-and-service') || is_singular('productandservice') || is_singular('product-service') || is_singular('product_service')) echo ' active'; ?>">
                             <span class="txt txt-14 txt-med">PRODUCT &amp; SERVICE</span>
                         </a>
-                        <a href="<?php echo esc_url(home_url('/insight/')); ?>" class="header-menu-item<?php if (is_page('insight') || is_category() || is_singular('post')) echo ' active'; ?>">
+                        <a href="<?php echo esc_url(home_url('/insight/')); ?>" class="header-menu-item<?php if (is_page('insight') || is_page_template('page-templates/insight.php') || is_page_template('insight.php') || is_page_template('page-templates/insight-category.php') || is_page_template('page-templates/insight-detail.php') || is_category() || is_singular('post') || (is_single() && !is_singular('career') && !is_singular('product-and-service') && !is_singular('productandservice'))) echo ' active'; ?>">
                             <span class="txt txt-14 txt-med">INSIGHT</span>
                         </a>
-                        <a href="<?php echo esc_url(home_url('/careers/')); ?>" class="header-menu-item<?php if (is_page('careers') || is_singular('career')) echo ' active'; ?>">
+                        <a href="<?php echo esc_url(home_url('/careers/')); ?>" class="header-menu-item<?php if (is_page('careers') || is_page('career') || is_page_template('page-templates/careers.php') || is_page_template('careers.php') || is_page_template('page-templates/career-detail.php') || is_page_template('career-detail.php') || is_singular('career') || is_singular('careers')) echo ' active'; ?>">
                             <span class="txt txt-14 txt-med">CAREERS</span>
                         </a>
-                        <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="header-menu-item<?php if (is_page('contact')) echo ' active'; ?>">
+                        <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="header-menu-item<?php if (is_page('contact') || is_page_template('page-templates/contact.php') || is_page_template('contact.php')) echo ' active'; ?>">
                             <span class="txt txt-14 txt-med">CONTACT</span>
                         </a>
                     <?php endif; ?>

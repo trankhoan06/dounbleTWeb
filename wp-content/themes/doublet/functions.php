@@ -38,14 +38,15 @@ function themax_enqueue_assets() {
 
     // Global CSS
     wp_enqueue_style('swiper-bundle', $theme_dir . '/css/swiper-bundle.min.css', array(), '1.0.0');
-    wp_enqueue_style('global-style', $theme_dir . '/css/global.css', array(), '1.0.0');
+    $global_css_ver = file_exists(get_template_directory() . '/css/global.css') ? filemtime(get_template_directory() . '/css/global.css') : '1.0.0';
+    wp_enqueue_style('global-style', $theme_dir . '/css/global.css', array(), $global_css_ver);
     $style_version = filemtime(get_template_directory() . '/style.css') ?: '1.0.0';
     wp_enqueue_style('themax-style', get_stylesheet_uri(), array(), $style_version);
 
     // Global JS
-    wp_enqueue_script('jquery-3.7.1', $theme_dir . '/js/jquery-3.7.1.min.js', array(), '3.7.1', true);
     wp_enqueue_script('swiper-bundle-js', $theme_dir . '/js/swiper-bundle.min.js', array(), '1.0.0', true);
-    wp_enqueue_script('global-js', $theme_dir . '/js/global.js', array('jquery-3.7.1'), '1.0.0', true);
+    $global_js_ver = file_exists(get_template_directory() . '/js/global.js') ? filemtime(get_template_directory() . '/js/global.js') : '1.0.0';
+    wp_enqueue_script('global-js', $theme_dir . '/js/global.js', array(), $global_js_ver, true);
 
     // Template specific CSS & JS
     if (is_page_template('page-templates/career-detail.php') || is_singular('career') || is_singular('careers')) {
@@ -70,9 +71,11 @@ function themax_enqueue_assets() {
         wp_enqueue_style('doublet-insight-category', $theme_dir . '/css/insight-category.css', array(), '1.0.0');
         wp_enqueue_script('doublet-insight-category-js', $theme_dir . '/js/insight-category.js', array('global-js'), '1.0.0', true);
     }
-    elseif (is_page_template('page-templates/product-service-detail.php') || is_singular('productandservice') || is_singular('product-service') || is_singular('product_service')) {
-        wp_enqueue_style('doublet-product-service-detail', $theme_dir . '/css/product-service-detail.css', array(), '1.0.0');
-        wp_enqueue_script('doublet-product-service-detail-js', $theme_dir . '/js/product-service-detail.js', array('global-js'), '1.0.0', true);
+    elseif (is_page_template('page-templates/product-service-detail.php') || is_page_template('product-service-detail.php') || is_singular('product-and-service') || is_singular('productandservice') || is_singular('product-service') || is_singular('product_service')) {
+        $psd_css_ver = file_exists(get_template_directory() . '/css/product-service-detail.css') ? filemtime(get_template_directory() . '/css/product-service-detail.css') : '1.0.1';
+        $psd_js_ver = file_exists(get_template_directory() . '/js/product-service-detail.js') ? filemtime(get_template_directory() . '/js/product-service-detail.js') : '1.0.1';
+        wp_enqueue_style('doublet-product-service-detail', $theme_dir . '/css/product-service-detail.css', array(), $psd_css_ver);
+        wp_enqueue_script('doublet-product-service-detail-js', $theme_dir . '/js/product-service-detail.js', array('swiper-bundle-js', 'global-js'), $psd_js_ver, true);
     }
     elseif (is_page_template('page-templates/product-service.php')) {
         wp_enqueue_style('doublet-product-service', $theme_dir . '/css/product-service.css', array(), '1.0.0');
@@ -91,7 +94,7 @@ add_action('wp_enqueue_scripts', 'themax_enqueue_assets');
 
 add_filter('body_class', 'themax_custom_body_classes');
 function themax_custom_body_classes($classes) {
-    if (is_page_template('page-templates/product-service-detail.php') || is_singular('productandservice') || is_singular('product-service') || is_singular('product_service')) {
+    if (is_page_template('page-templates/product-service-detail.php') || is_page_template('product-service-detail.php') || is_singular('product-and-service') || is_singular('productandservice') || is_singular('product-service') || is_singular('product_service')) {
         $classes[] = 'product-service-detail-page';
     }
     elseif (is_page_template('page-templates/careers.php')) {
@@ -115,7 +118,6 @@ function themax_custom_body_classes($classes) {
 add_filter('script_loader_tag', 'themax_add_defer_to_scripts', 10, 2);
 function themax_add_defer_to_scripts($tag, $handle) {
     $defer_scripts = array(
-        'jquery-3.7.1',
         'swiper-bundle-js',
         'global-js',
         'doublet-career-detail-js',
@@ -144,4 +146,108 @@ function themax_disable_cache_for_zalo() {
         header('Pragma: no-cache');
         header('Expires: 0');
     }
+}
+
+/**
+ * Determine if a header navigation item is currently active
+ *
+ * @param object $item WordPress nav menu item object
+ * @return bool
+ */
+function themax_is_nav_item_active($item) {
+    if (!empty($item->current)) {
+        return true;
+    }
+    if (!empty($item->classes) && is_array($item->classes)) {
+        if (in_array('current-menu-item', $item->classes) || in_array('current_page_item', $item->classes) || in_array('current-menu-ancestor', $item->classes)) {
+            return true;
+        }
+    }
+
+    $item_url = untrailingslashit(trim($item->url ?? ''));
+    $home_url = untrailingslashit(home_url('/'));
+
+    // Check Home page
+    if ($item_url === $home_url || $item_url === $home_url . '/' || $item_url === '') {
+        return (is_front_page() || is_home());
+    }
+
+    // Do not active other items if on front page
+    if (is_front_page() || is_home()) {
+        return false;
+    }
+
+    $item_path = trim(parse_url($item_url, PHP_URL_PATH) ?? '', '/');
+
+    // 1. Commitment
+    if (strpos($item_path, 'commitment') !== false) {
+        return (is_page('commitment') || is_page_template('page-templates/commitment.php') || is_page_template('commitment.php'));
+    }
+
+    // 2. Product & Service
+    if (strpos($item_path, 'product-service') !== false || strpos($item_path, 'product') !== false) {
+        return (
+            is_page('product-service') || 
+            is_page_template('page-templates/product-service.php') || 
+            is_page_template('product-service.php') || 
+            is_page_template('page-templates/product-service-detail.php') || 
+            is_page_template('product-service-detail.php') || 
+            is_singular('product-and-service') || 
+            is_singular('productandservice') || 
+            is_singular('product-service') || 
+            is_singular('product_service')
+        );
+    }
+
+    // 3. Insight
+    if (strpos($item_path, 'insight') !== false || strpos($item_path, 'tin-tuc') !== false) {
+        return (
+            is_page('insight') || 
+            is_page_template('page-templates/insight.php') || 
+            is_page_template('insight.php') || 
+            is_page_template('page-templates/insight-category.php') || 
+            is_page_template('page-templates/insight-detail.php') || 
+            is_category() || 
+            is_singular('post') || 
+            (is_single() && !is_singular('career') && !is_singular('product-and-service') && !is_singular('productandservice'))
+        );
+    }
+
+    // 4. Careers
+    if (strpos($item_path, 'career') !== false || strpos($item_path, 'tuyen-dung') !== false) {
+        return (
+            is_page('careers') || 
+            is_page('career') || 
+            is_page_template('page-templates/careers.php') || 
+            is_page_template('careers.php') || 
+            is_page_template('page-templates/career-detail.php') || 
+            is_page_template('career-detail.php') || 
+            is_singular('career') || 
+            is_singular('careers')
+        );
+    }
+
+    // 5. Contact
+    if (strpos($item_path, 'contact') !== false || strpos($item_path, 'lien-he') !== false) {
+        return (
+            is_page('contact') || 
+            is_page_template('page-templates/contact.php') || 
+            is_page_template('contact.php')
+        );
+    }
+
+    // 6. Queried object match
+    if (!empty($item->object_id) && $item->object_id == get_queried_object_id()) {
+        return true;
+    }
+
+    // 7. Path match
+    $current_path = trim(strtok($_SERVER['REQUEST_URI'] ?? '', '?'), '/');
+    if (!empty($item_path) && !empty($current_path)) {
+        if ($item_path === $current_path || strpos($current_path, $item_path) === 0) {
+            return true;
+        }
+    }
+
+    return false;
 }

@@ -34,45 +34,111 @@ $careers_th_position = tr_posts_field('careers_th_position') ?: 'POSITION';
 $careers_th_location = tr_posts_field('careers_th_location') ?: 'LOCATION';
 $careers_th_deadline = tr_posts_field('careers_th_deadline') ?: 'DEADLINE';
 
-$careers_jobs_list = tr_posts_field('careers_jobs_list');
-if (!is_array($careers_jobs_list) || empty($careers_jobs_list)) {
-    $careers_jobs_list = [
-        [
-            'title' => 'Steel Production Engineer',
-            'location' => 'Office',
-            'deadline' => '20/10/2026',
-            'link' => '#',
-            'btn_text' => 'VIEW DETAIL'
-        ],
-        [
-            'title' => 'Steel Quality Control Engineer',
-            'location' => 'Headquarters',
-            'deadline' => '20/10/2026',
-            'link' => '#',
-            'btn_text' => 'VIEW DETAIL'
-        ],
-        [
-            'title' => 'Steel Sales Manager',
-            'location' => 'Office',
-            'deadline' => '20/10/2026',
-            'link' => '#',
-            'btn_text' => 'VIEW DETAIL'
-        ],
-        [
-            'title' => 'Steel Fabrication Supervisor',
-            'location' => 'Office',
-            'deadline' => '20/10/2026',
-            'link' => '#',
-            'btn_text' => 'VIEW DETAIL'
-        ],
-        [
-            'title' => 'Project Engineer – Steel Structures',
-            'location' => 'Headquarters',
-            'deadline' => '20/10/2026',
-            'link' => '#',
-            'btn_text' => 'VIEW DETAIL'
-        ]
-    ];
+// Lấy danh sách việc làm từ ACF Post Type 'career'
+$career_posts = get_posts([
+    'post_type'      => 'career',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'orderby'        => 'date',
+    'order'          => 'DESC'
+]);
+
+$careers_jobs_list = [];
+
+if (!empty($career_posts)) {
+    foreach ($career_posts as $c_post) {
+        $c_id = $c_post->ID;
+
+        // Location: Ưu tiên ACF get_field -> post_meta -> typerocket -> fallback
+        $c_location = '';
+        if (function_exists('get_field')) {
+            $c_location = get_field('location', $c_id) ?: (get_field('career_location', $c_id) ?: get_field('workplace', $c_id));
+        }
+        if (empty($c_location)) {
+            $c_location = get_post_meta($c_id, 'location', true) ?: (get_post_meta($c_id, 'career_location', true) ?: tr_posts_field('career_location', $c_id));
+        }
+        if (empty($c_location)) {
+            $c_location = 'Office';
+        }
+
+        // Deadline: Ưu tiên ACF get_field -> post_meta -> typerocket -> fallback
+        $c_deadline = '';
+        if (function_exists('get_field')) {
+            $c_deadline = get_field('deadline', $c_id) ?: get_field('career_deadline', $c_id);
+        }
+        if (empty($c_deadline)) {
+            $c_deadline = get_post_meta($c_id, 'deadline', true) ?: (get_post_meta($c_id, 'career_deadline', true) ?: tr_posts_field('career_deadline', $c_id));
+        }
+        if (empty($c_deadline)) {
+            $c_deadline = '20/10/2026';
+        }
+
+        // Button text
+        $c_btn = '';
+        if (function_exists('get_field')) {
+            $c_btn = get_field('btn_text', $c_id) ?: get_field('career_btn_text', $c_id);
+        }
+        if (empty($c_btn)) {
+            $c_btn = tr_posts_field('career_btn_text', $c_id);
+        }
+        if (empty($c_btn)) {
+            $c_btn = 'VIEW DETAIL';
+        }
+
+        $careers_jobs_list[] = [
+            'title'    => get_the_title($c_id),
+            'location' => $c_location,
+            'deadline' => $c_deadline,
+            'link'     => get_permalink($c_id),
+            'btn_text' => $c_btn
+        ];
+    }
+}
+
+// Nếu chưa có bài viết trong Post Type 'career', lấy từ TypeRocket repeater hoặc dữ liệu mặc định
+if (empty($careers_jobs_list)) {
+    $tr_jobs = tr_posts_field('careers_jobs_list');
+    if (is_array($tr_jobs) && !empty($tr_jobs)) {
+        $careers_jobs_list = $tr_jobs;
+    } else {
+        $careers_jobs_list = [
+            [
+                'title' => 'Steel Production Engineer',
+                'location' => 'Office',
+                'deadline' => '20/10/2026',
+                'link' => '#',
+                'btn_text' => 'VIEW DETAIL'
+            ],
+            [
+                'title' => 'Steel Quality Control Engineer',
+                'location' => 'Headquarters',
+                'deadline' => '20/10/2026',
+                'link' => '#',
+                'btn_text' => 'VIEW DETAIL'
+            ],
+            [
+                'title' => 'Steel Sales Manager',
+                'location' => 'Office',
+                'deadline' => '20/10/2026',
+                'link' => '#',
+                'btn_text' => 'VIEW DETAIL'
+            ],
+            [
+                'title' => 'Steel Fabrication Supervisor',
+                'location' => 'Office',
+                'deadline' => '20/10/2026',
+                'link' => '#',
+                'btn_text' => 'VIEW DETAIL'
+            ],
+            [
+                'title' => 'Project Engineer – Steel Structures',
+                'location' => 'Headquarters',
+                'deadline' => '20/10/2026',
+                'link' => '#',
+                'btn_text' => 'VIEW DETAIL'
+            ]
+        ];
+    }
 }
 
 // 4. Cultural Stats Banner Fields

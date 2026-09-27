@@ -827,16 +827,18 @@
      transition: color var(--transition);
  }
 
- .header-menu-item:hover {
-     color: var(--primary-1);
+ .header-menu-item:hover,
+ .header-menu-item.active {
+     color: var(--primary-2);
  }
 
  .header.is-scrolled .header-menu-item {
      color: var(--txt-icon-primary);
  }
 
- .header.is-scrolled .header-menu-item:hover {
-     color: var(--primary-1);
+ .header.is-scrolled .header-menu-item:hover,
+ .header.is-scrolled .header-menu-item.active {
+     color: var(--primary-2);
  }
 
  .header-cta-wrap {
@@ -999,6 +1001,11 @@
 
      .header-menu-item {
          color: var(--txt-icon-secondary);
+     }
+
+     .header-menu-item:hover,
+     .header-menu-item.active {
+         color: var(--primary-1);
      }
 
      .header {
@@ -1966,20 +1973,53 @@
      display: flex;
      align-items: center;
      justify-content: center;
-     background-color: var(--white);
-     border: var(--1px) solid var(--border-default);
-     border-radius: 4px;
-     color: var(--txt-icon-secondary);
+     background-color: #E8EBF0;
+     border: none;
+     outline: none;
+     color: var(--txt-icon-primary);
      cursor: pointer;
      z-index: 10;
-     transition: background-color var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
+     --cut: .8rem;
+     box-shadow: 0 2px 8px rgba(181, 15, 29, 0.2);
+     transition: background-color var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition);
+ }
+
+ .modal-close-btn::before {
+     content: '';
+     position: absolute;
+     inset: var(--1px);
+     background-color: var(--white);
+     clip-path: polygon(calc(var(--cut) - var(--1px)) 0%,
+             100% 0%,
+             100% calc(100% - (var(--cut) - var(--1px))),
+             calc(100% - (var(--cut) - var(--1px))) 100%,
+             0% 100%,
+             0% calc(var(--cut) - var(--1px)));
+     transition: background-color var(--transition);
+     z-index: 1;
+ }
+
+ .modal-close-btn svg {
+     position: relative;
+     z-index: 2;
+     color: var(--txt-icon-primary);
+     stroke: var(--txt-icon-primary);
+     transition: transform var(--transition), stroke var(--transition);
  }
 
  .modal-close-btn:hover {
-     background-color: var(--secondary);
-     border-color: var(--secondary);
+     background-color: var(--secondary-2);
      color: var(--white);
-     transform: rotate(90deg);
+     box-shadow: 0 4px 16px rgba(235, 31, 48, 0.35);
+ }
+
+ .modal-close-btn:hover::before {
+     background-color: var(--secondary-2);
+ }
+
+ .modal-close-btn:hover svg {
+     color: var(--white);
+     stroke: var(--white);
  }
 
  /* Modal Body */
@@ -2216,7 +2256,7 @@
  }
 
  .custom-dropdown-arrow {
-     color: #4B5563;
+     color: var(--txt-icon-primary);
      flex-shrink: 0;
      transition: transform var(--transition), color var(--transition);
  }

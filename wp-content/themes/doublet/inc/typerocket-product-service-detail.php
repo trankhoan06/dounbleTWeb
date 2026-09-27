@@ -10,6 +10,7 @@ add_action('edit_form_after_title', function($post) {
 
     $template_file = get_post_meta($post->ID, '_wp_page_template', true);
     $is_psd = (
+        $post->post_type === 'product-and-service' ||
         $post->post_type === 'productandservice' ||
         $post->post_type === 'product-service' ||
         $post->post_type === 'product_service' ||

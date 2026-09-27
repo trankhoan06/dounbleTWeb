@@ -1,50 +1,3 @@
-/* ==========================================================================
-   Insight Page Styles - Double T
-   Complies strictly with design.md and AGENTS.md rules
-   NO custom font-size, line-height, letter-spacing, or font-weight declarations (Rule 6)
-   ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   Header Overrides for Insight Page (Solid White Header matching mockup)
-   -------------------------------------------------------------------------- */
-body.insight-page .header {
-    background-color: var(--white);
-    border-bottom: 1px solid var(--border-default);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-}
-
-body.insight-page .header-top {
-    border-bottom-color: var(--border-default);
-}
-
-body.insight-page .header-top-slogan,
-body.insight-page .header-top-link,
-body.insight-page .header-lang-trigger {
-    color: var(--txt-icon-secondary);
-}
-
-body.insight-page .header-top-divider {
-    background-color: var(--border-default);
-}
-
-body.insight-page .header-logo img {
-    filter: none;
-}
-
-body.insight-page .header-menu-item {
-    color: var(--txt-icon-primary);
-}
-
-body.insight-page .header-menu-item:hover,
-body.insight-page .header-menu-item.active {
-    color: var(--primary-1);
-}
-
-body.insight-page .header-cta-wrap:after,
-body.insight-page .header-cta-wrap:before {
-    background-color: var(--border-default);
-}
-
 /* --------------------------------------------------------------------------
    1. Hero Banner (Full width background with bottom-left cut-tr teal card)
    -------------------------------------------------------------------------- */
@@ -246,19 +199,23 @@ body.insight-page .header-cta-wrap:before {
     width: 0.8rem;
     height: 1.2rem;
     fill: none;
-    stroke: currentColor;
+    stroke: var(--primary-2);
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
-    transition: transform var(--transition);
+    transition: transform var(--transition), stroke var(--transition);
 }
 
 .insight-view-all:hover {
-    color: var(--primary-1);
+    color: var(--secondary-2);
 }
 
 .insight-view-all:hover .insight-view-all-icon {
     transform: translateX(0.4rem);
+}
+
+.insight-view-all:hover .insight-view-all-icon {
+    stroke: var(--secondary-2);
 }
 
 /* --------------------------------------------------------------------------

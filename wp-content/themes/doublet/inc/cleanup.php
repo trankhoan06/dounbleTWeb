@@ -46,7 +46,7 @@ add_action('wp_enqueue_scripts', function() {
 }, 200);
 
 // ============================================================
-// 4. JQUERY MẶC ĐỊNH CỦA WORDPRESS (theme đã load jQuery riêng)
+// 4. BỎ JQUERY TRÊN FRONTEND (theme dùng Vanilla JS thuần)
 // ============================================================
 add_action('wp_enqueue_scripts', function() {
     if (!is_admin()) {

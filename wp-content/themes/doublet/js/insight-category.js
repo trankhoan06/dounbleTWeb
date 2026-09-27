@@ -10,7 +10,7 @@
         const menuLinks = document.querySelectorAll('.header-menu-item');
         menuLinks.forEach(link => {
             const href = link.getAttribute('href') || '';
-            if (href.includes('insight.html') || href.includes('insight-category.html')) {
+            if (href.includes('insight')) {
                 link.classList.add('active');
             }
         });

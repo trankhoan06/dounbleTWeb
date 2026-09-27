@@ -16,52 +16,105 @@ $ps_products_title = tr_posts_field('ps_products_title') ?: 'Professional steel 
 $ps_products_btn_text = tr_posts_field('ps_products_btn_text') ?: 'VIEW MORE';
 $ps_products_btn_link = tr_posts_field('ps_products_btn_link') ?: '#serviceCatalog';
 
-$ps_products_items = tr_posts_field('ps_products_items');
-if (!is_array($ps_products_items) || empty($ps_products_items)) {
-    $ps_products_items = [
-        [
-            'title' => 'Hot Rolled-HR / Hot Rolled Pickled and Oiled-HRPO',
-            'link' => './product-service-detail.html',
-            'image' => '',
-            'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg',
-            'alt' => 'Hot rolled steel processing'
-        ],
-        [
-            'title' => 'Cold-Rolled',
-            'link' => '#service-cut-to-length',
-            'image' => '',
-            'default_img' => get_template_directory_uri() . '/imgs/cta.jpg',
-            'alt' => 'Cold-rolled steel processing'
-        ],
-        [
-            'title' => 'Hot-Dip Galvanized',
-            'link' => '#service-amada',
-            'image' => '',
-            'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg',
-            'alt' => 'Hot-dip galvanized steel'
-        ],
-        [
-            'title' => 'Electrical Steel-Es',
-            'link' => '#service-flat-bar',
-            'image' => '',
-            'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg',
-            'alt' => 'Electrical steel processing'
-        ],
-        [
-            'title' => 'Electrical Galvanized Steel-Eg',
-            'link' => '#service-support',
-            'image' => '',
-            'default_img' => get_template_directory_uri() . '/imgs/cta.jpg',
-            'alt' => 'Electrical galvanized steel processing'
-        ],
-        [
-            'title' => 'Stainless Steel-Inox',
-            'link' => '#service-slitting',
-            'image' => '',
-            'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg',
-            'alt' => 'Stainless steel processing'
-        ]
-    ];
+// Lấy danh sách sản phẩm từ Post Type 'product-and-service' (ACF CPT)
+$ps_posts = get_posts([
+    'post_type'      => ['product-and-service', 'productandservice'],
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'orderby'        => 'date',
+    'order'          => 'DESC'
+]);
+
+$ps_products_items = [];
+
+if (!empty($ps_posts)) {
+    foreach ($ps_posts as $prod_post) {
+        $p_id = $prod_post->ID;
+
+        // Ảnh lấy theo psd_hero_img (TypeRocket field)
+        $p_img_id = tr_posts_field('psd_hero_img', $p_id);
+        $p_img_url = '';
+        if (!empty($p_img_id)) {
+            $p_img_url = wp_get_attachment_image_url($p_img_id, 'full');
+        }
+        // Fallback sang Featured Image nếu psd_hero_img chưa chọn
+        if (empty($p_img_url)) {
+            $p_img_url = get_the_post_thumbnail_url($p_id, 'full');
+        }
+        // Fallback ACF field nếu có
+        if (empty($p_img_url) && function_exists('get_field')) {
+            $acf_img = get_field('psd_hero_img', $p_id) ?: get_field('image', $p_id);
+            if (!empty($acf_img)) {
+                $p_img_url = is_array($acf_img) ? $acf_img['url'] : (is_numeric($acf_img) ? wp_get_attachment_image_url($acf_img, 'full') : $acf_img);
+            }
+        }
+        // Fallback ảnh mặc định
+        if (empty($p_img_url)) {
+            $p_img_url = get_template_directory_uri() . '/imgs/hero-img.jpg';
+        }
+
+        $ps_products_items[] = [
+            'title'       => get_the_title($p_id),
+            'link'        => get_permalink($p_id),
+            'image'       => $p_img_id,
+            'image_url'   => $p_img_url,
+            'alt'         => get_the_title($p_id),
+            'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg'
+        ];
+    }
+}
+
+// Nếu chưa có bài đăng trong Post Type, fallback về TypeRocket repeater hoặc 6 sản phẩm mặc định
+if (empty($ps_products_items)) {
+    $tr_products = tr_posts_field('ps_products_items');
+    if (is_array($tr_products) && !empty($tr_products)) {
+        $ps_products_items = $tr_products;
+    } else {
+        $ps_products_items = [
+            [
+                'title' => 'Hot Rolled-HR / Hot Rolled Pickled and Oiled-HRPO',
+                'link' => '#',
+                'image' => '',
+                'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg',
+                'alt' => 'Hot rolled steel processing'
+            ],
+            [
+                'title' => 'Cold-Rolled',
+                'link' => '#service-cut-to-length',
+                'image' => '',
+                'default_img' => get_template_directory_uri() . '/imgs/cta.jpg',
+                'alt' => 'Cold-rolled steel processing'
+            ],
+            [
+                'title' => 'Hot-Dip Galvanized',
+                'link' => '#service-amada',
+                'image' => '',
+                'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg',
+                'alt' => 'Hot-dip galvanized steel'
+            ],
+            [
+                'title' => 'Electrical Steel-Es',
+                'link' => '#service-flat-bar',
+                'image' => '',
+                'default_img' => get_template_directory_uri() . '/imgs/service-item1.jpg',
+                'alt' => 'Electrical steel processing'
+            ],
+            [
+                'title' => 'Electrical Galvanized Steel-Eg',
+                'link' => '#service-support',
+                'image' => '',
+                'default_img' => get_template_directory_uri() . '/imgs/cta.jpg',
+                'alt' => 'Electrical galvanized steel processing'
+            ],
+            [
+                'title' => 'Stainless Steel-Inox',
+                'link' => '#service-slitting',
+                'image' => '',
+                'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg',
+                'alt' => 'Stainless steel processing'
+            ]
+        ];
+    }
 }
 
 // 3. Services Overview Fields
@@ -215,8 +268,8 @@ if (!is_array($ps_service_catalog_items) || empty($ps_service_catalog_items)) {
                         $p_link = !empty($prod['link']) ? $prod['link'] : '#';
                         $p_alt = !empty($prod['alt']) ? $prod['alt'] : $p_title;
                         
-                        $p_img_url = '';
-                        if (!empty($prod['image'])) {
+                        $p_img_url = !empty($prod['image_url']) ? $prod['image_url'] : '';
+                        if (!$p_img_url && !empty($prod['image'])) {
                             $p_img_url = wp_get_attachment_image_url($prod['image'], 'full');
                         }
                         if (!$p_img_url && !empty($prod['default_img'])) {
