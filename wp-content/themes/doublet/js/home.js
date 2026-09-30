@@ -29,6 +29,63 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', requestHeroParallax, { passive: true });
     }
 
+    // Play the configured YouTube or MP4 video inside the existing media frame.
+    const videoMain = document.querySelector('.home-video-main');
+    const videoPlayButton = videoMain?.querySelector('.home-video-control');
+
+    if (videoMain && videoPlayButton) {
+        const getYouTubeId = (urlValue) => {
+            if (!urlValue) return '';
+
+            try {
+                const url = new URL(urlValue, window.location.origin);
+                const host = url.hostname.replace(/^www\./, '');
+
+                if (host === 'youtu.be') return url.pathname.split('/').filter(Boolean)[0] || '';
+                if (host.endsWith('youtube.com') || host.endsWith('youtube-nocookie.com')) {
+                    if (url.pathname === '/watch') return url.searchParams.get('v') || '';
+                    const parts = url.pathname.split('/').filter(Boolean);
+                    if (['embed', 'shorts', 'live'].includes(parts[0])) return parts[1] || '';
+                }
+            } catch (error) {
+                return '';
+            }
+
+            return '';
+        };
+
+        videoPlayButton.addEventListener('click', () => {
+            if (videoMain.classList.contains('is-playing')) return;
+
+            const videoUrl = videoMain.dataset.videoUrl || '';
+            const youtubeId = getYouTubeId(videoUrl);
+
+            if (youtubeId) {
+                const iframe = document.createElement('iframe');
+                iframe.className = 'home-video-embed';
+                iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeId)}?autoplay=1&rel=0&playsinline=1`;
+                iframe.title = 'Double T video';
+                iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+                iframe.allowFullscreen = true;
+                videoMain.appendChild(iframe);
+                videoMain.classList.add('is-playing');
+                return;
+            }
+
+            const nativeVideo = videoMain.querySelector('.home-video-player');
+            if (!nativeVideo || !videoUrl) return;
+
+            if (!nativeVideo.currentSrc) {
+                nativeVideo.src = videoUrl;
+                nativeVideo.load();
+            }
+            nativeVideo.controls = true;
+            videoMain.classList.add('is-playing');
+            const playAttempt = nativeVideo.play();
+            if (playAttempt) playAttempt.catch(() => videoMain.classList.remove('is-playing'));
+        });
+    }
+
     // Use a subtle fade-up only. The selectors target small content units so
     // labels, titles, descriptions, images and cards reveal independently.
     if (typeof window.AOS === 'object') {

@@ -241,13 +241,45 @@
     width: 5.6rem;
     position: absolute;
     z-index: 6;
-    pointer-events: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    transition: opacity 250ms ease-out, transform 250ms ease-out;
+}
+
+.home-video-control:hover {
+    transform: scale(1.08);
+}
+
+.home-video-control:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: .6rem;
 }
 
 .home-video-thumb {
     position: absolute;
     inset: 0;
     z-index: 5;
+    transition: opacity 300ms ease-out, visibility 300ms ease-out;
+}
+
+.home-video-player,
+.home-video-embed {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    z-index: 4;
+}
+
+.home-video-main.is-playing .home-video-control,
+.home-video-main.is-playing .home-video-thumb,
+.home-video-main.is-playing .home-video-overlay {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .home-video-deco-left {

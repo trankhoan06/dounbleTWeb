@@ -42,6 +42,7 @@ add_action('edit_form_after_title', function($post) {
         // 3. Video Section
         echo beginBox("3. Video Section", true);
         echo $form->image('home_video_thumb')->setLabel("Ảnh Poster / Thumbnail Video");
+        echo $form->text('home_video_youtube_url')->setLabel("YouTube URL (VD: https://www.youtube.com/watch?v=... hoặc https://youtu.be/...)");
         echo $form->file('home_video_file')->setLabel("Upload File Video (.mp4)");
         echo $form->text('home_video_url')->setLabel("Hoặc nhập trực tiếp URL Video (.mp4)");
         echo endBox();

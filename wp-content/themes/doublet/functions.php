@@ -94,7 +94,8 @@ function themax_enqueue_assets() {
     elseif ($is_home_page) {
         wp_enqueue_style('aos', 'https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css', array(), '2.3.4');
         wp_enqueue_script('aos', 'https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js', array(), '2.3.4', true);
-        wp_enqueue_style('doublet-home', $theme_dir . '/css/home.css', array(), '1.0.0');
+        $home_css_ver = file_exists(get_template_directory() . '/css/home.css') ? filemtime(get_template_directory() . '/css/home.css') : '1.0.0';
+        wp_enqueue_style('doublet-home', $theme_dir . '/css/home.css', array(), $home_css_ver);
         $home_js_ver = file_exists(get_template_directory() . '/js/home.js') ? filemtime(get_template_directory() . '/js/home.js') : '1.0.0';
         wp_enqueue_script('doublet-home-js', $theme_dir . '/js/home.js', array('global-js', 'aos'), $home_js_ver, true);
     }

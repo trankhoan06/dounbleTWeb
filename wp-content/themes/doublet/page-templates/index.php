@@ -25,6 +25,9 @@ $home_video_file = tr_posts_field('home_video_file');
 $home_video_file_url = $home_video_file ? wp_get_attachment_url($home_video_file) : '';
 $home_video_url = tr_posts_field('home_video_url');
 $final_video_src = $home_video_file_url ?: ($home_video_url ?: '');
+$home_video_youtube_url = trim((string) tr_posts_field('home_video_youtube_url'));
+$home_video_fallback_url = 'https://www.youtube.com/watch?v=M7lc1UVf-VE';
+$home_video_play_url = $home_video_youtube_url ?: ($final_video_src ?: $home_video_fallback_url);
 
 // 4. Product Section Fields
 $home_product_label = tr_posts_field('home_product_label') ?: 'PRODUCT DOUBLE T';
@@ -392,16 +395,18 @@ $home_partners_logos = tr_posts_field('home_partners_logos');
             <div class="container">
                 <div class="home-video-deco-left cut-tl"></div>
                 <div class="home-video-inner cut-xl cut-tl">
-                    <div class="home-video-main cut-br">
+                    <div class="home-video-main cut-br" data-video-url="<?php echo esc_url($home_video_play_url); ?>">
                         <div class="home-video-overlay"></div>
-                        <div class="home-video-control">
-                            <img src="<?php echo get_template_directory_uri(); ?>/imgs/play.svg" class="img-basic" alt="">
-                        </div>
+                        <button type="button" class="home-video-control" aria-label="Play video">
+                            <img src="<?php echo get_template_directory_uri(); ?>/imgs/play.svg" class="img-basic" alt="" aria-hidden="true">
+                        </button>
                         <div class="home-video-thumb">
                             <img src="<?php echo esc_url($home_video_thumb_url); ?>" class="img-fill" alt="video thumbnail">
                         </div>
-                        <video class="img-fill">
-                            <source src="<?php echo esc_url($final_video_src); ?>">
+                        <video class="home-video-player img-fill" playsinline preload="metadata">
+                            <?php if ($final_video_src): ?>
+                                <source src="<?php echo esc_url($final_video_src); ?>">
+                            <?php endif; ?>
                         </video>
                     </div>
                     <div class="home-video-video-deco"></div>
