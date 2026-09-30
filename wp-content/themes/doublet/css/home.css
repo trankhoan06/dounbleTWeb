@@ -4,6 +4,7 @@
     display: flex;
     justify-content: end;
     align-items: end;
+    overflow: hidden;
 }
 
 .home-hero-overlay {
@@ -19,6 +20,12 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
+}
+
+.home-hero-bg img.has-parallax {
+    transform: translate3d(0, var(--hero-parallax-y, 0), 0) scale(1.26);
+    transform-origin: center center;
+    will-change: transform;
 }
 
 .home-hero-ic-wrap {
@@ -1673,4 +1680,51 @@
         margin-bottom: 3.2rem;
     }
 
+}
+/* Keep Home's AOS fade-up subtle; the library default is a much larger 100px move. */
+.main [data-aos='fade-up'] {
+    transform: translate3d(0, 18px, 0);
+}
+
+.main [data-aos='fade-up'].aos-animate {
+    transform: translate3d(0, 0, 0);
+}
+
+/* Partners uses its own reveal because its logo track is continuously transformed. */
+.home-partners.partners-reveal-ready .home-partners-label,
+.home-partners.partners-reveal-ready .home-partners-title,
+.home-partners.partners-reveal-ready .home-partners-desc,
+.home-partners.partners-reveal-ready .home-partners-card {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    transition: opacity 600ms ease-out, transform 600ms ease-out;
+}
+
+.home-partners.partners-reveal-ready .home-partners-title {
+    transition-delay: 90ms;
+}
+
+.home-partners.partners-reveal-ready .home-partners-desc {
+    transition-delay: 180ms;
+}
+
+.home-partners.partners-reveal-ready .home-partners-card {
+    transition-delay: var(--partner-stagger, 0ms);
+}
+
+.home-partners.partners-reveal-ready.is-revealed .home-partners-label,
+.home-partners.partners-reveal-ready.is-revealed .home-partners-title,
+.home-partners.partners-reveal-ready.is-revealed .home-partners-desc,
+.home-partners.partners-reveal-ready.is-revealed .home-partners-card {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+.home-partners.partners-reveal-ready .home-partners-marquee-track {
+    animation: none;
+    transform: translate3d(0, 0, 0);
+}
+
+.home-partners.partners-reveal-ready.is-marquee-running .home-partners-marquee-track {
+    animation: partnersMarquee 32s linear infinite;
 }

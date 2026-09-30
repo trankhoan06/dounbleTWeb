@@ -15,7 +15,7 @@ get_header();
 ?>
 <main class="main" data-namespace="home">
     <section class="home_hero" data-init>
-        <div class="home_hero_inner">
+        <div class="home_hero_inner first-load-item">
             <?php
             $home_banner_video = tr_posts_field('home_banner_video');
             $video_url = $home_banner_video ? wp_get_attachment_url($home_banner_video) : '';
@@ -24,7 +24,7 @@ get_header();
             ?>
             <?php if ($video_url): ?>
                 <video data-src="<?php echo esc_url($video_url); ?>"
-                    poster="<?php echo esc_url($poster_url); ?>" preload="auto"
+                    poster="<?php echo esc_url($poster_url); ?>" preload="metadata"
                     autoplay loop muted playsinline class="lazy-home-video"
                     style="position: relative; z-index: 1;"
                     ></video>
@@ -49,7 +49,7 @@ get_header();
             <?php endif; ?>
 
         </div>
-        <div class="home_hero_overlay" data-init>
+        <div class="home_hero_overlay first-load-item" data-init>
             <div class="home_hero_overlay_txt txt_16">Scroll down</div>
             <div class="home_hero_overlay_icon img_full">
                 <img src="<?php echo get_template_directory_uri(); ?>/images/Arrows_down.svg" alt="">

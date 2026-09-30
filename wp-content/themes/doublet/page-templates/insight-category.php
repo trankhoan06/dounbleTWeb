@@ -9,7 +9,7 @@ get_header(); ?>
     <main class="main" id="mainContent">
         <section class="cat-hero" aria-labelledby="catHeroTitle">
             <div class="cat-hero-inner">
-                <div class="cat-hero-panel">
+                <div class="cat-hero-panel hero-enter-item hero-enter-panel">
                     <div class="container cat-hero-container">
                         <nav class="cat-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
                             <a href="./index.html">Home</a>
@@ -24,13 +24,13 @@ get_header(); ?>
                         </h1>
                     </div>
                 </div>
-                <div class="cat-hero-media desktop">
-                    <img src="<?php echo get_template_directory_uri(); ?>/imgs/hero-img.jpg" class="img-fill" alt="Double T steel processing plant">
+                <div class="cat-hero-media desktop hero-enter-item">
+                    <img src="<?php echo get_template_directory_uri(); ?>/imgs/hero-img.jpg" class="img-fill" alt="Double T steel processing plant" loading="eager" fetchpriority="high" decoding="async">
                 </div>
             </div>
         </section>
 
-        <section class="cat-listing-section" id="categoryListingSection">
+        <section class="cat-listing-section page-first-section-reveal reveal-ready" id="categoryListingSection">
             <div class="container">
                 <div class="cat-listing-layout">
 

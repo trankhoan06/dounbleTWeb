@@ -232,11 +232,11 @@ if (!is_array($ps_service_catalog_items) || empty($ps_service_catalog_items)) {
     <main class="main">
         <!-- 1. Hero Section -->
         <section class="ps-hero" aria-labelledby="psHeroTitle">
-            <div class="ps-hero-bg">
-                <img src="<?php echo esc_url($ps_hero_bg_url); ?>" class="img-fill" alt="Double T steel processing factory">
+            <div class="ps-hero-bg hero-enter-item">
+                <img src="<?php echo esc_url($ps_hero_bg_url); ?>" class="img-fill" alt="Double T steel processing factory" loading="eager" fetchpriority="high" decoding="async">
             </div>
             <div class="container ps-hero-inner">
-                <div class="ps-hero-panel">
+                <div class="ps-hero-panel hero-enter-item hero-enter-panel">
                     <div class="ps-hero-panel-bg cut-tr"></div>
                     <nav class="ps-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
                         <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
@@ -251,13 +251,13 @@ if (!is_array($ps_service_catalog_items) || empty($ps_service_catalog_items)) {
         </section>
 
         <!-- 2. Products Section -->
-        <section class="ps-products" id="productRange" aria-labelledby="psProductsTitle">
+        <section class="ps-products page-first-section-reveal reveal-ready" id="productRange" aria-labelledby="psProductsTitle">
             <div class="container">
                 <div class="ps-section-head">
-                    <div class="label red-light cut-diagonal cut-sm ps-section-label">
+                    <div class="label red-light cut-diagonal cut-sm ps-section-label reveal-ready">
                         <div class="txt txt-13 txt-semi"><?php echo esc_html($ps_products_label); ?></div>
                     </div>
-                    <h2 class="heading h2 h3_tb h3_mb ps-products-title" id="psProductsTitle">
+                    <h2 class="heading h2 h3_tb h3_mb ps-products-title reveal-ready" id="psProductsTitle">
                         <?php echo wp_kses_post($ps_products_title); ?>
                     </h2>
                 </div>

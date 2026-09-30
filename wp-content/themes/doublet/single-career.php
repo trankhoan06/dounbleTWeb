@@ -57,7 +57,7 @@ $career_ben_content = tr_posts_field('career_ben_content') ?: '<ul class="txt tx
     <!-- Hero Section -->
     <section class="career-detail-hero">
         <div class="container">
-            <div class="career-detail-hero-content">
+            <div class="career-detail-hero-content hero-enter-item hero-enter-panel">
                 <nav class="career-detail-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
                     <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
                     <span class="career-detail-breadcrumb-sep">/</span>
@@ -71,7 +71,7 @@ $career_ben_content = tr_posts_field('career_ben_content') ?: '<ul class="txt tx
     </section>
 
     <!-- Main Content -->
-    <section class="career-detail-main">
+    <section class="career-detail-main page-first-section-reveal reveal-ready">
         <div class="container">
             <div class="career-detail-grid">
 

@@ -136,7 +136,7 @@ if (empty($psd_other_items)) {
         <!-- 1. Hero Section -->
         <section class="psd-hero" aria-labelledby="psdHeroTitle">
             <div class="psd-hero-inner">
-                <div class="psd-hero-panel">
+                <div class="psd-hero-panel hero-enter-item hero-enter-panel">
                     <div class="container psd-hero-container">
                         <nav class="psd-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
                             <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
@@ -151,14 +151,14 @@ if (empty($psd_other_items)) {
                         </h1>
                     </div>
                 </div>
-                <div class="psd-hero-media">
+                <div class="psd-hero-media hero-enter-item">
                     <img src="<?php echo esc_url($psd_hero_img_url); ?>" class="img-fill" alt="<?php echo esc_attr(strip_tags($psd_hero_title)); ?>">
                 </div>
             </div>
         </section>
 
         <!-- 2. Specification Section -->
-        <section class="psd-spec" id="specification" aria-labelledby="psdSpecLabel">
+        <section class="psd-spec page-first-section-reveal reveal-ready" id="specification" aria-labelledby="psdSpecLabel">
             <div class="container">
                 <div class="psd-section-head">
                     <div class="psd-section-tag cut-tl" id="psdSpecLabel">

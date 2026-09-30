@@ -334,7 +334,7 @@ $home_partners_logos = tr_posts_field('home_partners_logos');
         <!-- 1. Hero Section -->
         <section class="home-hero">
             <div class="container">
-                <div class="home-hero-ic-wrap">
+                <div class="home-hero-ic-wrap first-load-item">
                     <div class="home-hero-ic">
                         <img src="<?php echo get_template_directory_uri(); ?>/imgs/mouse.svg" class="img-basic" alt="icon mouse">
                     </div>
@@ -343,10 +343,10 @@ $home_partners_logos = tr_posts_field('home_partners_logos');
                     </div>
                 </div>
             </div>
-            <div class="home-hero-bg">
+            <div class="home-hero-bg first-load-item">
                 <img src="<?php echo esc_url($home_hero_bg_url); ?>" class="img-fill" alt="home hero image">
             </div>
-            <div class="home-hero-overlay"></div>
+            <div class="home-hero-overlay first-load-item"></div>
         </section>
 
         <!-- 2. Future Section -->

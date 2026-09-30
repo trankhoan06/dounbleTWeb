@@ -1,5 +1,7 @@
 <?php
-flush_rewrite_rules();
+// Rebuilding rewrite rules on every request is expensive. WordPress only needs
+// this after the theme is activated (or when rewrite settings change).
+add_action('after_switch_theme', 'flush_rewrite_rules');
 include 'typerocket/init.php';
 require dirname( __FILE__ ) . '/inc/init.php';
 
@@ -35,18 +37,43 @@ add_filter('show_admin_bar', '__return_false');
 
 function themax_enqueue_assets() {
     $theme_dir = get_template_directory_uri();
+    $is_home_page = is_page_template('page-templates/index.php')
+        || is_page_template('page-templates/template.php')
+        || is_front_page()
+        || is_home();
 
     // Global CSS
-    wp_enqueue_style('swiper-bundle', $theme_dir . '/css/swiper-bundle.min.css', array(), '1.0.0');
     $global_css_ver = file_exists(get_template_directory() . '/css/global.css') ? filemtime(get_template_directory() . '/css/global.css') : '1.0.0';
     wp_enqueue_style('global-style', $theme_dir . '/css/global.css', array(), $global_css_ver);
     $style_version = filemtime(get_template_directory() . '/style.css') ?: '1.0.0';
     wp_enqueue_style('themax-style', get_stylesheet_uri(), array(), $style_version);
 
-    // Global JS
-    wp_enqueue_script('swiper-bundle-js', $theme_dir . '/js/swiper-bundle.min.js', array(), '1.0.0', true);
+    // Lenis is optional at runtime: the site keeps native scrolling if the CDN
+    // is unavailable, while supported browsers receive smooth wheel scrolling.
+    wp_enqueue_script('lenis', 'https://cdn.jsdelivr.net/npm/lenis@1.3.17/dist/lenis.min.js', array(), '1.3.17', true);
     $global_js_ver = file_exists(get_template_directory() . '/js/global.js') ? filemtime(get_template_directory() . '/js/global.js') : '1.0.0';
-    wp_enqueue_script('global-js', $theme_dir . '/js/global.js', array(), $global_js_ver, true);
+    wp_enqueue_script('global-js', $theme_dir . '/js/global.js', array('lenis'), $global_js_ver, true);
+
+    // Swiper is 150 KB and is only used by the templates below. Loading it
+    // globally delayed every other page unnecessarily.
+    $uses_swiper = is_page_template('page-templates/commitment.php')
+        || is_page_template('page-templates/index.php')
+        || is_page_template('page-templates/template.php')
+        || is_front_page()
+        || is_home()
+        || is_page_template('page-templates/insight-detail.php')
+        || is_singular('post')
+        || is_single()
+        || is_page_template('page-templates/product-service-detail.php')
+        || is_page_template('product-service-detail.php')
+        || is_singular(array('product-and-service', 'productandservice', 'product-service', 'product_service'));
+
+    if ($uses_swiper) {
+        $swiper_css_ver = file_exists(get_template_directory() . '/css/swiper-bundle.min.css') ? filemtime(get_template_directory() . '/css/swiper-bundle.min.css') : '1.0.0';
+        $swiper_js_ver = file_exists(get_template_directory() . '/js/swiper-bundle.min.js') ? filemtime(get_template_directory() . '/js/swiper-bundle.min.js') : '1.0.0';
+        wp_enqueue_style('swiper-bundle', $theme_dir . '/css/swiper-bundle.min.css', array(), $swiper_css_ver);
+        wp_enqueue_script('swiper-bundle-js', $theme_dir . '/js/swiper-bundle.min.js', array(), $swiper_js_ver, true);
+    }
 
     // Template specific CSS & JS
     if (is_page_template('page-templates/career-detail.php') || is_singular('career') || is_singular('careers')) {
@@ -57,15 +84,19 @@ function themax_enqueue_assets() {
         wp_enqueue_style('doublet-careers', $theme_dir . '/css/careers.css', array(), '1.0.0');
     }
     elseif (is_page_template('page-templates/commitment.php')) {
-        wp_enqueue_style('doublet-commitment', $theme_dir . '/css/commitment.css', array(), '1.0.0');
+        $commitment_css_ver = file_exists(get_template_directory() . '/css/commitment.css') ? filemtime(get_template_directory() . '/css/commitment.css') : '1.0.0';
+        wp_enqueue_style('doublet-commitment', $theme_dir . '/css/commitment.css', array(), $commitment_css_ver);
         wp_enqueue_script('doublet-commitment-js', $theme_dir . '/js/commitment.js', array('global-js'), '1.0.0', true);
     }
     elseif (is_page_template('page-templates/contact.php')) {
         wp_enqueue_style('doublet-contact', $theme_dir . '/css/contact.css', array(), '1.0.0');
     }
-    elseif (is_page_template('page-templates/index.php') || is_page_template('page-templates/template.php') || is_front_page() || is_home()) {
+    elseif ($is_home_page) {
+        wp_enqueue_style('aos', 'https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css', array(), '2.3.4');
+        wp_enqueue_script('aos', 'https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js', array(), '2.3.4', true);
         wp_enqueue_style('doublet-home', $theme_dir . '/css/home.css', array(), '1.0.0');
-        wp_enqueue_script('doublet-home-js', $theme_dir . '/js/home.js', array('global-js'), '1.0.0', true);
+        $home_js_ver = file_exists(get_template_directory() . '/js/home.js') ? filemtime(get_template_directory() . '/js/home.js') : '1.0.0';
+        wp_enqueue_script('doublet-home-js', $theme_dir . '/js/home.js', array('global-js', 'aos'), $home_js_ver, true);
     }
     elseif (is_page_template('page-templates/insight-category.php') || is_category() || is_archive()) {
         wp_enqueue_style('doublet-insight-category', $theme_dir . '/css/insight-category.css', array(), '1.0.0');
@@ -91,6 +122,39 @@ function themax_enqueue_assets() {
     }
 }
 add_action('wp_enqueue_scripts', 'themax_enqueue_assets');
+
+/**
+ * The theme contains many hand-written <img> tags, which WordPress cannot
+ * automatically enhance. Add native lazy loading and async decoding to images
+ * outside the initial header/hero area. Existing explicit attributes always win.
+ */
+function themax_optimize_theme_images($html) {
+    return preg_replace_callback('/<img\b[^>]*>/i', function ($match) {
+        $tag = $match[0];
+
+        if (stripos($tag, ' loading=') !== false) {
+            return $tag;
+        }
+
+        // Header logo and hero imagery affect first paint/LCP, so do not lazy-load them.
+        $is_priority = stripos($tag, 'fetchpriority=') !== false
+            || stripos($tag, 'header-logo') !== false
+            || stripos($tag, 'hero') !== false;
+
+        $attributes = $is_priority
+            ? ' loading="eager" fetchpriority="high" decoding="async"'
+            : ' loading="lazy" decoding="async"';
+
+        return preg_replace('/\s*\/?>(\s*)$/', $attributes . '>', $tag);
+    }, $html);
+}
+
+function themax_start_image_optimization_buffer() {
+    if (!is_admin() && !is_feed() && !wp_doing_ajax() && !is_robots()) {
+        ob_start('themax_optimize_theme_images');
+    }
+}
+add_action('template_redirect', 'themax_start_image_optimization_buffer', 0);
 
 add_filter('body_class', 'themax_custom_body_classes');
 function themax_custom_body_classes($classes) {

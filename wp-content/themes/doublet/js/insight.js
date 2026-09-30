@@ -94,7 +94,7 @@
             const subPostsHtml = (category.subPosts || []).map(post => this.renderSubCard(post)).join('');
 
             return `
-                <section class="insight-category" id="${catId}" data-category="${catId}" aria-labelledby="catLabel-${catId}">
+                <section class="insight-category page-first-section-reveal reveal-ready" id="${catId}" data-category="${catId}" aria-labelledby="catLabel-${catId}">
                     <div class="container">
                         <!-- Category Header Bar (Industrial Tag + View All) -->
                         <div class="insight-category-bar">
@@ -140,6 +140,9 @@
                     if (Array.isArray(categories) && categories.length > 0) {
                         const html = categories.map(cat => this.renderCategorySection(cat)).join('');
                         container.innerHTML = html;
+                        if (typeof window.DoubleTRefreshReveals === 'function') {
+                            window.DoubleTRefreshReveals();
+                        }
                     }
                 })
                 .catch(err => {

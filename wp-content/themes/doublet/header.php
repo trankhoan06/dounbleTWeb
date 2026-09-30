@@ -20,17 +20,14 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preload" href="<?php echo get_template_directory_uri(); ?>/fonts/GoogleSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="<?php echo get_template_directory_uri(); ?>/fonts/GoogleSans-Medium.woff2" as="font" type="font/woff2" crossorigin>
-    <?php 
-    if (is_front_page() || is_home() || is_page_template('page-templates/homepage.php')) {
-        $home_banner_video = tr_posts_field('home_banner_video');
-        $video_url = $home_banner_video ? wp_get_attachment_url($home_banner_video) : '';
-        if ($video_url) {
-            echo '<link rel="preload" href="' . esc_url($video_url) . '" as="video" type="video/mp4">';
-        }
-    }
-    ?>
+    <script>
+        document.documentElement.classList.add('is-first-loading');
+        window.setTimeout(function () {
+            document.documentElement.classList.remove('is-first-loading');
+        }, 3000);
+    </script>
+    <link rel="preload" href="<?php echo esc_url(get_template_directory_uri()); ?>/fonts/MonaSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="<?php echo esc_url(get_template_directory_uri()); ?>/fonts/MonaSans-Medium.woff2" as="font" type="font/woff2" crossorigin>
 
         <?php wp_head(); ?>
 </head>
@@ -67,7 +64,7 @@ $header_nav_items = function_exists('themax_get_nav_menu_items') ? themax_get_na
 <body <?php body_class(); ?>>
 
     <!-- Header -->
-    <header class="header">
+    <header class="header header-enter-ready">
         <!-- Header Top Bar -->
         <div class="header-top desktop">
             <div class="container header-top-inner">
@@ -209,7 +206,7 @@ $vi_url = !empty($pll_raw['vi']['url']) ? $pll_raw['vi']['url'] : (function_exis
         <div class="header-main">
             <div class="container grid header-main-inner">
                 <a href="<?php echo esc_url(home_url('/')); ?>" class="header-logo">
-                    <img src="<?php echo esc_url($header_logo_url); ?>" class="img-basic" alt="Double T Logo">
+                    <img src="<?php echo esc_url($header_logo_url); ?>" class="img-basic" alt="Double T Logo" loading="eager" fetchpriority="high" decoding="async">
                 </a>
                 <nav class="header-menu">
                     <div class="header-top tablet">

@@ -121,6 +121,10 @@
                             viewAllLink.href = `./insight-category.html?category=${otherCategory.slug}`;
                         }
                     }
+
+                    if (typeof window.DoubleTRefreshReveals === 'function') {
+                        window.DoubleTRefreshReveals();
+                    }
                 })
                 .catch(err => {
                     // Static fallback HTML already exists in DOM for SEO

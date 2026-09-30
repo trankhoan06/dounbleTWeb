@@ -159,11 +159,11 @@ if (!is_array($careers_success_stats) || empty($careers_success_stats)) {
     <main class="main">
         <!-- 1. Hero Section -->
         <section class="careers-hero" aria-labelledby="careersHeroTitle">
-            <div class="careers-hero-bg">
-                <img src="<?php echo esc_url($careers_hero_bg_url); ?>" class="img-fill" alt="Double T steel processing factory">
+            <div class="careers-hero-bg hero-enter-item">
+                <img src="<?php echo esc_url($careers_hero_bg_url); ?>" class="img-fill" alt="Double T steel processing factory" loading="eager" fetchpriority="high" decoding="async">
             </div>
             <div class="container careers-hero-inner">
-                <div class="careers-hero-panel">
+                <div class="careers-hero-panel hero-enter-item hero-enter-panel">
                     <div class="careers-hero-panel-bg cut-tr"></div>
                     <nav class="careers-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
                         <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
@@ -178,7 +178,7 @@ if (!is_array($careers_success_stats) || empty($careers_success_stats)) {
         </section>
 
         <!-- 2. Introduction & 4-Photo Working Environment Grid -->
-        <section class="careers-intro">
+        <section class="careers-intro page-first-section-reveal reveal-ready">
             <div class="container">
                 <p class="careers-intro-copy txt txt-16 txt-14_tb txt-14_mb txt-med">
                     <?php echo wp_kses_post(nl2br($careers_intro_desc)); ?>

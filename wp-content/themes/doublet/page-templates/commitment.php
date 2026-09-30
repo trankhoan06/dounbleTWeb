@@ -104,11 +104,11 @@ $commit_partners_logos = tr_posts_field('commit_partners_logos');
     <main class="main">
         <!-- 1. Hero Section -->
         <section class="commit-hero">
-            <div class="commit-hero-bg">
-                <img src="<?php echo esc_url($commit_hero_bg_url); ?>" class="img-fill" alt="">
+            <div class="commit-hero-bg hero-enter-item">
+                <img src="<?php echo esc_url($commit_hero_bg_url); ?>" class="img-fill" alt="" loading="eager" fetchpriority="high" decoding="async">
             </div>
             <div class="container">
-                <div class="commit-hero-content">
+                <div class="commit-hero-content hero-enter-item hero-enter-panel">
                     <div class="commit-hero-content-bg cut-tr"></div>
                     <div class="commit-hero-pagi txt txt-14 txt-med txt-13_mb">
                         <a href="<?php echo esc_url(home_url('/')); ?>" class="commit-hero-pagi-prev">Home</a>
@@ -123,7 +123,7 @@ $commit_partners_logos = tr_posts_field('commit_partners_logos');
         </section>
 
         <!-- 2. Intro Section -->
-        <section class="commit-intro" aria-labelledby="commitIntroTitle">
+        <section class="commit-intro page-first-section-reveal reveal-ready" aria-labelledby="commitIntroTitle">
             <div class="container grid commit-intro-inner">
                 <div class="commit-intro-content">
                     <div class="label red-light cut-diagonal cut-sm">
@@ -157,7 +157,7 @@ $commit_partners_logos = tr_posts_field('commit_partners_logos');
                     </div>
                 </div>
 
-                <figure class="commit-intro-media cut-diagonal cut-lg hover-img">
+                <figure class="commit-intro-media cut-diagonal cut-lg hover-img reveal-ready">
                     <img src="<?php echo esc_url($commit_intro_img_url); ?>" class="img-basic"
                         alt="Double T steel processing facilities and production team">
                 </figure>

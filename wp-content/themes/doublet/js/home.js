@@ -1,4 +1,66 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // A small GPU-only parallax on the Home hero image. Scroll work is
+    // coalesced to at most one update per animation frame.
+    const heroSection = document.querySelector('.home-hero');
+    const heroImage = heroSection?.querySelector('.home-hero-bg img');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (heroSection && heroImage && !reducedMotion) {
+        let parallaxFrame = null;
+
+        heroImage.classList.add('has-parallax');
+
+        const updateHeroParallax = () => {
+            const heroRect = heroSection.getBoundingClientRect();
+            const maxShift = Math.min(120, heroSection.offsetHeight * 0.13);
+            const shift = Math.min(maxShift, Math.max(0, -heroRect.top * 0.16));
+
+            heroImage.style.setProperty('--hero-parallax-y', `${shift.toFixed(2)}px`);
+            parallaxFrame = null;
+        };
+
+        const requestHeroParallax = () => {
+            if (parallaxFrame !== null) return;
+            parallaxFrame = window.requestAnimationFrame(updateHeroParallax);
+        };
+
+        updateHeroParallax();
+        window.addEventListener('scroll', requestHeroParallax, { passive: true });
+        window.addEventListener('resize', requestHeroParallax, { passive: true });
+    }
+
+    // Use a subtle fade-up only. The selectors target small content units so
+    // labels, titles, descriptions, images and cards reveal independently.
+    if (typeof window.AOS === 'object') {
+        const groups = [
+            '.home-future-title, .home-future-sub, .home-future-btn, .home-future-img, .home-future-orbit',
+            '.home-video-inner, .home-video-main, .home-video-control',
+            '.home-product-label, .home-product-title, .home-product-cms, .home-product-control, .home-product-cta',
+            '.home-service-img, .home-service-title, .home-service-sub, .home-service-btn, .home-service-cms',
+            '.home-app-label, .home-app-title, .home-app-tab, .home-app-media, .home-app-content-title, .home-app-content-desc, .home-app-feature, .home-app-action',
+            '.home-media-label, .home-media-title, .home-media-bar, .home-media-slider-wrap',
+            '.home_intro_content, .home_intro_image, .home_specialize_title, .home_specialize_desc, .home_specialize_item, .home_services_title, .home_services_content, .home_case_item, .home_clients_title'
+        ];
+
+        groups.forEach((selector) => {
+            document.querySelectorAll(selector).forEach((element, index) => {
+                if (element.hasAttribute('data-aos')) return;
+                element.setAttribute('data-aos', 'fade-up');
+                element.setAttribute('data-aos-delay', String((index % 4) * 90));
+                element.setAttribute('data-aos-duration', '650');
+                element.setAttribute('data-aos-once', 'true');
+            });
+        });
+
+        window.AOS.init({
+            duration: 650,
+            easing: 'ease-out',
+            once: true,
+            offset: 70,
+            disable: () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+        });
+    }
+
     // Product Swiper Slider
     const productSliderEl = document.querySelector('.home-product-slider');
     if (productSliderEl && typeof Swiper !== 'undefined') {

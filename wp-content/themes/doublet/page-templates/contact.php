@@ -41,12 +41,12 @@ $contact_map_iframe_src = tr_posts_field('contact_map_iframe_src') ?: 'https://w
     <main class="main" id="mainContent">
         <!-- 1. Hero Section -->
         <section class="contact-hero" aria-labelledby="contactHeroTitle">
-            <div class="contact-hero-bg">
+            <div class="contact-hero-bg hero-enter-item">
                 <img src="<?php echo esc_url($contact_hero_bg_url); ?>" class="img-fill"
-                    alt="Double T steel processing manufacturing facility">
+                    alt="Double T steel processing manufacturing facility" loading="eager" fetchpriority="high" decoding="async">
             </div>
             <div class="container contact-hero-container">
-                <div class="contact-hero-panel">
+                <div class="contact-hero-panel hero-enter-item hero-enter-panel">
                     <div class="contact-hero-panel-bg cut-tr"></div>
                     <nav class="contact-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
                         <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
@@ -61,7 +61,7 @@ $contact_map_iframe_src = tr_posts_field('contact_map_iframe_src') ?: 'https://w
         </section>
 
         <!-- 2. Main Content: Company Info + Form -->
-        <section class="contact-main">
+        <section class="contact-main page-first-section-reveal reveal-ready">
             <div class="container grid">
                 <!-- Left: Company Information -->
                 <div class="contact-info-col">

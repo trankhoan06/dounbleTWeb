@@ -9,7 +9,7 @@ get_header(); ?>
     <main class="main" id="mainContent">
         <section class="detail-hero" aria-labelledby="detailHeroTitle">
             <div class="detail-hero-inner">
-                <div class="detail-hero-panel">
+                <div class="detail-hero-panel hero-enter-item hero-enter-panel">
                     <div class="container detail-hero-container">
                         <nav class="detail-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
                             <a href="./index.html">Home</a>
@@ -21,8 +21,8 @@ get_header(); ?>
                         </h1>
                     </div>
                 </div>
-                <div class="detail-hero-media">
-                    <img src="<?php echo get_template_directory_uri(); ?>/imgs/hero-img.jpg" class="img-fill" alt="Double T steel processing plant">
+                <div class="detail-hero-media hero-enter-item">
+                    <img src="<?php echo get_template_directory_uri(); ?>/imgs/hero-img.jpg" class="img-fill" alt="Double T steel processing plant" loading="eager" fetchpriority="high" decoding="async">
                 </div>
             </div>
         </section>
@@ -30,7 +30,7 @@ get_header(); ?>
         <!-- ==========================================================================
              2. Main Article Section (3-Column Layout: Share | Article | TOC)
              ========================================================================== -->
-        <section class="detail-main-section">
+        <section class="detail-main-section page-first-section-reveal reveal-ready">
             <div class="container detail-container">
                 <div class="detail-layout">
 

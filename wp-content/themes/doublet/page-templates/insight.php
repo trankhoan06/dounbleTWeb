@@ -277,12 +277,12 @@ if (empty($insight_sections)) {
     <main class="main" id="mainContent">
         <!-- 1. Hero Section -->
         <section class="insight-hero" aria-labelledby="insightHeroTitle">
-            <div class="insight-hero-bg">
-                <img src="<?php echo esc_url($insight_hero_bg_url); ?>" class="img-fill"
+            <div class="insight-hero-bg hero-enter-item">
+                <img src="<?php echo esc_url($insight_hero_bg_url); ?>" class="img-fill" loading="eager" fetchpriority="high" decoding="async"
                     alt="Double T steel processing manufacturing facility">
             </div>
             <div class="container insight-hero-container">
-                <div class="insight-hero-panel">
+                <div class="insight-hero-panel hero-enter-item hero-enter-panel">
                     <div class="insight-hero-panel-bg cut-tr"></div>
                     <nav class="insight-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
                         <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
@@ -316,7 +316,7 @@ if (empty($insight_sections)) {
 
                 $sub_articles = !empty($sec['sub_articles']) && is_array($sec['sub_articles']) ? $sec['sub_articles'] : [];
             ?>
-                <section class="insight-category" id="<?php echo esc_attr($c_slug); ?>" data-category="<?php echo esc_attr($c_slug); ?>"
+                <section class="insight-category page-first-section-reveal reveal-ready" id="<?php echo esc_attr($c_slug); ?>" data-category="<?php echo esc_attr($c_slug); ?>"
                     aria-labelledby="catLabel-<?php echo esc_attr($c_slug); ?>">
                     <div class="container">
                         <!-- Category Header Bar -->
