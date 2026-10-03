@@ -16,9 +16,9 @@ $ps_products_title = tr_posts_field('ps_products_title') ?: 'Professional steel 
 $ps_products_btn_text = tr_posts_field('ps_products_btn_text') ?: 'VIEW MORE';
 $ps_products_btn_link = tr_posts_field('ps_products_btn_link') ?: '#serviceCatalog';
 
-// Lấy danh sách sản phẩm từ Post Type 'product-and-service' (ACF CPT)
+// Lấy danh sách sản phẩm động từ ACF Custom Post Type 'product-and-service'
 $ps_posts = get_posts([
-    'post_type'      => ['product-and-service', 'productandservice'],
+    'post_type'      => 'product-and-service',
     'post_status'    => 'publish',
     'posts_per_page' => -1,
     'orderby'        => 'date',
@@ -31,40 +31,87 @@ if (!empty($ps_posts)) {
     foreach ($ps_posts as $prod_post) {
         $p_id = $prod_post->ID;
 
-        // Ảnh lấy theo psd_hero_img (TypeRocket field)
-        $p_img_id = tr_posts_field('psd_hero_img', $p_id);
+        // 1. Title (Hỗ trợ ACF field title / product_title hoặc Tiêu đề bài viết)
+        $p_title = '';
+        if (function_exists('get_field')) {
+            $p_title = get_field('product_title', $p_id) ?: get_field('title', $p_id);
+        }
+        if (empty($p_title)) {
+            $p_title = get_the_title($p_id);
+        }
+
+        // 2. Link (Hỗ trợ ACF custom link hoặc permalink bài viết)
+        $p_link = '';
+        if (function_exists('get_field')) {
+            $p_link = get_field('product_link', $p_id) ?: get_field('link', $p_id);
+        }
+        if (empty($p_link)) {
+            $p_link = get_permalink($p_id);
+        }
+
+        // 3. Image: Quét tất cả các cách lưu ảnh trong ACF / TypeRocket / Featured Image
         $p_img_url = '';
-        if (!empty($p_img_id)) {
-            $p_img_url = wp_get_attachment_image_url($p_img_id, 'full');
-        }
-        // Fallback sang Featured Image nếu psd_hero_img chưa chọn
-        if (empty($p_img_url)) {
-            $p_img_url = get_the_post_thumbnail_url($p_id, 'full');
-        }
-        // Fallback ACF field nếu có
-        if (empty($p_img_url) && function_exists('get_field')) {
-            $acf_img = get_field('psd_hero_img', $p_id) ?: get_field('image', $p_id);
-            if (!empty($acf_img)) {
-                $p_img_url = is_array($acf_img) ? $acf_img['url'] : (is_numeric($acf_img) ? wp_get_attachment_image_url($acf_img, 'full') : $acf_img);
+
+        // Cách A: ACF fields (image, product_image, featured_image, thumbnail, hinh_anh, psd_hero_img)
+        if (function_exists('get_field')) {
+            $acf_fields = ['image', 'product_image', 'featured_image', 'thumbnail', 'hinh_anh', 'anh_san_pham', 'psd_hero_img'];
+            foreach ($acf_fields as $f_key) {
+                $raw_img = get_field($f_key, $p_id);
+                if (!empty($raw_img)) {
+                    if (is_array($raw_img) && !empty($raw_img['url'])) {
+                        $p_img_url = $raw_img['url'];
+                    } elseif (is_numeric($raw_img)) {
+                        $p_img_url = wp_get_attachment_image_url($raw_img, 'full');
+                    } elseif (is_string($raw_img)) {
+                        $p_img_url = $raw_img;
+                    }
+                    if (!empty($p_img_url)) break;
+                }
             }
         }
-        // Fallback ảnh mặc định
+
+        // Cách B: Featured Image chuẩn của WordPress (Ảnh đại diện)
+        if (empty($p_img_url) && has_post_thumbnail($p_id)) {
+            $p_img_url = get_the_post_thumbnail_url($p_id, 'full');
+        }
+
+        // Cách C: TypeRocket fields (psd_hero_img, image)
+        if (empty($p_img_url)) {
+            $tr_img_id = tr_posts_field('psd_hero_img', $p_id) ?: tr_posts_field('image', $p_id);
+            if (!empty($tr_img_id)) {
+                $p_img_url = wp_get_attachment_image_url($tr_img_id, 'full');
+            }
+        }
+
+        // Cách D: Fallback post_meta trực tiếp
+        if (empty($p_img_url)) {
+            $meta_img = get_post_meta($p_id, 'image', true) ?: (get_post_meta($p_id, 'product_image', true) ?: get_post_meta($p_id, 'psd_hero_img', true));
+            if (!empty($meta_img)) {
+                if (is_numeric($meta_img)) {
+                    $p_img_url = wp_get_attachment_image_url($meta_img, 'full');
+                } elseif (is_string($meta_img)) {
+                    $p_img_url = $meta_img;
+                }
+            }
+        }
+
+        // Cách E: Fallback ảnh placeholder mặc định
         if (empty($p_img_url)) {
             $p_img_url = get_template_directory_uri() . '/imgs/hero-img.jpg';
         }
 
         $ps_products_items[] = [
-            'title'       => get_the_title($p_id),
-            'link'        => get_permalink($p_id),
-            'image'       => $p_img_id,
+            'title'       => $p_title,
+            'link'        => $p_link,
+            'image'       => '',
             'image_url'   => $p_img_url,
-            'alt'         => get_the_title($p_id),
+            'alt'         => $p_title,
             'default_img' => get_template_directory_uri() . '/imgs/hero-img.jpg'
         ];
     }
 }
 
-// Nếu chưa có bài đăng trong Post Type, fallback về TypeRocket repeater hoặc 6 sản phẩm mặc định
+// Nếu chưa có bài đăng nào trong CPT 'product-and-service', fallback về TypeRocket repeater hoặc sản phẩm mẫu mặc định
 if (empty($ps_products_items)) {
     $tr_products = tr_posts_field('ps_products_items');
     if (is_array($tr_products) && !empty($tr_products)) {
@@ -237,7 +284,8 @@ if (!is_array($ps_service_catalog_items) || empty($ps_service_catalog_items)) {
             </div>
             <div class="container ps-hero-inner">
                 <div class="ps-hero-panel hero-enter-item hero-enter-panel">
-                    <div class="ps-hero-panel-bg cut-tr"></div>
+                    <div class="ps-hero-panel-bg cut-tr">
+                    </div>
                     <nav class="ps-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
                         <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
                         <span class="commit-hero-pagi-devi" aria-hidden="true">/</span>
@@ -257,13 +305,17 @@ if (!is_array($ps_service_catalog_items) || empty($ps_service_catalog_items)) {
                     <div class="label red-light cut-diagonal cut-sm ps-section-label reveal-ready">
                         <div class="txt txt-13 txt-semi"><?php echo esc_html($ps_products_label); ?></div>
                     </div>
-                    <h2 class="heading h2 h3_tb h3_mb ps-products-title reveal-ready" id="psProductsTitle">
+                    <h2 class="heading h1 h3_tb h3_mb ps-products-title reveal-ready" id="psProductsTitle">
                         <?php echo wp_kses_post($ps_products_title); ?>
                     </h2>
                 </div>
 
-                <div class="ps-products-grid">
-                    <?php foreach ($ps_products_items as $prod): 
+                <div class="ps-products-grid" id="psProductsGrid">
+                    <?php 
+                    $card_idx = 0;
+                    foreach ($ps_products_items as $prod): 
+                        $card_idx++;
+                        $is_hidden_class = ($card_idx > 6) ? ' is-hidden' : '';
                         $p_title = !empty($prod['title']) ? $prod['title'] : '';
                         $p_link = !empty($prod['link']) ? $prod['link'] : '#';
                         $p_alt = !empty($prod['alt']) ? $prod['alt'] : $p_title;
@@ -279,7 +331,7 @@ if (!is_array($ps_service_catalog_items) || empty($ps_service_catalog_items)) {
                             $p_img_url = get_template_directory_uri() . '/imgs/hero-img.jpg';
                         }
                     ?>
-                        <a href="<?php echo esc_url($p_link); ?>" class="ps-product-card hover-img">
+                        <a href="<?php echo esc_url($p_link); ?>" class="ps-product-card hover-img<?php echo esc_attr($is_hidden_class); ?>">
                             <div class="ps-product-card-img cut-tl">
                                 <div class="ps-product-card-img-block"></div>
                                 <img src="<?php echo esc_url($p_img_url); ?>" class="img-abs img-fill" alt="<?php echo esc_attr($p_alt); ?>">
@@ -293,10 +345,10 @@ if (!is_array($ps_service_catalog_items) || empty($ps_service_catalog_items)) {
                     <?php endforeach; ?>
                 </div>
 
-                <div class="ps-products-action">
-                    <a href="<?php echo esc_url($ps_products_btn_link); ?>" class="btn btn-primary ps-products-more">
+                <div class="ps-products-action" id="psProductsAction"<?php if (count($ps_products_items) <= 6) echo ' style="display: none;"'; ?>>
+                    <button type="button" class="btn btn-primary ps-products-more" id="psProductsMore">
                         <span class="txt txt-13 txt-semi txt-14_mb"><?php echo esc_html($ps_products_btn_text); ?></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </section>
@@ -308,7 +360,7 @@ if (!is_array($ps_service_catalog_items) || empty($ps_service_catalog_items)) {
                     <div class="label red-light cut-diagonal cut-sm ps-services-label">
                         <div class="txt txt-13 txt-semi"><?php echo esc_html($ps_services_label); ?></div>
                     </div>
-                    <h2 class="heading h2 h3_tb h3_mb ps-services-title" id="psServicesTitle">
+                    <h2 class="heading h1 h3_tb h3_mb ps-services-title" id="psServicesTitle">
                         <?php echo wp_kses_post($ps_services_title); ?>
                     </h2>
                     <p class="txt txt-16 txt-14_tb txt-14_mb ps-services-desc">
@@ -338,7 +390,7 @@ if (!is_array($ps_service_catalog_items) || empty($ps_service_catalog_items)) {
                         $t_slug = !empty($c_item['slug']) ? $c_item['slug'] : 'service-' . $tab_count;
                     ?>
                         <a href="#<?php echo esc_attr($t_slug); ?>" 
-                           class="txt txt-13 txt-semi ps-service-tab <?php echo $is_active ? 'active' : ''; ?>"
+                           class="txt txt-15 txt-semi ps-service-tab <?php echo $is_active ? 'active' : ''; ?>"
                            data-service-tab="<?php echo esc_attr($t_slug); ?>"><?php echo wp_kses_post($t_title); ?></a>
                     <?php endforeach; ?>
                 </nav>

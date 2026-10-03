@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         slidesPerView: 1,
         speed: 600,
+        autoHeight: true,
         allowTouchMove: true,
         navigation: {
             prevEl: prevButton,

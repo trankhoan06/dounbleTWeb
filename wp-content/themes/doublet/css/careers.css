@@ -1,12 +1,40 @@
-/* ==========================================================================
-   Careers Page Styles - Double T
-   Complies strictly with design.md and AGENTS.md rules
-   NO custom font-size, line-height, letter-spacing, or font-weight declarations (Rule 6)
-   ========================================================================== */
+body .header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-default);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
 
-/* --------------------------------------------------------------------------
-   Header Overrides for Careers Page (Solid White Header)
-   -------------------------------------------------------------------------- */
+body .header-top {
+    border-bottom-color: var(--border-default);
+}
+
+body .header-top-slogan,
+body .header-top-link,
+body .header-lang-trigger {
+    color: var(--txt-icon-secondary);
+}
+
+body .header-top-divider {
+    background-color: var(--border-default);
+}
+
+body .header-logo img {
+    filter: none;
+}
+
+body .header-menu-item {
+    color: var(--txt-icon-primary);
+}
+
+body .header-menu-item:hover,
+body .header-menu-item.active {
+    color: var(--primary-1);
+}
+
+body .header-cta-wrap:after,
+body .header-cta-wrap:before {
+    background-color: var(--border-default);
+}
 
 /* --------------------------------------------------------------------------
    1. Hero Banner: Industrial Factory with Diagonal Left-Pinned Teal Panel
@@ -18,6 +46,7 @@
     align-items: flex-end;
     overflow: hidden;
     background-color: var(--primary-2);
+    margin-top: 10.6rem;
 }
 
 .careers-hero-bg {
@@ -37,7 +66,6 @@
     height: 100%;
     display: flex;
     align-items: flex-end;
-    margin-left: 0;
 }
 
 .careers-hero-panel {
@@ -52,6 +80,7 @@
 }
 
 .careers-hero-panel-bg {
+    opacity: .95;
     position: absolute;
     top: 0;
     right: 0;
@@ -110,7 +139,7 @@
     }
 
     .careers-hero {
-        margin-top: 6.3rem;
+        margin-top: 5.8rem;
     }
 
 
@@ -125,7 +154,8 @@
     }
 
     .careers-hero {
-        margin-top: 6.6rem;
+        margin-top: 6.3rem;
+        height: 43.6rem;
     }
 
     .careers-hero-panel {
@@ -246,7 +276,7 @@
 
     .careers-gallery {
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 24rem 18rem 18rem;
+        grid-template-rows: auto;
         gap: 1.6rem;
     }
 
@@ -287,16 +317,17 @@
     .careers-gallery-wide {
         grid-column: 1 / -1;
         grid-row: auto;
+        height: 36rem;
     }
 
     .careers-gallery-sub {
-        grid-column: span 1;
-        grid-row: 3 !important;
+        grid-column: 1/2 !important;
+        grid-row: 2 !important;
     }
 
     .careers-gallery-stat {
-        grid-column: span 1;
-        grid-row: 3 !important;
+        grid-column: 2/3 !important;
+        grid-row: 2 !important;
     }
 }
 

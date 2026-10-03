@@ -9,11 +9,16 @@ add_action('edit_form_after_title', function($post) {
     }
 
     $template_file = get_post_meta($post->ID, '_wp_page_template', true);
+    $supported_types = [
+        'product-and-service',
+        'productandservice',
+        'product-service',
+        'product_service',
+        'product',
+        'prod'
+    ];
     $is_psd = (
-        $post->post_type === 'product-and-service' ||
-        $post->post_type === 'productandservice' ||
-        $post->post_type === 'product-service' ||
-        $post->post_type === 'product_service' ||
+        in_array($post->post_type, $supported_types) ||
         basename(get_page_template()) == 'product-service-detail.php' ||
         $template_file == 'page-templates/product-service-detail.php' ||
         $template_file == 'product-service-detail.php'
@@ -29,8 +34,8 @@ add_action('edit_form_after_title', function($post) {
         // 1. Hero Section
         echo beginBox("1. Hero Section (Banner đầu trang)", false);
         echo $form->image('psd_hero_img')->setLabel("Hình ảnh Hero bên phải (Mặc định: hero-img.jpg)");
-        echo $form->text('psd_hero_breadcrumb')->setLabel("Breadcrumb tên sản phẩm (Mặc định: Hot Rrolled - HR/ Hot Rolled Pickled and oiled - hrpo)");
-        echo $form->text('psd_hero_title')->setLabel("Tiêu đề chính (Hỗ trợ HTML <br>, Mặc định: HOT ROLLED - HR/ HOT ROLLED<br>PICKLED AND OILED - HRPO)");
+        echo $form->text('psd_hero_breadcrumb')->setLabel("Breadcrumb tên sản phẩm");
+        echo $form->text('psd_hero_title')->setLabel("Tiêu đề chính (Hỗ trợ HTML <br>)");
         echo endBox();
 
         // 2. Specification Section
@@ -50,10 +55,10 @@ add_action('edit_form_after_title', function($post) {
         echo endBox();
 
         // 3. Application Examples Section
-        echo beginBox("3. Application Examples (Ứng dụng thực tế)", true);
+        echo beginBox("3. Application Examples (Ứng dụng thực tế)", false);
         echo $form->text('psd_app_label')->setLabel("Nhãn phụ (Mặc định: APPLICATION EXAMPLES)");
-        echo $form->textarea('psd_app_desc')->setLabel("Mô tả ngắn (Mặc định: Thanks to its superior mechanical properties...)");
-        echo $form->repeater('psd_app_items')->setLabel("Danh sách các ứng dụng (Nếu để trống sẽ hiển thị 6 ứng dụng mặc định)")->setFields([
+        echo $form->textarea('psd_app_desc')->setLabel("Mô tả ngắn");
+        echo $form->repeater('psd_app_items')->setLabel("Danh sách các ứng dụng thực tế (Mỗi item gồm Tên ứng dụng và Hình ảnh)")->setFields([
             $form->text('title')->setLabel("Tên ứng dụng (VD: Manufacturing vehicle wheel rims)"),
             $form->image('image')->setLabel("Hình ảnh ứng dụng")
         ]);
@@ -61,14 +66,8 @@ add_action('edit_form_after_title', function($post) {
 
         // 4. Other Products Section
         echo beginBox("4. Other Products (Sản phẩm khác)", true);
-        echo $form->text('psd_other_label')->setLabel("Nhãn phụ (Mặc định: OTHER PRODUCTS)");
-        echo $form->repeater('psd_other_items')->setLabel("Danh sách sản phẩm khác (Nếu để trống sẽ hiển thị 5 sản phẩm mặc định)")->setFields([
-            $form->row(
-                $form->text('title')->setLabel("Tên sản phẩm"),
-                $form->text('link')->setLabel("Link sản phẩm")
-            ),
-            $form->image('image')->setLabel("Hình ảnh sản phẩm")
-        ]);
+        echo $form->text('psd_other_label')->setLabel("Nhãn tiêu đề khối (Mặc định: OTHER PRODUCTS)");
+        echo '<p style="color: #666; font-style: italic; margin-top: 8px;">(Lưu ý: Danh sách sản phẩm khác bên dưới được hệ thống tự động query tối đa 6 sản phẩm mới nhất trừ sản phẩm hiện tại ra).</p>';
         echo endBox();
 
         echo '</div>';

@@ -75,6 +75,7 @@ add_action('edit_form_after_title', function($post) {
         echo $form->image('commit_mission_img')->setLabel("Hình ảnh minh họa Mission (Mặc định: commit-vison.jpg)");
         echo $form->text('commit_mission_title')->setLabel("Tiêu đề khối Mission (Mặc định: MISSION)");
         echo $form->repeater('commit_mission_items')->setLabel("Danh sách các mục Sứ mệnh (Nếu để trống sẽ lấy 3 mục mặc định)")->setFields([
+            $form->textarea('icon')->setLabel("Mã SVG Icon (Tùy chọn)"),
             $form->text('title')->setLabel("Tiêu đề mục (VD: FOR CUSTOMERS)"),
             $form->textarea('desc')->setLabel("Nội dung mô tả")
         ]);

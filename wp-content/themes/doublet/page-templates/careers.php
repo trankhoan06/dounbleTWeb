@@ -193,7 +193,7 @@ if (!is_array($careers_success_stats) || empty($careers_success_stats)) {
                     </figure>
 
                     <!-- Column 2-3 Row 1: Wide Aerial View of Complex -->
-                    <figure class="careers-gallery-item careers-gallery-wide hover-img">
+                    <figure class="careers-gallery-item careers-gallery-wide middle hover-img">
                         <img src="<?php echo esc_url($careers_gallery_img_2_url); ?>" class="img-fill"
                             alt="Aerial view of Double T steel processing manufacturing complex" loading="lazy">
                     </figure>

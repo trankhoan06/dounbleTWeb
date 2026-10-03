@@ -507,7 +507,7 @@ $home_partners_logos = tr_posts_field('home_partners_logos');
                             <h1 class="heading h1"><?php echo wp_kses_post($home_service_title); ?></h1>
                         </div>
                         <div class="home-service-sub">
-                            <div class="txt txt-16"><?php echo wp_kses_post(nl2br($home_service_desc)); ?></div>
+                            <div class="txt txt-16 txt-14_mb"><?php echo wp_kses_post(nl2br($home_service_desc)); ?></div>
                         </div>
                     </div>
                     <a href="<?php echo esc_url($home_service_btn_link ?: '#'); ?>" class="btn home-service-btn btn-primary">
@@ -637,11 +637,11 @@ $home_partners_logos = tr_posts_field('home_partners_logos');
                                         $s2 = $home_service_slides[1];
                                     ?>
                                         <div class="home-service-next-tab-item active" data-slide-index="1">
-                                            <span class="txt txt-13 txt-next-num txt-med"><?php echo esc_html(!empty($s2['num']) ? $s2['num'] : '02'); ?></span>
+                                            <span class="txt txt-16 txt-next-num txt-med"><?php echo esc_html(!empty($s2['num']) ? $s2['num'] : '02'); ?></span>
                                             <span class="txt txt-13 txt-semi txt-next-title cut-tl"><?php echo esc_html(!empty($s2['title']) ? $s2['title'] : 'Cut-to-Length Line'); ?></span>
                                         </div>
                                         <div class="home-service-next-tab-item" data-slide-index="0">
-                                            <span class="txt txt-13 txt-next-num txt-med"><?php echo esc_html(!empty($s1['num']) ? $s1['num'] : '01'); ?></span>
+                                            <span class="txt txt-16 txt-next-num txt-med"><?php echo esc_html(!empty($s1['num']) ? $s1['num'] : '01'); ?></span>
                                             <span class="txt txt-13 txt-semi txt-next-title cut-tl"><?php echo esc_html(!empty($s1['title']) ? $s1['title'] : 'Slitting Line'); ?></span>
                                         </div>
                                     <?php endif; ?>

@@ -36,38 +36,43 @@
  }
 
  @font-face {
-     font-family: 'Mona Sans';
-     src: url('../fonts/MonaSans-Regular.woff2') format('woff2');
+     font-family: "Mona Sans";
+     font-display: swap;
      font-weight: normal;
      font-style: normal;
+     src: url('../fonts/MonaSans-Regular.woff2') format('woff2');
  }
 
  @font-face {
-     font-family: 'Mona Sans';
-     src: url('../fonts/MonaSans-Italic.woff2') format('woff2');
+     font-family: "Mona Sans";
+     font-display: swap;
      font-weight: normal;
      font-style: italic;
+     src: url('../fonts/MonaSans-Italic.woff2') format('woff2');
  }
 
  @font-face {
-     font-family: 'Beau Sans';
-     src: url('../fonts/BeauSans-Bold.woff2') format('woff2');
+     font-family: "Beau Sans";
+     font-display: swap;
      font-weight: 700;
      font-style: normal;
+     src: url('../fonts/BeauSans-Bold.woff2') format('woff2');
  }
 
  @font-face {
-     font-family: 'Mona Sans';
-     src: url('../fonts/MonaSans-Medium.woff2') format('woff2');
+     font-family: "Mona Sans";
+     font-display: swap;
      font-weight: 500;
      font-style: normal;
+     src: url('../fonts/MonaSans-Medium.woff2') format('woff2');
  }
 
  @font-face {
-     font-family: 'Mona Sans';
-     src: url('../fonts/MonaSans-SemiBold.woff2') format('woff2');
+     font-family: "Mona Sans";
+     font-display: swap;
      font-weight: 600;
      font-style: normal;
+     src: url('../fonts/MonaSans-SemiBold.woff2') format('woff2');
  }
 
  .hover-img img {
@@ -923,7 +928,7 @@
 
  .header-menu-item:hover,
  .header-menu-item.active {
-     color: var(--primary-2);
+     color: var(--primary-2) !important;
  }
 
  .header.is-scrolled .header-menu-item {
@@ -932,7 +937,7 @@
 
  .header.is-scrolled .header-menu-item:hover,
  .header.is-scrolled .header-menu-item.active {
-     color: var(--primary-2);
+     color: var(--primary-2) !important;
  }
 
  .header-cta-wrap {
@@ -1099,7 +1104,7 @@
 
      .header-menu-item:hover,
      .header-menu-item.active {
-         color: var(--primary-1);
+         color: var(--primary-2);
      }
 
      .header {
@@ -1108,12 +1113,17 @@
          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
      }
 
+     .header.is-hidden {
+         transform: translateY(0);
+     }
+
      .header-main-inner {
          padding-left: 1.6rem;
          background-color: transparent;
          justify-content: space-between;
          display: flex;
          padding-right: 1rem;
+         padding-block: 1rem;
      }
 
      .header-logo {
@@ -1752,7 +1762,7 @@
      .home-partners-head-left {
          grid-column: 1 / -1;
          margin-bottom: 2rem;
-         gap: 1.2rem;
+         gap: 1.6rem;
      }
 
      .home-partners-head-right {
@@ -1847,7 +1857,23 @@
      padding: 8rem max(8rem, calc((100vw - 1440px) / 2 + 8rem)) 8rem clamp(8rem, 10vw, 14rem);
      display: flex;
      flex-direction: column;
+     overflow: hidden;
      justify-content: center;
+ }
+
+ .consultation-cta-content_bg img {
+     width: 100%;
+     height: 100%;
+ }
+
+ .consultation-cta-content_bg {
+     position: absolute;
+     width: 43rem;
+     right: 0;
+     top: 0;
+     bottom: 0;
+     z-index: 1;
+     opacity: .8;
  }
 
  .consultation-cta-content::before {
@@ -1892,6 +1918,12 @@
          min-height: auto;
      }
 
+     .consultation-cta-content_bg {
+         height: 19rem;
+         top: unset;
+         width: 36rem;
+     }
+
      .consultation-cta-bg {
          position: relative;
          width: 100%;
@@ -1901,7 +1933,7 @@
      .consultation-cta-content {
          width: 100%;
          clip-path: none;
-         padding: 15.2rem 2.4rem 4.8rem;
+         padding: 9.2rem 2.4rem 4.8rem;
          margin-top: -10.4rem;
          --cut: 10.4rem;
          clip-path: polygon(0% 0%, 100% var(--cut), 100% 100%, 0 100%);
@@ -2050,12 +2082,14 @@
      backdrop-filter: blur(4px);
      -webkit-backdrop-filter: blur(4px);
      display: flex;
-     align-items: center;
+     align-items: flex-start;
      justify-content: center;
      padding: 2rem;
      opacity: 0;
      visibility: hidden;
      pointer-events: none;
+     overflow-y: auto;
+     -webkit-overflow-scrolling: touch;
      transition: opacity var(--transition), visibility var(--transition);
  }
 
@@ -2069,6 +2103,7 @@
      background-color: var(--white);
      max-width: 127.9rem;
      width: 100%;
+     margin: auto;
      position: relative;
      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
      transform: translateY(2rem) scale(0.96);
@@ -2492,7 +2527,7 @@
  .modal-submit-btn {
      width: 100%;
      height: 4.8rem;
-     background: var(--primary-2);
+     background: var(--linear-primary);
      color: var(--white);
      border: none;
      cursor: pointer;
@@ -2530,6 +2565,10 @@
      .modal-container {
          max-height: 90vh;
          overflow-y: auto;
+         -webkit-overflow-scrolling: touch;
+         overscroll-behavior: contain;
+         background-color: transparent;
+         box-shadow: unset;
      }
 
      .modal-body {
@@ -2573,6 +2612,17 @@
  }
 
  @media screen and (max-width: 767px) {
+     .modal-close-btn {
+         position: fixed;
+         top: .8rem;
+         right: .8rem;
+     }
+
+     .modal-info-top .modal-label,
+     .modal-title {
+         margin-bottom: 1.2rem;
+     }
+
      .middle {
          display: none !important;
      }

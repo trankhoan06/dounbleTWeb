@@ -190,6 +190,7 @@ function initRelatedSwiper() {
     if (swiperEl && typeof Swiper !== 'undefined') {
         const nextBtn = document.querySelector('#psdOtherNext');
         const prevBtn = document.querySelector('#psdOtherPrev');
+        const paginationEl = document.querySelector('#psdOtherPagination');
         new Swiper(swiperEl, {
             slidesPerView: 1.15,
             slidesPerGroup: 1,
@@ -200,6 +201,10 @@ function initRelatedSwiper() {
             navigation: {
                 nextEl: nextBtn,
                 prevEl: prevBtn,
+            },
+            pagination: {
+                el: paginationEl,
+                clickable: true,
             },
             breakpoints: {
                 390: {

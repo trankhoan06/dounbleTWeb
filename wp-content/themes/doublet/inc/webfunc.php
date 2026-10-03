@@ -226,6 +226,10 @@ function render_consultation_cta() {
                 <img src="<?php echo esc_url($cta_bg_url); ?>" alt="Steel Manufacturing Line" class="img-abs">
             </div>
             <div class="consultation-cta-content">
+				<div class="consultation-cta-content_bg">
+                <img class="desktop" src="<?php echo get_template_directory_uri(); ?>/imgs/cta_bg.png" alt="">
+                <img class="tablet" src="<?php echo get_template_directory_uri(); ?>/imgs/cta_bg_mb.webp" alt="">
+              </div>
                 <h2 class="heading consultation-cta-title h3"><?php echo esc_html($cta_title); ?></h2>
                 <p class="txt txt-16 consultation-cta-desc txt-14_mb">
                     <?php echo wp_kses_post(nl2br($cta_desc)); ?>
@@ -241,4 +245,4 @@ function render_consultation_cta() {
         </div>
     </section>
     <?php
-}
+}

@@ -29,7 +29,7 @@ $empty_text = $current_lang === 'vi' ? 'Chưa có bài viết nào trong chuyên
                         <nav class="cat-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
                             <a href="<?php echo esc_url(home_url('/')); ?>"><?php echo esc_html($breadcrumb_home); ?></a>
                             <span class="cat-breadcrumb-devi" aria-hidden="true">/</span>
-                            <a class="middle" href="<?php echo esc_url($insight_url); ?>"><?php echo esc_html($breadcrumb_insight); ?></a>
+                            <a href="<?php echo esc_url($insight_url); ?>"><?php echo esc_html($breadcrumb_insight); ?></a>
                             <span class="cat-breadcrumb-devi" aria-hidden="true">/</span>
                             <span class="current" id="catBreadcrumbCurrent"><?php single_cat_title(); ?></span>
                         </nav>
@@ -168,7 +168,6 @@ $empty_text = $current_lang === 'vi' ? 'Chưa có bài viết nào trong chuyên
             </div>
         </section>
 
-        <?php render_consultation_cta(); ?>
     </main>
 
 <?php get_footer(); ?>

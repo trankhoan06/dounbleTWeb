@@ -1,6 +1,40 @@
-/* ==========================================================================
-   Career Detail Page Styles
-   ========================================================================== */
+body .header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-default);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+body .header-top {
+    border-bottom-color: var(--border-default);
+}
+
+body .header-top-slogan,
+body .header-top-link,
+body .header-lang-trigger {
+    color: var(--txt-icon-secondary);
+}
+
+body .header-top-divider {
+    background-color: var(--border-default);
+}
+
+body .header-logo img {
+    filter: none;
+}
+
+body .header-menu-item {
+    color: var(--txt-icon-primary);
+}
+
+body .header-menu-item:hover,
+body .header-menu-item.active {
+    color: var(--primary-1);
+}
+
+body .header-cta-wrap:after,
+body .header-cta-wrap:before {
+    background-color: var(--border-default);
+}
 
 /* --- Hero Section --- */
 .career-detail-hero {
@@ -68,7 +102,7 @@
 @media screen and (max-width: 767px) {
     .career-detail-hero {
         margin-top: 6.6rem;
-        min-height: 33rem;
+        min-height: 26.5rem;
         padding-block: 3.2rem;
         justify-content: end;
     }

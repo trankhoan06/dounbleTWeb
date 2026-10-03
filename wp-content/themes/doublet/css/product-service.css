@@ -1,3 +1,41 @@
+body .header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-default);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+body .header-top {
+    border-bottom-color: var(--border-default);
+}
+
+body .header-top-slogan,
+body .header-top-link,
+body .header-lang-trigger {
+    color: var(--txt-icon-secondary);
+}
+
+body .header-top-divider {
+    background-color: var(--border-default);
+}
+
+body .header-logo img {
+    filter: none;
+}
+
+body .header-menu-item {
+    color: var(--txt-icon-primary);
+}
+
+body .header-menu-item:hover,
+body .header-menu-item.active {
+    color: var(--primary-1);
+}
+
+body .header-cta-wrap:after,
+body .header-cta-wrap:before {
+    background-color: var(--border-default);
+}
+
 .ps-hero {
     position: relative;
     height: min(65rem, 100vh);
@@ -5,6 +43,7 @@
     align-items: flex-end;
     overflow: hidden;
     background-color: var(--primary-2);
+    margin-top: 10.6rem;
 }
 
 .ps-hero-bg {
@@ -24,7 +63,6 @@
     height: 100%;
     display: flex;
     align-items: flex-end;
-    margin-left: 0;
 }
 
 .ps-hero-panel {
@@ -48,6 +86,7 @@
     background: var(--linear-primary);
     z-index: -1;
     --cut: 8rem;
+    opacity: .95;
 }
 
 .ps-breadcrumb {
@@ -97,7 +136,7 @@
     }
 
     .ps-hero {
-        margin-top: 6.3rem;
+        margin-top: 5.8rem;
     }
 
 
@@ -107,6 +146,11 @@
 }
 
 @media screen and (max-width: 767px) {
+    .ps-hero {
+        margin-top: 6.3rem;
+        height: 43.6rem;
+    }
+
     .ps-hero-panel-bg {
         background: linear-gradient(94deg, rgba(32, 183, 198, 1) -3.94%, rgba(11, 111, 126, 1) 174.46%);
     }
@@ -239,6 +283,28 @@
 
 .ps-products-more {
     min-width: 12rem;
+    cursor: pointer;
+    border: 0;
+}
+
+.ps-product-card.is-hidden {
+    display: none !important;
+}
+
+.ps-product-card.fade-in {
+    animation: psCardFadeIn 0.4s ease forwards;
+}
+
+@keyframes psCardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .ps-services-overview,
@@ -482,6 +548,10 @@
 }
 
 @media screen and (max-width: 767px) {
+    .ps-service-list {
+        padding-top: 2.4rem;
+    }
+
     .ps-services-title br {
         display: none;
     }

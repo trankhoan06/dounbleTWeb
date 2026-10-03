@@ -68,7 +68,7 @@ $contact_map_iframe_src = tr_posts_field('contact_map_iframe_src') ?: 'https://w
                     <div class="contact-info-label cut-diagonal label red-light">
                         <span class="txt txt-13 txt-semi"><?php echo esc_html($contact_info_label); ?></span>
                     </div>
-                    <h2 class="heading h2 h3_tb h3_mb contact-info-heading"><?php echo esc_html($contact_info_title); ?></h2>
+                    <h2 class="heading h1 h3_tb h3_mb contact-info-heading"><?php echo esc_html($contact_info_title); ?></h2>
 
                     <div class="contact-info-block">
                         <!-- Headquarters -->

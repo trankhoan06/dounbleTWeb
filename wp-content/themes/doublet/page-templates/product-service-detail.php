@@ -72,10 +72,12 @@ if (!is_array($psd_app_items) || empty($psd_app_items)) {
 // 4. Other Products Fields
 $psd_other_label = tr_posts_field('psd_other_label') ?: 'OTHER PRODUCTS';
 
-// Lấy tối đa 6 sản phẩm khác mới nhất từ Post Type 'product-and-service'
+// Lấy tối đa 6 sản phẩm khác mới nhất từ Post Type của bài hiện tại (trừ bài hiện tại ra)
 $current_id = get_the_ID();
+$current_post_type = get_post_type($current_id) ?: 'product-and-service';
+
 $other_posts = get_posts([
-    'post_type'      => ['product-and-service', 'productandservice'],
+    'post_type'      => array_unique([$current_post_type, 'product-and-service', 'productandservice']),
     'post_status'    => 'publish',
     'posts_per_page' => 6,
     'post__not_in'   => [$current_id],
@@ -89,19 +91,55 @@ if (!empty($other_posts)) {
     foreach ($other_posts as $o_post) {
         $o_id = $o_post->ID;
 
-        // Ảnh theo psd_hero_img (TypeRocket) -> Featured Image -> ACF -> Fallback
-        $o_img_id = tr_posts_field('psd_hero_img', $o_id);
+        // 1. Tiêu đề
+        $o_title = '';
+        if (function_exists('get_field')) {
+            $o_title = get_field('product_title', $o_id) ?: get_field('title', $o_id);
+        }
+        if (empty($o_title)) {
+            $o_title = get_the_title($o_id);
+        }
+
+        // 2. Link bài viết
+        $o_link = '';
+        if (function_exists('get_field')) {
+            $o_link = get_field('product_link', $o_id) ?: get_field('link', $o_id);
+        }
+        if (empty($o_link)) {
+            $o_link = get_permalink($o_id);
+        }
+
+        // 3. Ảnh bài viết (ACF -> Featured Image -> TypeRocket -> Post Meta -> Fallback)
         $o_img_url = '';
-        if (!empty($o_img_id)) {
-            $o_img_url = wp_get_attachment_image_url($o_img_id, 'full');
+        if (function_exists('get_field')) {
+            $acf_img = get_field('product_image', $o_id) ?: (get_field('image', $o_id) ?: get_field('psd_hero_img', $o_id));
+            if (!empty($acf_img)) {
+                if (is_array($acf_img)) {
+                    $o_img_url = !empty($acf_img['url']) ? $acf_img['url'] : '';
+                } elseif (is_numeric($acf_img)) {
+                    $o_img_url = wp_get_attachment_image_url($acf_img, 'full');
+                } elseif (is_string($acf_img)) {
+                    $o_img_url = $acf_img;
+                }
+            }
         }
         if (empty($o_img_url)) {
             $o_img_url = get_the_post_thumbnail_url($o_id, 'full');
         }
-        if (empty($o_img_url) && function_exists('get_field')) {
-            $acf_img = get_field('psd_hero_img', $o_id) ?: get_field('image', $o_id);
-            if (!empty($acf_img)) {
-                $o_img_url = is_array($acf_img) ? $acf_img['url'] : (is_numeric($acf_img) ? wp_get_attachment_image_url($acf_img, 'full') : $acf_img);
+        if (empty($o_img_url)) {
+            $tr_img_id = tr_posts_field('psd_hero_img', $o_id) ?: tr_posts_field('image', $o_id);
+            if (!empty($tr_img_id)) {
+                $o_img_url = wp_get_attachment_image_url($tr_img_id, 'full');
+            }
+        }
+        if (empty($o_img_url)) {
+            $meta_img = get_post_meta($o_id, 'image', true) ?: (get_post_meta($o_id, 'product_image', true) ?: get_post_meta($o_id, 'psd_hero_img', true));
+            if (!empty($meta_img)) {
+                if (is_numeric($meta_img)) {
+                    $o_img_url = wp_get_attachment_image_url($meta_img, 'full');
+                } elseif (is_string($meta_img)) {
+                    $o_img_url = $meta_img;
+                }
             }
         }
         if (empty($o_img_url)) {
@@ -109,27 +147,25 @@ if (!empty($other_posts)) {
         }
 
         $psd_other_items[] = [
-            'title'         => get_the_title($o_id),
-            'link'          => get_permalink($o_id),
-            'image'         => $o_img_id,
-            'image_url'     => $o_img_url,
-            'default_image' => get_template_directory_uri() . '/imgs/hero-img.jpg'
+            'title'     => $o_title,
+            'link'      => $o_link,
+            'image_url' => $o_img_url
         ];
     }
 }
 
-// Fallback nếu chưa có bài đăng nào khác trong Post Type
+// Fallback chỉ khi cơ sở dữ liệu chưa có bài đăng nào khác
 if (empty($psd_other_items)) {
     $tr_other = tr_posts_field('psd_other_items');
     if (is_array($tr_other) && !empty($tr_other)) {
         $psd_other_items = $tr_other;
     } else {
         $psd_other_items = [
-            ['title' => 'Cold-Rolled', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/cta.jpg'],
-            ['title' => 'Hot-Dip Galvanized', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/service-item1.jpg'],
-            ['title' => 'Electrical Steel-Es', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/home-service.webp'],
-            ['title' => 'Electrical Galvanized Steel-Eg', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/product.jpg'],
-            ['title' => 'Stainless Steel-Inox', 'link' => '#', 'image' => '', 'default_image' => get_template_directory_uri() . '/imgs/hero-img.jpg']
+            ['title' => 'Cold-Rolled', 'link' => '#', 'image_url' => get_template_directory_uri() . '/imgs/cta.jpg'],
+            ['title' => 'Hot-Dip Galvanized', 'link' => '#', 'image_url' => get_template_directory_uri() . '/imgs/service-item1.jpg'],
+            ['title' => 'Electrical Steel-Es', 'link' => '#', 'image_url' => get_template_directory_uri() . '/imgs/home-service.webp'],
+            ['title' => 'Electrical Galvanized Steel-Eg', 'link' => '#', 'image_url' => get_template_directory_uri() . '/imgs/product.jpg'],
+            ['title' => 'Stainless Steel-Inox', 'link' => '#', 'image_url' => get_template_directory_uri() . '/imgs/hero-img.jpg']
         ];
     }
 }
@@ -235,15 +271,19 @@ if (empty($psd_other_items)) {
                 <div class="psd-app-grid">
                     <?php foreach ($psd_app_items as $app): 
                         $a_title = !empty($app['title']) ? $app['title'] : '';
+                        $a_img_raw = !empty($app['image']) ? $app['image'] : null;
                         $a_img_url = '';
-                        if (!empty($app['image'])) {
-                            $a_img_url = wp_get_attachment_image_url($app['image'], 'full');
+                        if (!empty($a_img_raw)) {
+                            if (is_numeric($a_img_raw)) {
+                                $a_img_url = wp_get_attachment_image_url((int)$a_img_raw, 'full');
+                            } elseif (is_array($a_img_raw) && !empty($a_img_raw['url'])) {
+                                $a_img_url = $a_img_raw['url'];
+                            } elseif (is_string($a_img_raw)) {
+                                $a_img_url = $a_img_raw;
+                            }
                         }
-                        if (!$a_img_url && !empty($app['default_image'])) {
-                            $a_img_url = $app['default_image'];
-                        }
-                        if (!$a_img_url) {
-                            $a_img_url = get_template_directory_uri() . '/imgs/application.jpg';
+                        if (empty($a_img_url)) {
+                            $a_img_url = !empty($app['default_image']) ? $app['default_image'] : get_template_directory_uri() . '/imgs/application.jpg';
                         }
                     ?>
                         <article class="psd-app-card hover-img cut-tl">

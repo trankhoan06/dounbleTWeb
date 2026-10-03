@@ -415,6 +415,7 @@ $related_query = new WP_Query($related_args);
                             stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </button>
+                <div class="swiper-pagination psd-other-pagination" id="psdOtherPagination"></div>
             </div>
         </div>
     </section>

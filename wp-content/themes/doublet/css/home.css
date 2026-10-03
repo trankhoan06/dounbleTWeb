@@ -174,6 +174,14 @@
         padding-top: 4.8rem;
         padding-bottom: 5rem;
     }
+
+    .home-future-title-wrap {
+        gap: 1.6rem;
+    }
+
+    .home-future-btn {
+        margin-top: .8rem;
+    }
 }
 
 /* home video */
@@ -655,6 +663,22 @@
 }
 
 @media only screen and (max-width: 767px) {
+    .home-product-label {
+        margin-bottom: 1.6rem;
+    }
+
+    .home-product-more {
+        margin-top: 2.4rem;
+    }
+
+    .home-product-item-title h5 {
+        font-size: 1.8rem;
+    }
+
+    .home-product-bg-bot {
+        display: none;
+    }
+
     .home-product {
         margin-top: -14.5rem;
         padding-top: 20rem;
@@ -965,12 +989,13 @@
 }
 
 .home-service-progress {
-    width: 11rem;
     height: 0.2rem;
     background: rgba(237, 239, 244, 0.35);
-    position: relative;
-    margin-left: 0.8rem;
+    position: absolute;
     overflow: hidden;
+    left: 12.5rem;
+    bottom: 0;
+    right: 0;
 }
 
 .home-service-progress-bar {
@@ -988,7 +1013,6 @@
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     align-items: center;
-    padding: 0.8rem 1.6rem;
     overflow: hidden;
     position: relative;
     height: 4.4rem;
@@ -1027,6 +1051,7 @@
     bottom: -0.3rem;
     background-color: #EDEFF4;
     right: -0.8rem;
+    opacity: .2;
 }
 
 .home-service-next-tab .txt-next-title {
@@ -1063,7 +1088,11 @@
     }
 
     .home-service-slide-right {
-        min-height: 40rem;
+        min-height: unset;
+    }
+
+    .home-service-img-wrap {
+        min-height: unset;
     }
 
     .home-service-controls {
@@ -1075,11 +1104,12 @@
 
     .home-service .grid {
         grid-template-columns: repeat(6, 1fr);
-        column-gap: 2.4rem;
+        gap: 4.8rem;
     }
 
     .home-service-img {
         grid-column: 1/4;
+        order: 2;
     }
 
     .home-service-content {
@@ -1089,6 +1119,7 @@
     .home-service-slide.swiper-slide {
         display: flex;
         flex-direction: column;
+        height: auto;
     }
 
     .home-service-num {
@@ -1108,9 +1139,22 @@
         padding-top: 6rem;
         --cut: 10rem;
     }
+
+    .home-service-cms {
+        order: 3;
+        margin-top: 0;
+    }
 }
 
 @media only screen and (max-width: 767px) {
+    .home-service-title-wrap {
+        gap: 1.6rem;
+    }
+
+    .home-service-btn {
+        margin-top: 2.4rem;
+    }
+
     .home-service {
         padding-bottom: 0;
     }
@@ -1136,6 +1180,10 @@
     .home-service-card-desc {
         gap: .8rem;
         margin-bottom: 2.4rem
+    }
+
+    .home-service {
+        padding-top: 4.8rem;
     }
 }
 
@@ -1698,6 +1746,9 @@
 }
 
 @media screen and (max-width: 767px) {
+    .home-media-head {
+        margin-bottom: 2.4rem;
+    }
 
     .home-media-card-img {
         --cut: 2.4rem;
@@ -1713,6 +1764,7 @@
     }
 
 }
+
 /* Keep Home's AOS fade-up subtle; the library default is a much larger 100px move. */
 .main [data-aos='fade-up'] {
     transform: translate3d(0, 18px, 0);
