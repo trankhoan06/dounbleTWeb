@@ -25,7 +25,22 @@ $careers_gallery_img_3_url = $careers_gallery_img_3_id ? wp_get_attachment_image
 $careers_gallery_img_4_id = tr_posts_field('careers_gallery_img_4');
 $careers_gallery_img_4_url = $careers_gallery_img_4_id ? wp_get_attachment_image_url($careers_gallery_img_4_id, 'full') : get_template_directory_uri() . '/imgs/commit-vison.jpg';
 
-$careers_gallery_stat_number = tr_posts_field('careers_gallery_stat_number') ?: '20+';
+$careers_gallery_extra = tr_posts_field('careers_gallery_extra');
+$extra_images_arr = [];
+if (!empty($careers_gallery_extra)) {
+    if (is_string($careers_gallery_extra)) {
+        $extra_images_arr = explode(',', $careers_gallery_extra);
+    } elseif (is_array($careers_gallery_extra)) {
+        $extra_images_arr = $careers_gallery_extra;
+    }
+}
+$extra_count = count(array_filter($extra_images_arr));
+
+if ($extra_count > 0) {
+    $careers_gallery_stat_number = $extra_count . '+';
+} else {
+    $careers_gallery_stat_number = tr_posts_field('careers_gallery_stat_number') ?: '20+';
+}
 
 // 3. Job Openings Fields
 $careers_openings_label = tr_posts_field('careers_openings_label') ?: 'JOB OPENINGS';
@@ -187,25 +202,25 @@ if (!is_array($careers_success_stats) || empty($careers_success_stats)) {
                 <!-- 4-Image Grid -->
                 <div class="careers-gallery">
                     <!-- Column 1: Tall Portrait Operator Photo -->
-                    <figure class="careers-gallery-item careers-gallery-tall hover-img">
+                    <figure class="careers-gallery-item careers-gallery-tall hover-img" data-fancybox="careers-gallery" data-src="<?php echo esc_url($careers_gallery_img_1_url); ?>">
                         <img src="<?php echo esc_url($careers_gallery_img_1_url); ?>" class="img-fill"
                             alt="Double T engineers and machine operators on the production line" loading="lazy">
                     </figure>
 
                     <!-- Column 2-3 Row 1: Wide Aerial View of Complex -->
-                    <figure class="careers-gallery-item careers-gallery-wide middle hover-img">
+                    <figure class="careers-gallery-item careers-gallery-wide middle hover-img" data-fancybox="careers-gallery" data-src="<?php echo esc_url($careers_gallery_img_2_url); ?>">
                         <img src="<?php echo esc_url($careers_gallery_img_2_url); ?>" class="img-fill"
                             alt="Aerial view of Double T steel processing manufacturing complex" loading="lazy">
                     </figure>
 
                     <!-- Column 2 Row 2: Slitting Line Machinery Operation -->
-                    <figure class="careers-gallery-item careers-gallery-sub hover-img">
+                    <figure class="careers-gallery-item careers-gallery-sub hover-img" data-fancybox="careers-gallery" data-src="<?php echo esc_url($careers_gallery_img_3_url); ?>">
                         <img src="<?php echo esc_url($careers_gallery_img_3_url); ?>" class="img-fill"
                             alt="Automated coil slitting line operation" loading="lazy">
                     </figure>
 
                     <!-- Column 3 Row 2: Operator with Stats Overlay -->
-                    <figure class="careers-gallery-item careers-gallery-sub careers-gallery-stat hover-img">
+                    <figure class="careers-gallery-item careers-gallery-sub careers-gallery-stat hover-img" data-fancybox="careers-gallery" data-src="<?php echo esc_url($careers_gallery_img_4_url); ?>">
                         <img src="<?php echo esc_url($careers_gallery_img_4_url); ?>" class="img-fill"
                             alt="Double T technician at the precision control console" loading="lazy">
                         <?php if ($careers_gallery_stat_number): ?>
@@ -215,6 +230,20 @@ if (!is_array($careers_success_stats) || empty($careers_success_stats)) {
                         <?php endif; ?>
                     </figure>
                 </div>
+
+                <!-- Hidden extra images for Fancybox -->
+                <?php if ($extra_count > 0): ?>
+                    <div style="display: none;">
+                        <?php foreach ($extra_images_arr as $img_id): 
+                            $img_url = wp_get_attachment_image_url($img_id, 'full');
+                            if ($img_url):
+                        ?>
+                            <a href="<?php echo esc_url($img_url); ?>" data-fancybox="careers-gallery"></a>
+                        <?php 
+                            endif;
+                        endforeach; ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </section>
 
@@ -300,4 +329,11 @@ if (!is_array($careers_success_stats) || empty($careers_success_stats)) {
         </section>
     </main>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof Fancybox !== "undefined") {
+                Fancybox.bind("[data-fancybox]", {});
+            }
+        });
+    </script>
 <?php get_footer(); ?>

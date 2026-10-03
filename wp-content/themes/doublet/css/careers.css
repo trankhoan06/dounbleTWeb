@@ -201,6 +201,7 @@ body .header-cta-wrap:before {
     margin: 0;
     overflow: hidden;
     background-color: #E8EBF0;
+    cursor: pointer;
 }
 
 .careers-gallery-item img {

@@ -39,6 +39,7 @@ add_action('edit_form_after_title', function($post) {
             $form->image('careers_gallery_img_4')->setLabel("Ảnh 4 (Góc dưới bên phải có con số)")
         );
         echo $form->text('careers_gallery_stat_number')->setLabel("Con số hiển thị trên ảnh 4 (Mặc định: 20+)");
+        echo $form->gallery('careers_gallery_extra')->setLabel("Danh sách ảnh album phụ thêm (Sẽ được ẩn trên giao diện nhưng hiện lên khi xem slide ảnh)");
         echo endBox();
 
         // 3. Job Openings Section

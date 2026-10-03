@@ -82,6 +82,8 @@ function themax_enqueue_assets() {
     }
     elseif (is_page_template('page-templates/careers.php')) {
         wp_enqueue_style('doublet-careers', $theme_dir . '/css/careers.css', array(), '1.0.0');
+        wp_enqueue_style('fancybox', 'https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css', array(), '5.0.36');
+        wp_enqueue_script('fancybox', 'https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js', array(), '5.0.36', true);
     }
     elseif (is_page_template('page-templates/commitment.php')) {
         $commitment_css_ver = file_exists(get_template_directory() . '/css/commitment.css') ? filemtime(get_template_directory() . '/css/commitment.css') : '1.0.0';
