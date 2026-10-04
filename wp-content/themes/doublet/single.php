@@ -74,8 +74,9 @@ $related_query = new WP_Query($related_args);
     <!-- 1. Hero Section -->
     <section class="detail-hero" aria-labelledby="detailHeroTitle">
         <div class="detail-hero-inner">
-            <div class="detail-hero-panel hero-enter-item hero-enter-panel">
-                <div class="container detail-hero-container">
+            <div class="detail-hero-panel">
+                <div class="detail-hero-panel-bg hero-panel-bg-fade hero-enter-bg"></div>
+                <div class="container detail-hero-container hero-enter-item hero-enter-panel">
                     <nav class="detail-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
                         <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
                         <span class="detail-breadcrumb-devi" aria-hidden="true">/</span>

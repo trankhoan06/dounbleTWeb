@@ -45,6 +45,111 @@
 
 .home-hero-ic {
     width: 3.2rem;
+    height: 3.2rem;
+    position: relative;
+}
+
+.home-hero-mouse {
+    position: absolute;
+    top: .3rem;
+    left: 50%;
+    width: 1.3rem;
+    height: 1.83rem;
+    border: .13rem solid currentColor;
+    border-radius: .7rem;
+    transform: translateX(-50%);
+    box-sizing: border-box;
+}
+
+.home-hero-mouse-wheel {
+    position: absolute;
+    top: .36rem;
+    left: 50%;
+    width: .13rem;
+    height: .4rem;
+    background-color: currentColor;
+    transform: translateX(-50%);
+    animation: home-hero-wheel 2s infinite;
+}
+
+.home-hero-scroll-chevron {
+    position: absolute;
+    top: 2.35rem;
+    left: 50%;
+    width: .82rem;
+    height: .42rem;
+    transform: translateX(-50%);
+    animation: home-hero-chevron 2s infinite;
+}
+
+.home-hero-scroll-chevron::before,
+.home-hero-scroll-chevron::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: .57rem;
+    height: .13rem;
+    border-radius: .1rem;
+    background-color: currentColor;
+}
+
+.home-hero-scroll-chevron::before {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: left center;
+}
+
+.home-hero-scroll-chevron::after {
+    right: 0;
+    transform: rotate(-45deg);
+    transform-origin: right center;
+}
+
+@keyframes home-hero-wheel {
+
+    0%,
+    30.555%,
+    61.111%,
+    91.667%,
+    100% {
+        transform: translate3d(-50%, 0, 0);
+        animation-timing-function: cubic-bezier(.333, 0, .667, 1);
+    }
+
+    10.185%,
+    40.74%,
+    71.296% {
+        transform: translate3d(-50%, .053rem, 0);
+        animation-timing-function: cubic-bezier(.333, 0, .667, 1);
+    }
+}
+
+@keyframes home-hero-chevron {
+
+    0%,
+    5%,
+    35.555%,
+    66.111%,
+    96.667%,
+    100% {
+        transform: translate3d(-50%, 0, 0);
+        animation-timing-function: cubic-bezier(.333, 0, .667, 1);
+    }
+
+    15.185%,
+    45.74%,
+    76.297% {
+        transform: translate3d(-50%, .139rem, 0);
+        animation-timing-function: cubic-bezier(.333, 0, .667, 1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .home-hero-mouse-wheel,
+    .home-hero-scroll-chevron {
+        animation: none;
+    }
 }
 
 /* home future */
@@ -1027,8 +1132,10 @@
     gap: 1.7rem;
     white-space: nowrap;
     opacity: 0;
+    will-change: opacity;
     transition: opacity var(--transition);
     pointer-events: none;
+    margin-left: auto;
 }
 
 .home-service-next-tab-item.active {
@@ -1037,7 +1144,10 @@
 }
 
 .home-service-next-tab .txt-next-num {
+    flex: 0 0 2ch;
     font-family: 'Beau Sans', sans-serif;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
     color: var(--white);
     transition: color var(--transition);
     position: relative;
@@ -1055,6 +1165,7 @@
 }
 
 .home-service-next-tab .txt-next-title {
+    flex: 1 1 auto;
     color: var(--primary-2);
     transition: color var(--transition);
     background-color: var(--white);

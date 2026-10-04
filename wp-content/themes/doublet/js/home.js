@@ -109,6 +109,24 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Media blocks below the first one sit close together, so the global
+        // offset makes their reveal feel late. Trigger them nearer the viewport
+        // edge and restart the small bar/slider stagger for each block.
+        const laterMediaBlocks = Array.from(document.querySelectorAll('.home-media-block')).slice(1);
+
+        laterMediaBlocks.forEach((block) => {
+            const animatedElements = [
+                block.querySelector('.home-media-bar'),
+                block.querySelector('.home-media-slider-wrap'),
+            ];
+
+            animatedElements.forEach((element, elementIndex) => {
+                if (!element) return;
+                element.setAttribute('data-aos-offset', '20');
+                element.setAttribute('data-aos-delay', String(elementIndex * 90));
+            });
+        });
+
         window.AOS.init({
             duration: 650,
             easing: 'ease-out',
@@ -116,6 +134,27 @@ document.addEventListener('DOMContentLoaded', () => {
             offset: 70,
             disable: () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
         });
+
+        // AOS can cache the following blocks before Swiper has finished sizing
+        // the first slider. Observe the blocks themselves as a reliable early
+        // trigger so a following category is ready before it enters the screen.
+        if ('IntersectionObserver' in window && !reducedMotion) {
+            const mediaRevealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+
+                    entry.target
+                        .querySelectorAll('.home-media-bar, .home-media-slider-wrap')
+                        .forEach((element) => element.classList.add('aos-animate'));
+                    observer.unobserve(entry.target);
+                });
+            }, {
+                rootMargin: '0px 0px -8% 0px',
+                threshold: 0.01,
+            });
+
+            laterMediaBlocks.forEach((block) => mediaRevealObserver.observe(block));
+        }
     }
 
     // Product Swiper Slider
@@ -310,6 +349,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
+
+        // Swiper changes the section's measured height during setup. Rebuild
+        // AOS positions after that layout has been committed to the page.
+        if (typeof window.AOS === 'object') {
+            window.requestAnimationFrame(() => {
+                window.requestAnimationFrame(() => window.AOS.refreshHard());
+            });
+        }
     }
 });
 

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.requestAnimationFrame(() => {
             document.documentElement.classList.remove('is-first-loading');
             const firstLoadItems = document.querySelectorAll('.first-load-item');
-            const heroEnterItems = document.querySelectorAll('.hero-enter-item');
+            const heroEnterItems = document.querySelectorAll('.hero-enter-item, .hero-enter-bg');
             const reduceFirstLoadMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             const cleanupDelay = reduceFirstLoadMotion ? 0 : 550;
 
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             window.setTimeout(() => {
                 heroEnterItems.forEach((element) => {
-                    element.classList.remove('hero-enter-item', 'hero-enter-panel');
+                    element.classList.remove('hero-enter-item', 'hero-enter-panel', 'hero-enter-bg');
                 });
             }, reduceFirstLoadMotion ? 0 : 1000);
         });

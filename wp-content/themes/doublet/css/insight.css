@@ -82,16 +82,18 @@ body .header-cta-wrap:before {
 }
 
 .insight-hero-panel-bg {
+    opacity: 1;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: calc(abs(100vw - 1440px)/2*-1 - 8rem);
     pointer-events: none;
-    background: var(--linear-primary);
+    --commit-hero-panel-bg: var(--linear-primary-90);
+    background: transparent;
+    backdrop-filter: blur(1.6rem);
     z-index: -1;
     --cut: 8rem;
-    opacity: .95;
 }
 
 .insight-breadcrumb {
@@ -152,7 +154,7 @@ body .header-cta-wrap:before {
 
 @media screen and (max-width: 767px) {
     .insight-hero-panel-bg {
-        background: linear-gradient(94deg, rgba(32, 183, 198, 1) -3.94%, rgba(11, 111, 126, 1) 174.46%);
+        --commit-hero-panel-bg: var(--linear-primary-90);
     }
 
     .insight-hero {

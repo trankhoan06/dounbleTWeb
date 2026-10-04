@@ -283,17 +283,19 @@ if (!is_array($ps_service_catalog_items) || empty($ps_service_catalog_items)) {
                 <img src="<?php echo esc_url($ps_hero_bg_url); ?>" class="img-fill" alt="Double T steel processing factory" loading="eager" fetchpriority="high" decoding="async">
             </div>
             <div class="container ps-hero-inner">
-                <div class="ps-hero-panel hero-enter-item hero-enter-panel">
-                    <div class="ps-hero-panel-bg cut-tr">
+                <div class="ps-hero-panel">
+                    <div class="ps-hero-panel-bg cut-tr hero-panel-bg-fade hero-enter-bg">
                     </div>
-                    <nav class="ps-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
-                        <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
-                        <span class="commit-hero-pagi-devi" aria-hidden="true">/</span>
-                        <span class="current"><?php echo esc_html($ps_hero_breadcrumb); ?></span>
-                    </nav>
-                    <h1 class="heading h1 h3_mb ps-hero-title" id="psHeroTitle">
-                        <?php echo esc_html($ps_hero_title); ?>
-                    </h1>
+                    <div class="ps-hero-copy hero-enter-item hero-enter-panel">
+                        <nav class="ps-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
+                            <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
+                            <span class="commit-hero-pagi-devi" aria-hidden="true">/</span>
+                            <span class="current"><?php echo esc_html($ps_hero_breadcrumb); ?></span>
+                        </nav>
+                        <h1 class="heading h1 h3_mb ps-hero-title" id="psHeroTitle">
+                            <?php echo esc_html($ps_hero_title); ?>
+                        </h1>
+                    </div>
                 </div>
             </div>
         </section>

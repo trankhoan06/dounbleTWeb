@@ -338,8 +338,11 @@ $home_partners_logos = tr_posts_field('home_partners_logos');
         <section class="home-hero">
             <div class="container">
                 <div class="home-hero-ic-wrap first-load-item">
-                    <div class="home-hero-ic">
-                        <img src="<?php echo get_template_directory_uri(); ?>/imgs/mouse.svg" class="img-basic" alt="icon mouse">
+                    <div class="home-hero-ic" aria-hidden="true">
+                        <span class="home-hero-mouse">
+                            <span class="home-hero-mouse-wheel"></span>
+                        </span>
+                        <span class="home-hero-scroll-chevron"></span>
                     </div>
                     <div class="home-hero-label">
                         <div class="txt txt-13 txt-med"><?php echo esc_html($home_hero_scroll_text); ?></div>

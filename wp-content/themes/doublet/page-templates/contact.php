@@ -46,16 +46,18 @@ $contact_map_iframe_src = tr_posts_field('contact_map_iframe_src') ?: 'https://w
                     alt="Double T steel processing manufacturing facility" loading="eager" fetchpriority="high" decoding="async">
             </div>
             <div class="container contact-hero-container">
-                <div class="contact-hero-panel hero-enter-item hero-enter-panel">
-                    <div class="contact-hero-panel-bg cut-tr"></div>
-                    <nav class="contact-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
-                        <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
-                        <span class="separator" aria-hidden="true">/</span>
-                        <span class="current"><?php echo esc_html($contact_hero_breadcrumb); ?></span>
-                    </nav>
-                    <h1 class="heading h1 h3_mb contact-hero-title" id="contactHeroTitle">
-                        <?php echo esc_html($contact_hero_title); ?>
-                    </h1>
+                <div class="contact-hero-panel">
+                    <div class="contact-hero-panel-bg cut-tr hero-panel-bg-fade hero-enter-bg"></div>
+                    <div class="contact-hero-copy hero-enter-item hero-enter-panel">
+                        <nav class="contact-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
+                            <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
+                            <span class="separator" aria-hidden="true">/</span>
+                            <span class="current"><?php echo esc_html($contact_hero_breadcrumb); ?></span>
+                        </nav>
+                        <h1 class="heading h1 h3_mb contact-hero-title" id="contactHeroTitle">
+                            <?php echo esc_html($contact_hero_title); ?>
+                        </h1>
+                    </div>
                 </div>
             </div>
         </section>

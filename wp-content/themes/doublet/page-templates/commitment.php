@@ -108,16 +108,18 @@ $commit_partners_logos = tr_posts_field('commit_partners_logos');
                 <img src="<?php echo esc_url($commit_hero_bg_url); ?>" class="img-fill" alt="" loading="eager" fetchpriority="high" decoding="async">
             </div>
             <div class="container">
-                <div class="commit-hero-content hero-enter-item hero-enter-panel">
-                    <div class="commit-hero-content-bg cut-tr"></div>
-                    <div class="commit-hero-pagi txt txt-14 txt-med txt-13_mb">
-                        <a href="<?php echo esc_url(home_url('/')); ?>" class="commit-hero-pagi-prev">Home</a>
-                        <div class="commit-hero-pagi-devi">/</div>
-                        <div><?php echo esc_html($commit_hero_breadcrumb); ?></div>
+                <div class="commit-hero-content">
+                    <div class="commit-hero-content-bg cut-tr hero-panel-bg-fade hero-enter-bg"></div>
+                    <div class="commit-hero-copy hero-enter-item hero-enter-panel">
+                        <div class="commit-hero-pagi txt txt-14 txt-med txt-13_mb">
+                            <a href="<?php echo esc_url(home_url('/')); ?>" class="commit-hero-pagi-prev">Home</a>
+                            <div class="commit-hero-pagi-devi">/</div>
+                            <div><?php echo esc_html($commit_hero_breadcrumb); ?></div>
+                        </div>
+                        <h1 class="commit-hero-title heading h1 h3_mb">
+                            <?php echo esc_html($commit_hero_title); ?>
+                        </h1>
                     </div>
-                    <h1 class="commit-hero-title heading h1 h3_mb">
-                        <?php echo esc_html($commit_hero_title); ?>
-                    </h1>
                 </div>
             </div>
         </section>
@@ -183,6 +185,9 @@ $commit_partners_logos = tr_posts_field('commit_partners_logos');
                 </div>
 
                 <div class="swiper commit-capabilities-slider">
+                    <div class="home-service-deco desktop">
+                            <img src="<?php echo get_template_directory_uri(); ?>/imgs/blur_card.png" class="img-basic" alt="logo watermark">
+                        </div>
                     <div class="swiper-wrapper">
                         <?php 
                         $cap_idx = 0;
@@ -218,6 +223,9 @@ $commit_partners_logos = tr_posts_field('commit_partners_logos');
                                     <div class="heading h1 commit-capabilities-number"><?php echo esc_html($c_num); ?></div>
 
                                     <div class="commit-capabilities-card cut-tl">
+                                        <div class="home-service-watermark">
+                                            <img src="<?php echo get_template_directory_uri(); ?>/imgs/logo_marker.png" class="img-basic" alt="logo watermark">
+                                        </div>
                                         <div class="commit-capabilities-card-body">
                                             <h3 class="heading h3 h4_tb h4_mb commit-capabilities-card-title">
                                                 <?php echo esc_html($c_title); ?>

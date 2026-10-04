@@ -99,8 +99,18 @@ body .header-cta-wrap:before {
     flex-direction: column;
     justify-content: center;
     padding-block: 6rem;
-    background: var(--linear-primary);
+    background: transparent;
     clip-path: polygon(0 0, var(--hero-cut) 0, 100% 100%, 0 100%);
+}
+
+.detail-hero-panel-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 1;
+    --commit-hero-panel-bg: var(--linear-primary-90);
+    backdrop-filter: blur(1.6rem);
 }
 
 /* Diagonal Separator Line matching the clip-path slope */

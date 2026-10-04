@@ -178,16 +178,18 @@ if (!is_array($careers_success_stats) || empty($careers_success_stats)) {
                 <img src="<?php echo esc_url($careers_hero_bg_url); ?>" class="img-fill" alt="Double T steel processing factory" loading="eager" fetchpriority="high" decoding="async">
             </div>
             <div class="container careers-hero-inner">
-                <div class="careers-hero-panel hero-enter-item hero-enter-panel">
-                    <div class="careers-hero-panel-bg cut-tr"></div>
-                    <nav class="careers-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
-                        <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
-                        <span class="commit-hero-pagi-devi" aria-hidden="true">/</span>
-                        <span class="current"><?php echo esc_html($careers_hero_breadcrumb); ?></span>
-                    </nav>
-                    <h1 class="heading h1 h3_mb careers-hero-title" id="careersHeroTitle">
-                        <?php echo esc_html($careers_hero_title); ?>
-                    </h1>
+                <div class="careers-hero-panel">
+                    <div class="careers-hero-panel-bg cut-tr hero-panel-bg-fade hero-enter-bg"></div>
+                    <div class="careers-hero-copy hero-enter-item hero-enter-panel">
+                        <nav class="careers-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
+                            <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
+                            <span class="commit-hero-pagi-devi" aria-hidden="true">/</span>
+                            <span class="current"><?php echo esc_html($careers_hero_breadcrumb); ?></span>
+                        </nav>
+                        <h1 class="heading h1 h3_mb careers-hero-title" id="careersHeroTitle">
+                            <?php echo esc_html($careers_hero_title); ?>
+                        </h1>
+                    </div>
                 </div>
             </div>
         </section>

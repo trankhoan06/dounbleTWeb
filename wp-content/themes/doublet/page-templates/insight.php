@@ -282,16 +282,18 @@ if (empty($insight_sections)) {
                     alt="Double T steel processing manufacturing facility">
             </div>
             <div class="container insight-hero-container">
-                <div class="insight-hero-panel hero-enter-item hero-enter-panel">
-                    <div class="insight-hero-panel-bg cut-tr"></div>
-                    <nav class="insight-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
-                        <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
-                        <span class="separator" aria-hidden="true">/</span>
-                        <span class="current"><?php echo esc_html($insight_hero_breadcrumb); ?></span>
-                    </nav>
-                    <h1 class="heading h1 h3_mb insight-hero-title" id="insightHeroTitle">
-                        <?php echo wp_kses_post($insight_hero_title); ?>
-                    </h1>
+                <div class="insight-hero-panel">
+                    <div class="insight-hero-panel-bg cut-tr hero-panel-bg-fade hero-enter-bg"></div>
+                    <div class="insight-hero-copy hero-enter-item hero-enter-panel">
+                        <nav class="insight-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
+                            <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
+                            <span class="separator" aria-hidden="true">/</span>
+                            <span class="current"><?php echo esc_html($insight_hero_breadcrumb); ?></span>
+                        </nav>
+                        <h1 class="heading h1 h3_mb insight-hero-title" id="insightHeroTitle">
+                            <?php echo wp_kses_post($insight_hero_title); ?>
+                        </h1>
+                    </div>
                 </div>
             </div>
         </section>
