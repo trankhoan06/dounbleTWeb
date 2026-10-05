@@ -95,10 +95,11 @@ $commit_vision_title = tr_posts_field('commit_vision_title') ?: 'VISION';
 $commit_vision_desc = tr_posts_field('commit_vision_desc') ?: 'To become the leading brand and number-one strategic partner in Vietnam for the supply and processing of steel coils and sheets. Double T is committed to continuously expanding its scale and enhancing its technological capabilities, aiming to become a symbol of reliability, quality, and technical excellence within the mechanical support industry.';
 
 // 5. Partners Fields
-$commit_partners_label = tr_posts_field('commit_partners_label') ?: 'PARTNERS';
-$commit_partners_title = tr_posts_field('commit_partners_title') ?: 'Partnering to create<br>sustainable value.';
-$commit_partners_desc = tr_posts_field('commit_partners_desc') ?: 'Partnering with <strong class="txt-primary txt-semi">Double T</strong> is the key to unlocking success, enabling you to confidently embrace new opportunities and challenges in the future of the metal industry.';
-$commit_partners_logos = tr_posts_field('commit_partners_logos');
+$partner_settings = doublet_get_partner_settings();
+$commit_partners_label = $partner_settings['label'];
+$commit_partners_title = $partner_settings['title'];
+$commit_partners_desc = $partner_settings['desc'];
+$commit_partners_logos = $partner_settings['logos'];
 ?>
 
     <main class="main">

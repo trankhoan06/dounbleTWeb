@@ -16,6 +16,7 @@ require dirname( __FILE__ ) . '/inc/typerocket-insight-detail.php';
 require dirname( __FILE__ ) . '/inc/typerocket-insight.php';
 require dirname( __FILE__ ) . '/inc/typerocket-product-service-detail.php';
 require dirname( __FILE__ ) . '/inc/typerocket-product-service.php';
+require dirname( __FILE__ ) . '/inc/typerocket-partners.php';
 add_filter('tr_theme_options_page', function() {
     return get_template_directory() . '/theme-options.php';
 });

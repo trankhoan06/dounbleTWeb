@@ -88,14 +88,6 @@ add_action('edit_form_after_title', function($post) {
         echo $form->textarea('commit_vision_desc')->setLabel("Nội dung Tầm nhìn");
         echo endBox();
 
-        // 5. Partners Section
-        echo beginBox("5. Partners Section (Đối tác)", true);
-        echo $form->text('commit_partners_label')->setLabel("Nhãn phụ (Mặc định: PARTNERS)");
-        echo $form->text('commit_partners_title')->setLabel("Tiêu đề chính (Mặc định: Partnering to create<br>sustainable value.)");
-        echo $form->textarea('commit_partners_desc')->setLabel("Đoạn mô tả đối tác");
-        echo $form->gallery('commit_partners_logos')->setLabel("Danh sách Logo đối tác (Nếu chưa chọn sẽ dùng các logo mặc định)");
-        echo endBox();
-
         echo '</div>';
     }
 });
