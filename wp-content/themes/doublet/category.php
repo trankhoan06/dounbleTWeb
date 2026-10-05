@@ -113,26 +113,94 @@ $empty_text = $current_lang === 'vi' ? 'Chưa có bài viết nào trong chuyên
                             </div>
                         </div>
 
-                        <!-- Widget 2: Other Posts Card -->
+                        <!-- Widget 2: Other Category Card (Random other category) -->
                         <div class="cat-sidebar-widget cut-tl" id="catSidebarOtherWidget">
-                            <div class="cat-widget-head">
-                                <div class="cat-widget-tag cut-tl" id="catWidgetTag">
-                                    <span class="txt txt-14 txt-semi cat-widget-tag-text" id="catWidgetTagText"><?php echo esc_html($recent_articles_text); ?></span>
-                                </div>
-                            </div>
+                            <?php
+                            $current_category = get_queried_object();
+                            $current_cat_id   = !empty($current_category->term_id) ? (int)$current_category->term_id : (int)get_queried_object_id();
 
-                            <div class="cat-widget-list" id="catWidgetList">
-                                <?php
+                            $cat_args = array(
+                                'taxonomy'   => 'category',
+                                'exclude'    => array($current_cat_id),
+                                'hide_empty' => false,
+                            );
+                            if (function_exists('pll_current_language')) {
+                                $cat_args['lang'] = $current_lang;
+                            }
+                            $other_categories = get_categories($cat_args);
+
+                            // Exclude current category just in case exclude arg was bypassed
+                            if (!empty($other_categories)) {
+                                $other_categories = array_values(array_filter($other_categories, function($cat) use ($current_cat_id) {
+                                    return (int)$cat->term_id !== (int)$current_cat_id;
+                                }));
+                            }
+
+                            // Filter out default uncategorized if other named categories exist
+                            if (!empty($other_categories)) {
+                                $non_default = array_values(array_filter($other_categories, function($cat) {
+                                    return !in_array($cat->slug, array('uncategorized', 'chua-phan-loai'));
+                                }));
+                                if (!empty($non_default)) {
+                                    $other_categories = $non_default;
+                                }
+                            }
+
+                            // Prioritize categories with posts so widget is not empty
+                            $cats_with_posts = array_values(array_filter($other_categories, function($cat) {
+                                return (int)$cat->count > 0;
+                            }));
+                            $eligible_cats = !empty($cats_with_posts) ? $cats_with_posts : $other_categories;
+
+                            $random_cat = null;
+                            if (!empty($eligible_cats)) {
+                                $rand_key = array_rand($eligible_cats);
+                                $random_cat = $eligible_cats[$rand_key];
+                            }
+
+                            if ($random_cat) {
+                                $widget_cat_title = mb_strtoupper($random_cat->name, 'UTF-8');
+                                $widget_cat_url   = get_category_link($random_cat->term_id);
+
                                 $sidebar_args = array(
                                     'post_type'      => 'post',
                                     'posts_per_page' => 4,
                                     'post_status'    => 'publish',
-                                    'exclude'        => array(get_the_ID()),
+                                    'tax_query'      => array(
+                                        array(
+                                            'taxonomy' => 'category',
+                                            'field'    => 'term_id',
+                                            'terms'    => $random_cat->term_id,
+                                        ),
+                                    ),
                                 );
                                 if (function_exists('pll_current_language')) {
                                     $sidebar_args['lang'] = $current_lang;
                                 }
                                 $sidebar_posts = get_posts($sidebar_args);
+                            } else {
+                                $widget_cat_title = $recent_articles_text;
+                                $widget_cat_url   = $insight_url;
+
+                                $sidebar_args = array(
+                                    'post_type'      => 'post',
+                                    'posts_per_page' => 4,
+                                    'post_status'    => 'publish',
+                                );
+                                if (function_exists('pll_current_language')) {
+                                    $sidebar_args['lang'] = $current_lang;
+                                }
+                                $sidebar_posts = get_posts($sidebar_args);
+                            }
+                            ?>
+                            <div class="cat-widget-head">
+                                <div class="cat-widget-tag cut-tl" id="catWidgetTag">
+                                    <span class="txt txt-14 txt-semi cat-widget-tag-text" id="catWidgetTagText"><?php echo esc_html($widget_cat_title); ?></span>
+                                </div>
+                            </div>
+
+                            <div class="cat-widget-list" id="catWidgetList">
+                                <?php
                                 if ($sidebar_posts) :
                                     foreach ($sidebar_posts as $spost) :
                                 ?>
@@ -144,17 +212,21 @@ $empty_text = $current_lang === 'vi' ? 'Chưa có bài viết nào trong chuyên
                                                 <img src="<?php echo get_template_directory_uri(); ?>/imgs/product.jpg" class="img-fill" alt="<?php echo esc_attr(get_the_title($spost->ID)); ?>" loading="lazy">
                                             <?php endif; ?>
                                         </div>
-                                        <h4 class="txt txt-14 txt-16_mb txt-semi cat-mini-title"><?php echo esc_html(get_the_title($spost->ID)); ?></h4>
+                                        <h4 class="txt txt-16 txt-16_mb txt-semi cat-mini-title"><?php echo esc_html(get_the_title($spost->ID)); ?></h4>
                                     </a>
                                 <?php
                                     endforeach;
                                     wp_reset_postdata();
-                                endif;
+                                else :
                                 ?>
+                                    <div class="cat-mini-empty">
+                                        <p class="txt txt-14"><?php echo esc_html($empty_text); ?></p>
+                                    </div>
+                                <?php endif; ?>
                             </div>
 
                             <div class="cat-widget-footer">
-                                <a href="<?php echo esc_url($insight_url); ?>" class="cat-widget-viewall" id="catWidgetViewAllLink" aria-label="View all related articles">
+                                <a href="<?php echo esc_url($widget_cat_url); ?>" class="cat-widget-viewall" id="catWidgetViewAllLink" aria-label="<?php echo esc_attr('View all ' . $widget_cat_title . ' articles'); ?>">
                                     <span class="txt txt-14 txt-semi cat-widget-viewall-text"><?php echo esc_html($view_all_text); ?></span>
                                     <svg class="cat-widget-viewall-icon" viewBox="0 0 8 12" aria-hidden="true">
                                         <path d="M1.5 1.5L6 6L1.5 10.5" />

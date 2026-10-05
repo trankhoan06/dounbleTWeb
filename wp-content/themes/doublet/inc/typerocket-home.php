@@ -55,13 +55,6 @@ add_action('edit_form_after_title', function($post) {
             $form->text('home_product_btn_text')->setLabel("Text nút Xem tất cả (Mặc định: VIEW ALL PRODUCTS)"),
             $form->text('home_product_btn_link')->setLabel("Link nút Xem tất cả")
         );
-        echo $form->repeater('home_product_items')->setLabel("Danh sách sản phẩm nổi bật (Kéo thả sắp xếp, nếu chưa nhập sẽ lấy danh sách mẫu mặc định)")->setFields([
-            $form->row(
-                $form->text('title')->setLabel("Tên sản phẩm"),
-                $form->text('link')->setLabel("Link sản phẩm")
-            ),
-            $form->image('image')->setLabel("Hình ảnh sản phẩm")
-        ]);
         echo endBox();
 
         // 5. Manufacturing Capabilities
@@ -163,14 +156,6 @@ add_action('edit_form_after_title', function($post) {
             ),
             $form->image('image')->setLabel("Hình ảnh thumbnail")
         ]);
-        echo endBox();
-
-        // 8. Partners Section
-        echo beginBox("8. Partners Section (Đối tác)", true);
-        echo $form->text('home_partners_label')->setLabel("Nhãn phụ (Mặc định: PARTNERS)");
-        echo $form->text('home_partners_title')->setLabel("Tiêu đề chính (Mặc định: Partnering to create<br>sustainable value.)");
-        echo $form->textarea('home_partners_desc')->setLabel("Đoạn mô tả đối tác");
-        echo $form->gallery('home_partners_logos')->setLabel("Danh sách Logo đối tác (Nếu chưa chọn sẽ dùng các logo đối tác mặc định)");
         echo endBox();
 
         echo '</div>';

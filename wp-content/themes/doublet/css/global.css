@@ -492,6 +492,10 @@
  }
 
  @media (max-width: 767px) {
+     .has-page-hero-parallax {
+         transform: unset;
+     }
+
      .container {
          padding-inline: 1.5rem;
      }

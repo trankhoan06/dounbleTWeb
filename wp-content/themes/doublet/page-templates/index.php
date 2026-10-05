@@ -34,9 +34,26 @@ $home_product_label = tr_posts_field('home_product_label') ?: 'PRODUCT DOUBLE T'
 $home_product_title = tr_posts_field('home_product_title') ?: 'Professional steel supplier and processor.';
 $home_product_btn_text = tr_posts_field('home_product_btn_text') ?: 'VIEW ALL PRODUCTS';
 $home_product_btn_link = tr_posts_field('home_product_btn_link') ?: '';
-$home_product_items = tr_posts_field('home_product_items');
-if (!is_array($home_product_items) || empty($home_product_items)) {
-    $home_product_items = [];
+$home_product_items = [];
+$product_posts = get_posts([
+    'post_type'      => 'product-and-service',
+    'post_status'    => 'publish',
+    'posts_per_page' => -1,
+    'orderby'        => 'date',
+    'order'          => 'DESC'
+]);
+
+if (!empty($product_posts)) {
+    foreach ($product_posts as $p_post) {
+        $thumb_id = get_post_thumbnail_id($p_post->ID);
+        $home_product_items[] = [
+            'title' => get_the_title($p_post->ID),
+            'image' => $thumb_id,
+            'link'  => get_permalink($p_post->ID)
+        ];
+    }
+} else {
+    // Fallback data
     for ($p = 0; $p < 8; $p++) {
         $home_product_items[] = [
             'title' => 'Hot Rolled-HR / Hot Rolled Pickled and Oiled-HRPO',
@@ -327,10 +344,11 @@ if (empty($home_media_blocks)) {
 }
 
 // 8. Partners Fields
-$home_partners_label = tr_posts_field('home_partners_label') ?: 'PARTNERS';
-$home_partners_title = tr_posts_field('home_partners_title') ?: 'Partnering to create<br>sustainable value.';
-$home_partners_desc = tr_posts_field('home_partners_desc') ?: 'Partnering with <strong class="txt-primary txt-semi">Double T</strong> is the key to unlocking success, enabling you to confidently embrace new opportunities and challenges in the future of the metal industry.';
-$home_partners_logos = tr_posts_field('home_partners_logos');
+$partner_settings = doublet_get_partner_settings();
+$home_partners_label = $partner_settings['label'];
+$home_partners_title = $partner_settings['title'];
+$home_partners_desc = $partner_settings['desc'];
+$home_partners_logos = $partner_settings['logos'];
 ?>
 
     <main class="main">
@@ -507,7 +525,7 @@ $home_partners_logos = tr_posts_field('home_partners_logos');
                             <div class="txt txt-13 txt-semi"><?php echo esc_html($home_service_label); ?></div>
                         </div>
                         <div class="home-service-title">
-                            <h1 class="heading h1"><?php echo wp_kses_post($home_service_title); ?></h1>
+                            <h1 class="heading h1 h3_mb"><?php echo wp_kses_post($home_service_title); ?></h1>
                         </div>
                         <div class="home-service-sub">
                             <div class="txt txt-16 txt-14_mb"><?php echo wp_kses_post(nl2br($home_service_desc)); ?></div>

@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Product & Service
         { selector: '.ps-section-label, .ps-products-title', stagger: 90, cycle: 2, duration: 650, distance: 24, rootMargin: '0px 0px -25% 0px' },
-        { selector: '.ps-product-card', stagger: 75, cycle: 4 },
+        { selector: '.ps-product-card:not(.swiper-slide .ps-product-card)', stagger: 75, cycle: 4 },
         { selector: '.ps-products-action', stagger: 0 },
         { selector: '.ps-services-label, .ps-services-title, .ps-services-desc, .ps-services-emphasis, .ps-services-overview-media', stagger: 80, cycle: 5 },
         { selector: '.ps-service-tabs', stagger: 0 },
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { selector: '.psd-section-tag, .psd-app-desc', stagger: 80, cycle: 2 },
         { selector: '.psd-spec-item', stagger: 65, cycle: 5 },
         { selector: '.psd-spec-frame-wrap, .psd-spec-card', stagger: 90, cycle: 2 },
-        { selector: '.psd-app-card', stagger: 75, cycle: 4 },
+        { selector: '.psd-app-card:not(.swiper-slide .psd-app-card)', stagger: 75, cycle: 4 },
         { selector: '.psd-other-slider-wrap, .psd-other-nav, .psd-other-pagination', stagger: 75, cycle: 4 },
     ];
 

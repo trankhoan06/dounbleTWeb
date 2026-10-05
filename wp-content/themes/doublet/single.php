@@ -78,7 +78,7 @@ $related_query = new WP_Query($related_args);
                 <div class="detail-hero-panel-bg hero-panel-bg-fade hero-enter-bg"></div>
                 <div class="container detail-hero-container hero-enter-item hero-enter-panel">
                     <nav class="detail-breadcrumb txt txt-14 txt-14_tb txt-14_mb" aria-label="Breadcrumb">
-                        <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
+                        <a href="<?php echo esc_url(home_url('/')); ?>">...</a>
                         <span class="detail-breadcrumb-devi" aria-hidden="true">/</span>
                         <a href="<?php echo esc_url($cat_link); ?>"><?php echo esc_html($cat_name); ?></a>
                         <span class="detail-breadcrumb-devi" aria-hidden="true">/</span>

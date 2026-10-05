@@ -960,6 +960,7 @@ body .header-cta-wrap:before {
         --cut: 3.2rem;
         padding: 3.2rem 1.6rem;
         order: 1;
+        background: linear-gradient(180deg, #F6F7FA 0%, #FFF 100%);
     }
 
     .commit-mission-item {

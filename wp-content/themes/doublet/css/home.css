@@ -1,6 +1,6 @@
 .home-hero {
     position: relative;
-    height: 100vh;
+    height: 100svh;
     display: flex;
     justify-content: end;
     align-items: end;
@@ -1724,7 +1724,7 @@
 .home-media-card-img {
     position: relative;
     width: 100%;
-    padding-top: calc(230 / 330 * 100%);
+    padding-top: calc(222/296 * 100%);
     overflow: hidden;
     --cut: 3.2rem;
     background-color: #E8EBF0;

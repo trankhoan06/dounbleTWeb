@@ -93,20 +93,110 @@ get_header(); ?>
 
                         <!-- Widget 2: Other Category Card -->
                         <div class="cat-sidebar-widget cut-tl" id="catSidebarOtherWidget">
+                            <?php
+                            $current_lang = function_exists('pll_current_language') ? pll_current_language('slug') : 'en';
+                            $current_lang = strtolower($current_lang ?: 'en');
+                            $cat_slug_param = isset($_GET['category']) ? sanitize_text_field($_GET['category']) : '';
+                            $current_cat = !empty($cat_slug_param) ? get_category_by_slug($cat_slug_param) : null;
+                            $current_cat_id = $current_cat ? (int)$current_cat->term_id : 0;
+
+                            $cat_args = array(
+                                'taxonomy'   => 'category',
+                                'exclude'    => array($current_cat_id),
+                                'hide_empty' => false,
+                            );
+                            if (function_exists('pll_current_language')) {
+                                $cat_args['lang'] = $current_lang;
+                            }
+                            $other_categories = get_categories($cat_args);
+
+                            if (!empty($other_categories)) {
+                                $non_default = array_values(array_filter($other_categories, function($cat) {
+                                    return !in_array($cat->slug, array('uncategorized', 'chua-phan-loai'));
+                                }));
+                                if (!empty($non_default)) {
+                                    $other_categories = $non_default;
+                                }
+                            }
+
+                            $cats_with_posts = array_values(array_filter($other_categories, function($cat) {
+                                return (int)$cat->count > 0;
+                            }));
+                            $eligible_cats = !empty($cats_with_posts) ? $cats_with_posts : $other_categories;
+
+                            $random_cat = null;
+                            if (!empty($eligible_cats)) {
+                                $rand_key = array_rand($eligible_cats);
+                                $random_cat = $eligible_cats[$rand_key];
+                            }
+
+                            if ($random_cat) {
+                                $widget_cat_title = mb_strtoupper($random_cat->name, 'UTF-8');
+                                $widget_cat_url   = get_category_link($random_cat->term_id);
+
+                                $sidebar_args = array(
+                                    'post_type'      => 'post',
+                                    'posts_per_page' => 4,
+                                    'post_status'    => 'publish',
+                                    'tax_query'      => array(
+                                        array(
+                                            'taxonomy' => 'category',
+                                            'field'    => 'term_id',
+                                            'terms'    => $random_cat->term_id,
+                                        ),
+                                    ),
+                                );
+                                if (function_exists('pll_current_language')) {
+                                    $sidebar_args['lang'] = $current_lang;
+                                }
+                                $sidebar_posts = get_posts($sidebar_args);
+                            } else {
+                                $widget_cat_title = $current_lang === 'vi' ? 'BÀI VIẾT GẦN ĐÂY' : 'RECENT ARTICLES';
+                                $widget_cat_url   = home_url('/insight/');
+
+                                $sidebar_args = array(
+                                    'post_type'      => 'post',
+                                    'posts_per_page' => 4,
+                                    'post_status'    => 'publish',
+                                );
+                                if (function_exists('pll_current_language')) {
+                                    $sidebar_args['lang'] = $current_lang;
+                                }
+                                $sidebar_posts = get_posts($sidebar_args);
+                            }
+                            ?>
                             <div class="cat-widget-head">
                                 <div class="cat-widget-tag cut-tl" id="catWidgetTag">
-                                    <span class="txt txt-14 txt-semi cat-widget-tag-text" id="catWidgetTagText">COMPANY
-                                        OPERATIONS</span>
+                                    <span class="txt txt-14 txt-semi cat-widget-tag-text" id="catWidgetTagText"><?php echo esc_html($widget_cat_title); ?></span>
                                 </div>
                             </div>
 
                             <div class="cat-widget-list" id="catWidgetList">
+                                <?php
+                                if ($sidebar_posts) :
+                                    foreach ($sidebar_posts as $spost) :
+                                ?>
+                                    <a href="<?php echo esc_url(get_permalink($spost->ID)); ?>" class="cat-mini-card hover-img">
+                                        <div class="cat-mini-img cut-tl">
+                                            <?php if (has_post_thumbnail($spost->ID)) : ?>
+                                                <?php echo get_the_post_thumbnail($spost->ID, 'thumbnail', array('class' => 'img-fill')); ?>
+                                            <?php else : ?>
+                                                <img src="<?php echo get_template_directory_uri(); ?>/imgs/product.jpg" class="img-fill" alt="<?php echo esc_attr(get_the_title($spost->ID)); ?>" loading="lazy">
+                                            <?php endif; ?>
+                                        </div>
+                                        <h4 class="txt txt-16 txt-16_mb txt-semi cat-mini-title"><?php echo esc_html(get_the_title($spost->ID)); ?></h4>
+                                    </a>
+                                <?php
+                                    endforeach;
+                                    wp_reset_postdata();
+                                endif;
+                                ?>
                             </div>
 
                             <div class="cat-widget-footer">
-                                <a href="./insight-category.html?category=company-operations" class="cat-widget-viewall"
-                                    id="catWidgetViewAllLink" aria-label="View all related articles">
-                                    <span class="txt txt-14 txt-semi cat-widget-viewall-text">VIEW ALL</span>
+                                <a href="<?php echo esc_url($widget_cat_url); ?>" class="cat-widget-viewall"
+                                    id="catWidgetViewAllLink" aria-label="<?php echo esc_attr('View all ' . $widget_cat_title . ' articles'); ?>">
+                                    <span class="txt txt-14 txt-semi cat-widget-viewall-text"><?php echo esc_html($current_lang === 'vi' ? 'XEM TẤT CẢ' : 'VIEW ALL'); ?></span>
                                     <svg class="cat-widget-viewall-icon" viewBox="0 0 8 12" aria-hidden="true">
                                         <path d="M1.5 1.5L6 6L1.5 10.5" />
                                     </svg>

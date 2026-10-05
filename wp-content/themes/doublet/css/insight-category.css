@@ -268,8 +268,8 @@ body .header-cta-wrap:before {
 
 .cat-listing-layout {
     display: grid;
-    grid-template-columns: 1fr 34rem;
-    gap: 4.8rem;
+    grid-template-columns: 1fr 29.6rem;
+    gap: 3.2rem;
     align-items: flex-start;
 }
 
@@ -285,7 +285,7 @@ body .header-cta-wrap:before {
 .cat-articles-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 3.6rem 2.4rem;
+    gap: 3.2rem;
 }
 
 .cat-article-card {
@@ -299,13 +299,15 @@ body .header-cta-wrap:before {
 .cat-article-img {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 16 / 10;
+    padding-top: 75%;
     background-color: #E8EBF0;
     --cut: 2.4rem;
     margin-bottom: 1.6rem;
 }
 
 .cat-article-img img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -522,7 +524,6 @@ body .header-cta-wrap:before {
 
 /* Widget 2: Other Category Card */
 .cat-sidebar-widget {
-    padding: 2.4rem;
     --cut: 2rem;
 }
 
@@ -558,22 +559,24 @@ body .header-cta-wrap:before {
 
 .cat-mini-card {
     display: grid;
-    grid-template-columns: 8.8rem 1fr;
+    grid-template-columns: 10rem 1fr;
     gap: 1.4rem;
-    align-items: flex-start;
+    align-items: center;
     text-decoration: none;
     color: inherit;
 }
 
 .cat-mini-img {
     position: relative;
-    width: 8.8rem;
+    width: 10rem;
     overflow: hidden;
+    padding-top: 75%;
     background-color: #E8EBF0;
-    --cut: 1.4rem;
 }
 
 .cat-mini-img img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -622,6 +625,7 @@ body .header-cta-wrap:before {
     color: var(--txt-icon-primary);
     text-decoration: none;
     transition: color var(--transition);
+    padding-right: .5rem;
 }
 
 .cat-widget-viewall-text {
@@ -633,15 +637,19 @@ body .header-cta-wrap:before {
     width: 0.8rem;
     height: 1.2rem;
     fill: none;
-    stroke: currentColor;
+    stroke: var(--primary-2);
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
-    transition: transform var(--transition);
+    transition: transform var(--transition), stroke var(--transition);
+}
+
+.cat-widget-viewall:hover .cat-widget-viewall-icon {
+    stroke: var(--secondary-2);
 }
 
 .cat-widget-viewall:hover {
-    color: var(--primary-2);
+    color: var(--secondary-2);
 }
 
 .cat-widget-viewall:hover .cat-widget-viewall-icon {
