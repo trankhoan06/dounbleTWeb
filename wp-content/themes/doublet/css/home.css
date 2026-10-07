@@ -846,6 +846,10 @@
 
 }
 
+.home-service-desc-item .desc-label {
+    font-weight: bold;
+}
+
 .home-service-btn {
     margin-top: 4.8rem;
 }

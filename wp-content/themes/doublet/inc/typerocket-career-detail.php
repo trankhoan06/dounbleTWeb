@@ -27,6 +27,7 @@ add_action('edit_form_after_title', function($post) {
 
         // 2. Job Info Sidebar (Thanh thông tin bên phải)
         echo beginBox("2. Job Info Sidebar (Thông tin tuyển dụng tóm tắt)", true);
+        echo $form->text('career_location')->setLabel("Địa điểm làm việc (VD: Office / Headquarters - hiển thị tại trang Careers)");
         echo $form->row(
             $form->text('career_salary')->setLabel("Mức lương (Mặc định: Negotiate)"),
             $form->text('career_experience')->setLabel("Kinh nghiệm (Mặc định: 2 Years)")

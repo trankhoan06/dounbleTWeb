@@ -43,7 +43,7 @@ add_action('edit_form_after_title', function($post) {
         echo endBox();
 
         // 3. Job Openings Section
-        echo beginBox("3. Job Openings (Cơ hội nghề nghiệp & Danh sách tuyển dụng)", true);
+        echo beginBox("3. Job Openings (Cơ hội nghề nghiệp & Tiêu đề bảng tuyển dụng)", true);
         echo $form->text('careers_openings_label')->setLabel("Nhãn phụ (Mặc định: JOB OPENINGS)");
         echo $form->text('careers_openings_title')->setLabel("Tiêu đề chính (Mặc định: Career Development)");
         echo $form->row(
@@ -51,17 +51,6 @@ add_action('edit_form_after_title', function($post) {
             $form->text('careers_th_location')->setLabel("Tiêu đề cột 2 (Mặc định: LOCATION)"),
             $form->text('careers_th_deadline')->setLabel("Tiêu đề cột 3 (Mặc định: DEADLINE)")
         );
-        echo $form->repeater('careers_jobs_list')->setLabel("Danh sách vị trí tuyển dụng (Nếu để trống sẽ hiển thị 5 vị trí mẫu mặc định)")->setFields([
-            $form->row(
-                $form->text('title')->setLabel("Tên vị trí tuyển dụng (VD: Steel Production Engineer)"),
-                $form->text('location')->setLabel("Địa điểm làm việc (VD: Office / Headquarters)")
-            ),
-            $form->row(
-                $form->text('deadline')->setLabel("Hạn nộp hồ sơ (VD: 20/10/2026)"),
-                $form->text('link')->setLabel("Link xem chi tiết công việc (VD: ./career-detail.html)")
-            ),
-            $form->text('btn_text')->setLabel("Text nút bấm (Mặc định: VIEW DETAIL)")
-        ]);
         echo endBox();
 
         // 4. Cultural Stats Banner

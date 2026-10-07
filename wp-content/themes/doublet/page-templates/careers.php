@@ -64,13 +64,16 @@ if (!empty($career_posts)) {
     foreach ($career_posts as $c_post) {
         $c_id = $c_post->ID;
 
-        // Location: Ưu tiên ACF get_field -> post_meta -> typerocket -> fallback
+        // Location: Ưu tiên TypeRocket career_location -> get_post_meta -> ACF get_field -> fallback
         $c_location = '';
-        if (function_exists('get_field')) {
-            $c_location = get_field('location', $c_id) ?: (get_field('career_location', $c_id) ?: get_field('workplace', $c_id));
+        if (function_exists('tr_posts_field')) {
+            $c_location = tr_posts_field('career_location', $c_id) ?: tr_posts_field('location', $c_id);
         }
         if (empty($c_location)) {
-            $c_location = get_post_meta($c_id, 'location', true) ?: (get_post_meta($c_id, 'career_location', true) ?: tr_posts_field('career_location', $c_id));
+            $c_location = get_post_meta($c_id, 'career_location', true) ?: get_post_meta($c_id, 'location', true);
+        }
+        if (empty($c_location) && function_exists('get_field')) {
+            $c_location = get_field('career_location', $c_id) ?: (get_field('location', $c_id) ?: get_field('workplace', $c_id));
         }
         if (empty($c_location)) {
             $c_location = 'Office';
@@ -110,20 +113,16 @@ if (!empty($career_posts)) {
     }
 }
 
-// Nếu chưa có bài viết trong Post Type 'career', lấy từ TypeRocket repeater hoặc dữ liệu mặc định
+// Nếu chưa có bài viết trong Post Type 'career', hiển thị danh sách vị trí mẫu mặc định
 if (empty($careers_jobs_list)) {
-    $tr_jobs = tr_posts_field('careers_jobs_list');
-    if (is_array($tr_jobs) && !empty($tr_jobs)) {
-        $careers_jobs_list = $tr_jobs;
-    } else {
-        $careers_jobs_list = [
-            [
-                'title' => 'Steel Production Engineer',
-                'location' => 'Office',
-                'deadline' => '20/10/2026',
-                'link' => '#',
-                'btn_text' => 'VIEW DETAIL'
-            ],
+    $careers_jobs_list = [
+        [
+            'title' => 'Steel Production Engineer',
+            'location' => 'Office',
+            'deadline' => '20/10/2026',
+            'link' => '#',
+            'btn_text' => 'VIEW DETAIL'
+        ],
             [
                 'title' => 'Steel Quality Control Engineer',
                 'location' => 'Headquarters',
@@ -153,7 +152,6 @@ if (empty($careers_jobs_list)) {
                 'btn_text' => 'VIEW DETAIL'
             ]
         ];
-    }
 }
 
 // 4. Cultural Stats Banner Fields
