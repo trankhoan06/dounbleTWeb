@@ -67,10 +67,10 @@ $form = tr_form()->useJson()->setGroup( $this->getName() );
         echo "<h4>Social Links</h4>";
         echo $form->row(
             $form->text('footer_social_fb')->setLabel('Facebook URL'),
-            $form->text('footer_social_insta')->setLabel('Instagram URL')
+            // $form->text('footer_social_insta')->setLabel('Instagram URL')
         );
         echo $form->row(
-            $form->text('footer_social_x')->setLabel('X (Twitter) URL'),
+            // $form->text('footer_social_x')->setLabel('X (Twitter) URL'),
             $form->text('footer_social_yt')->setLabel('YouTube URL')
         );
 

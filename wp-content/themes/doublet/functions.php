@@ -27,8 +27,9 @@ add_theme_support( 'title-tag' );
 
 // Register Menus
 register_nav_menus( array(
-    'header_menu' => esc_html__( 'Header Menu', 'themax' ),
-    'footer_menu' => esc_html__( 'Footer Menu', 'themax' ),
+    'header_menu'    => esc_html__( 'Header Menu', 'themax' ),
+    'footer_menu'    => esc_html__( 'Footer Menu', 'themax' ),
+    'footer_service' => esc_html__( 'Footer Service Menu', 'themax' ),
 ) );
 
 //Media Support
@@ -343,6 +344,10 @@ function themax_get_nav_menu_items($location = 'header_menu') {
             } elseif (!empty($pll_options['nav_menus'][$stylesheet]['header_menu'][$current_lang])) {
                 $menu_id = $pll_options['nav_menus'][$stylesheet]['header_menu'][$current_lang];
             }
+        } elseif ($location === 'footer_service') {
+            if (!empty($pll_options['nav_menus'][$stylesheet]['footer_service'][$current_lang])) {
+                $menu_id = $pll_options['nav_menus'][$stylesheet]['footer_service'][$current_lang];
+            }
         }
     }
 
@@ -351,18 +356,38 @@ function themax_get_nav_menu_items($location = 'header_menu') {
         $menu_id = !empty($menu_locations['header_menu']) ? $menu_locations['header_menu'] : 0;
     }
 
-    // Fallback thủ công theo slug menu nếu vẫn chưa tìm thấy
+    // Fallback theo slug menu tạo trong WP Admin nếu chưa gán vào theme location
     if (!$menu_id) {
-        if ($current_lang === 'vi') {
-            $vi_menu = wp_get_nav_menu_object('header_vi') ?: wp_get_nav_menu_object('header-vi');
-            if ($vi_menu) {
-                $menu_id = $vi_menu->term_id;
+        if ($location === 'footer_service') {
+            if ($current_lang === 'vi') {
+                $vi_service = wp_get_nav_menu_object('footer_service_vi') 
+                    ?: (wp_get_nav_menu_object('footer-service-vi') 
+                    ?: (wp_get_nav_menu_object('footer_service') 
+                    ?: wp_get_nav_menu_object('Footer Menu Tiếng Việt')));
+                if ($vi_service) {
+                    $menu_id = $vi_service->term_id;
+                }
+            } else {
+                $en_service = wp_get_nav_menu_object('footer_service') 
+                    ?: (wp_get_nav_menu_object('footer-service') 
+                    ?: (wp_get_nav_menu_object('footer_service_en') 
+                    ?: wp_get_nav_menu_object('Footer Menu English')));
+                if ($en_service) {
+                    $menu_id = $en_service->term_id;
+                }
             }
-        }
-        if (!$menu_id) {
-            $en_menu = wp_get_nav_menu_object('header') ?: wp_get_nav_menu_object('header_en');
-            if ($en_menu) {
-                $menu_id = $en_menu->term_id;
+        } else {
+            if ($current_lang === 'vi') {
+                $vi_menu = wp_get_nav_menu_object('header_vi') ?: wp_get_nav_menu_object('header-vi');
+                if ($vi_menu) {
+                    $menu_id = $vi_menu->term_id;
+                }
+            }
+            if (!$menu_id) {
+                $en_menu = wp_get_nav_menu_object('header') ?: wp_get_nav_menu_object('header_en');
+                if ($en_menu) {
+                    $menu_id = $en_menu->term_id;
+                }
             }
         }
     }

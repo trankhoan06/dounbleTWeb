@@ -16,8 +16,8 @@ $footer_tax_id = tr_options_field('tr_theme_options.footer_tax_id') ?: '11018088
 
 // Socials
 $footer_social_fb = tr_options_field('tr_theme_options.footer_social_fb') ?: '#';
-$footer_social_insta = tr_options_field('tr_theme_options.footer_social_insta') ?: '#';
-$footer_social_x = tr_options_field('tr_theme_options.footer_social_x') ?: '#';
+// $footer_social_insta = tr_options_field('tr_theme_options.footer_social_insta') ?: '#';
+// $footer_social_x = tr_options_field('tr_theme_options.footer_social_x') ?: '#';
 $footer_social_yt = tr_options_field('tr_theme_options.footer_social_yt') ?: '#';
 
 // Multilingual text fields for footer & modal
@@ -116,6 +116,7 @@ $footer_vr360_url = tr_options_field('tr_theme_options.header_vr360_link') ?: '#
 
 // Nav menus for footer
 $footer_nav_items = function_exists('themax_get_nav_menu_items') ? themax_get_nav_menu_items('footer_menu') : false;
+$footer_service_items = function_exists('themax_get_nav_menu_items') ? themax_get_nav_menu_items('footer_service') : false;
 ?>
     <footer class="footer">
         <div class="footer-main">
@@ -143,7 +144,7 @@ $footer_nav_items = function_exists('themax_get_nav_menu_items') ? themax_get_na
                                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                             </svg>
                         </a>
-                        <a href="<?php echo esc_url($footer_social_insta); ?>" <?php if ($footer_social_insta !== '#') echo 'target="_blank" rel="noopener"'; ?> class="footer-social-btn cut-diagonal" aria-label="Instagram">
+                        <!-- <a href="<?php echo esc_url($footer_social_insta); ?>" <?php if ($footer_social_insta !== '#') echo 'target="_blank" rel="noopener"'; ?> class="footer-social-btn cut-diagonal" aria-label="Instagram">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -156,7 +157,7 @@ $footer_nav_items = function_exists('themax_get_nav_menu_items') ? themax_get_na
                                 <path
                                     d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                             </svg>
-                        </a>
+                        </a> -->
                         <a href="<?php echo esc_url($footer_social_yt); ?>" <?php if ($footer_social_yt !== '#') echo 'target="_blank" rel="noopener"'; ?> class="footer-social-btn cut-diagonal" aria-label="YouTube">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                                 <path
@@ -272,11 +273,17 @@ $footer_nav_items = function_exists('themax_get_nav_menu_items') ? themax_get_na
                         <h4 class="footer-col-title txt-15_mb"><?php echo esc_html($footer_col4_title); ?></h4>
                     <?php endif; ?>
                     <ul class="footer-links">
-                        <li><a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="txt txt-14">Slitting Line</a></li>
-                        <li><a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="txt txt-14">Cut-to-Length Line</a></li>
-                        <li><a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="txt txt-14">Máy cắt Amada &amp; Tấm Reshear Line</a></li>
-                        <li><a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="txt txt-14">Dây chuyền cán vuốt thép La và Thép tròn đặc</a></li>
-                        <li><a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="txt txt-14">Dịch vụ hỗ trợ kỹ thuật phụ trợ</a></li>
+                        <?php if (!empty($footer_service_items)) : ?>
+                            <?php foreach ($footer_service_items as $item) : ?>
+                                <li><a href="<?php echo esc_url($item->url); ?>" class="txt txt-14" <?php if (!empty($item->target)) echo 'target="' . esc_attr($item->target) . '"'; ?>><?php echo esc_html($item->title); ?></a></li>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <li><a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="txt txt-14">Slitting Line</a></li>
+                            <li><a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="txt txt-14">Cut-to-Length Line</a></li>
+                            <li><a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="txt txt-14">Máy cắt Amada &amp; Tấm Reshear Line</a></li>
+                            <li><a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="txt txt-14">Dây chuyền cán vuốt thép La và Thép tròn đặc</a></li>
+                            <li><a href="<?php echo esc_url(home_url('/product-service/')); ?>" class="txt txt-14">Dịch vụ hỗ trợ kỹ thuật phụ trợ</a></li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
@@ -317,7 +324,7 @@ $footer_nav_items = function_exists('themax_get_nav_menu_items') ? themax_get_na
         </svg>
     </button>
 
-    <div class="modal-backdrop" id="consultationModal" aria-hidden="true" role="dialog" aria-modal="true"
+    <div class="modal-backdrop" id="consultationModal" style="display: none;" aria-hidden="true" role="dialog" aria-modal="true"
         aria-labelledby="modalTitle" data-lenis-prevent>
         <div class="modal-container" data-lenis-prevent>
             <button class="modal-close-btn cut-diagonal" id="modalCloseBtn" aria-label="Close modal">
