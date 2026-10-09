@@ -17,6 +17,7 @@ require dirname( __FILE__ ) . '/inc/typerocket-insight.php';
 require dirname( __FILE__ ) . '/inc/typerocket-product-service-detail.php';
 require dirname( __FILE__ ) . '/inc/typerocket-product-service.php';
 require dirname( __FILE__ ) . '/inc/typerocket-partners.php';
+require dirname( __FILE__ ) . '/inc/typerocket-privacy-policy.php';
 add_filter('tr_theme_options_page', function() {
     return get_template_directory() . '/theme-options.php';
 });
@@ -124,6 +125,10 @@ function themax_enqueue_assets() {
     elseif (is_page_template('page-templates/insight-detail.php') || is_singular('post') || is_single()) {
         wp_enqueue_style('doublet-insight-detail', $theme_dir . '/css/insight-detail.css', array(), '1.0.0');
         wp_enqueue_script('doublet-insight-detail-js', $theme_dir . '/js/insight-detail.js', array('global-js'), '1.0.0', true);
+    }
+    elseif (is_page_template('page-templates/privacy-policy.php') || is_page_template('privacy-policy.php')) {
+        $privacy_css_ver = file_exists(get_template_directory() . '/css/privacy-policy.css') ? filemtime(get_template_directory() . '/css/privacy-policy.css') : '1.0.0';
+        wp_enqueue_style('doublet-privacy-policy', $theme_dir . '/css/privacy-policy.css', array('global-style'), $privacy_css_ver);
     }
 }
 add_action('wp_enqueue_scripts', 'themax_enqueue_assets');

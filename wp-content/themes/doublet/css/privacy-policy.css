@@ -1,0 +1,155 @@
+/* ==========================================================================
+   Privacy Policy Page Styles - Double T
+   Clean default layout with primary-2 title
+   ========================================================================== */
+
+/* Header Overrides (Solid Header) */
+body .header {
+    background-color: var(--white);
+    border-bottom: var(--1px) solid var(--border-default);
+    box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.04);
+}
+
+body .header-top {
+    border-bottom-color: var(--border-default);
+}
+
+body .header-top-slogan,
+body .header-top-link,
+body .header-lang-trigger {
+    color: var(--txt-icon-secondary);
+}
+
+body .header-top-divider {
+    background-color: var(--border-default);
+}
+
+body .header-logo img {
+    filter: none;
+}
+
+body .header-menu-item {
+    color: var(--txt-icon-primary);
+}
+
+body .header-menu-item:hover,
+body .header-menu-item.active {
+    color: var(--primary-1);
+}
+
+body .header-cta-wrap:after,
+body .header-cta-wrap:before {
+    background-color: var(--border-default);
+}
+
+/* Page Layout */
+.privacy-page {
+    margin-top: 10.4rem;
+    padding-top: 4.8rem;
+    padding-bottom: 8rem;
+}
+
+/* Title (H1) */
+.privacy-title {
+    color: var(--primary-2);
+    font-family: 'Beau Sans', sans-serif;
+    font-size: 3.6rem;
+    line-height: 1.3em;
+    font-weight: 700;
+    margin-bottom: 2.4rem;
+}
+
+/* Content */
+.privacy-content {
+    font-family: 'Mona Sans', sans-serif;
+    line-height: 1.75em;
+}
+
+.privacy-content p {
+    margin-bottom: 1.6rem;
+    line-height: 1.75em;
+}
+
+.privacy-content h2 {
+    font-family: 'Beau Sans', sans-serif;
+    font-size: 2.4rem;
+    line-height: 1.35em;
+    font-weight: 700;
+    margin-top: 3.2rem;
+    margin-bottom: 1.4rem;
+}
+
+.privacy-content h3 {
+    font-family: 'Beau Sans', sans-serif;
+    font-size: 2rem;
+    line-height: 1.4em;
+    font-weight: 600;
+    margin-top: 2.4rem;
+    margin-bottom: 1.2rem;
+}
+
+.privacy-content ul,
+.privacy-content ol {
+    margin-bottom: 1.8rem;
+    padding-left: 2.4rem;
+}
+
+.privacy-content li {
+    margin-bottom: 0.6rem;
+    line-height: 1.75em;
+}
+
+.privacy-content strong,
+.privacy-content b {
+    font-weight: 600;
+}
+
+.privacy-content a {
+    color: var(--primary-2);
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+}
+
+.privacy-content a:hover {
+    color: var(--primary-1);
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .privacy-page {
+        margin-top: 7.2rem;
+        padding-top: 3.6rem;
+        padding-bottom: 6rem;
+    }
+
+    .privacy-title {
+        font-size: 3rem;
+        margin-bottom: 2rem;
+    }
+
+    .privacy-content h2 {
+        font-size: 2.2rem;
+        margin-top: 2.8rem;
+    }
+
+    .privacy-content h3 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .privacy-page {
+        padding-top: 2.8rem;
+        padding-bottom: 4.8rem;
+    }
+
+    .privacy-title {
+        font-size: 2.4rem;
+        margin-bottom: 1.6rem;
+    }
+
+    .privacy-content h2 {
+        font-size: 2rem;
+        margin-top: 2.4rem;
+    }
+}

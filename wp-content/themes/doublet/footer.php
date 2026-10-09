@@ -20,6 +20,17 @@ $footer_social_fb = tr_options_field('tr_theme_options.footer_social_fb') ?: '#'
 // $footer_social_x = tr_options_field('tr_theme_options.footer_social_x') ?: '#';
 $footer_social_yt = tr_options_field('tr_theme_options.footer_social_yt') ?: '#';
 
+// Helper to properly format footer links (handles relative paths like /privacy-policy/ or vi/chinh-sach-bao-mat/)
+$themax_format_footer_link = function($link) {
+    if (empty($link) || $link === '#') {
+        return '#';
+    }
+    if (preg_match('/^(https?:\/\/|#|mailto:|tel:)/i', $link)) {
+        return $link;
+    }
+    return home_url('/' . ltrim($link, '/'));
+};
+
 // Multilingual text fields for footer & modal
 if ($current_lang === 'vi') {
     $footer_company_desc = tr_options_field('tr_theme_options.footer_company_desc_vi') ?: 'Doanh nghiệp hàng đầu trong cung cấp và gia công các loại thép tấm, thép cuộn tại Việt Nam.';
@@ -33,9 +44,11 @@ if ($current_lang === 'vi') {
     $footer_copy_line2 = tr_options_field('tr_theme_options.footer_copy_line2_vi') ?: 'Tối đa hoá sức mạnh trực tuyến bởi <strong>THEMAX</strong>';
     $footer_profile_text = tr_options_field('tr_theme_options.footer_profile_text_vi') ?: 'Hồ sơ 2T';
     $footer_terms_text = tr_options_field('tr_theme_options.footer_terms_text_vi') ?: 'Điều khoản sử dụng';
-    $footer_terms_url = tr_options_field('tr_theme_options.footer_terms_link_vi') ?: '#';
+    $footer_terms_raw = tr_options_field('tr_theme_options.footer_terms_link_vi') ?: tr_options_field('tr_theme_options.footer_terms_link');
+    $footer_terms_url = $themax_format_footer_link($footer_terms_raw);
     $footer_privacy_text = tr_options_field('tr_theme_options.footer_privacy_text_vi') ?: 'Chính sách bảo mật';
-    $footer_privacy_url = tr_options_field('tr_theme_options.footer_privacy_link_vi') ?: '#';
+    $footer_privacy_raw = tr_options_field('tr_theme_options.footer_privacy_link_vi') ?: tr_options_field('tr_theme_options.footer_privacy_link');
+    $footer_privacy_url = $themax_format_footer_link($footer_privacy_raw);
     $footer_custom_profile_link = tr_options_field('tr_theme_options.footer_profile_link_vi') ?: tr_options_field('tr_theme_options.header_profile_link_vi');
 
     // Modal consultation
@@ -74,10 +87,9 @@ if ($current_lang === 'vi') {
     $footer_copy_line1 = tr_options_field('tr_theme_options.footer_copy_line1') ?: 'Copyright © 2009 by DOUBLE T ENGINEERING CO., LTD';
     $footer_copy_line2 = tr_options_field('tr_theme_options.footer_copy_line2') ?: 'Maximize Online Power by <strong>THEMAX</strong>';
     $footer_profile_text = tr_options_field('tr_theme_options.footer_profile_text') ?: '2T Profile';
-    $footer_terms_text = tr_options_field('tr_theme_options.footer_terms_text') ?: 'Terms of Use';
-    $footer_terms_url = tr_options_field('tr_theme_options.footer_terms_link') ?: '#';
     $footer_privacy_text = tr_options_field('tr_theme_options.footer_privacy_text') ?: 'Privacy Policy';
-    $footer_privacy_url = tr_options_field('tr_theme_options.footer_privacy_link') ?: '#';
+    $footer_privacy_raw = tr_options_field('tr_theme_options.footer_privacy_link') ?: tr_options_field('tr_theme_options.footer_privacy_link_vi');
+    $footer_privacy_url = $themax_format_footer_link($footer_privacy_raw);
     $footer_custom_profile_link = tr_options_field('tr_theme_options.footer_profile_link') ?: tr_options_field('tr_theme_options.header_profile_link');
 
     // Modal consultation
@@ -110,8 +122,7 @@ if ($current_lang === 'vi') {
 $footer_hq_phone = tr_options_field('tr_theme_options.footer_hq_phone') ?: '0272.249.6667 – 0272.249.6668 – 0272.249.6669';
 $footer_hcm_email = tr_options_field('tr_theme_options.footer_hcm_email') ?: '2t@2tsteel.com';
 $footer_hcm_phone = tr_options_field('tr_theme_options.footer_hcm_phone') ?: '028.3816.5435 – 028.3816.5436';
-$header_profile_file = ($current_lang === 'vi') ? (tr_options_field('tr_theme_options.header_profile_file_vi') ?: tr_options_field('tr_theme_options.header_profile_file')) : tr_options_field('tr_theme_options.header_profile_file');
-$footer_profile_url = $footer_custom_profile_link ?: ($header_profile_file ? wp_get_attachment_url($header_profile_file) : (tr_options_field('tr_theme_options.header_profile_link') ?: '#'));
+$footer_profile_url = $footer_custom_profile_link ? $themax_format_footer_link($footer_custom_profile_link) : ($header_profile_file ? wp_get_attachment_url($header_profile_file) : $themax_format_footer_link(tr_options_field('tr_theme_options.header_profile_link')));
 $footer_vr360_url = tr_options_field('tr_theme_options.header_vr360_link') ?: '#';
 
 // Nav menus for footer
@@ -300,13 +311,7 @@ $footer_service_items = function_exists('themax_get_nav_menu_items') ? themax_ge
                     <?php if ($footer_profile_text) : ?>
                         <a href="<?php echo esc_url($footer_profile_url); ?>" <?php if ($header_profile_file && empty($footer_custom_profile_link)) echo 'target="_blank" download'; ?>><?php echo esc_html($footer_profile_text); ?></a>
                     <?php endif; ?>
-                    <?php if ($footer_profile_text && $footer_terms_text) : ?>
-                        <span class="divider"></span>
-                    <?php endif; ?>
-                    <?php if ($footer_terms_text) : ?>
-                        <a href="<?php echo esc_url($footer_terms_url); ?>"><?php echo esc_html($footer_terms_text); ?></a>
-                    <?php endif; ?>
-                    <?php if (($footer_profile_text || $footer_terms_text) && $footer_privacy_text) : ?>
+                    <?php if ($footer_profile_text) : ?>
                         <span class="divider"></span>
                     <?php endif; ?>
                     <?php if ($footer_privacy_text) : ?>

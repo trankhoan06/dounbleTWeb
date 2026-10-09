@@ -127,14 +127,6 @@ $form = tr_form()->useJson()->setGroup( $this->getName() );
             $form->text('footer_profile_link_vi')->setLabel('Profile Link URL (VI)')
         );
         echo $form->row(
-            $form->text('footer_terms_text')->setLabel('Terms Text (EN)')->setDefault('Terms of Use'),
-            $form->text('footer_terms_text_vi')->setLabel('Terms Text (VI)')->setDefault('Điều khoản sử dụng')
-        );
-        echo $form->row(
-            $form->text('footer_terms_link')->setLabel('Terms Link (EN)')->setDefault('#'),
-            $form->text('footer_terms_link_vi')->setLabel('Terms Link (VI)')->setDefault('#')
-        );
-        echo $form->row(
             $form->text('footer_privacy_text')->setLabel('Privacy Text (EN)')->setDefault('Privacy Policy'),
             $form->text('footer_privacy_text_vi')->setLabel('Privacy Text (VI)')->setDefault('Chính sách bảo mật')
         );
