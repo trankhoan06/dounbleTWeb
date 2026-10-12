@@ -209,19 +209,26 @@ $career_ben_content = tr_posts_field('career_ben_content') ?: '<ul class="txt tx
                     ?>
                     <div class="career-apply-section" id="apply-form">
                         <h2 class="heading h3 h4_tb h5_mb career-apply-title"><?php echo esc_html($c_form_title); ?></h2>
-                        <form action="#" class="career-apply-form">
+                        <form action="#" method="POST" class="career-apply-form" id="careerApplyForm" enctype="multipart/form-data">
+                            <input type="hidden" name="action" value="doublet_submit_career_apply">
+                            <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'doublet_career_nonce' ) ); ?>">
+                            <input type="hidden" name="lang" value="<?php echo esc_attr( $current_lang ); ?>">
+                            <input type="hidden" name="job_title" value="<?php echo esc_attr( $post_title ); ?>">
+                            <input type="hidden" name="job_id" value="<?php echo esc_attr( $post_id ); ?>">
+                            <div class="career-form-alert" id="careerAlert" style="display: none; margin-bottom: 1.6rem; padding: 1.2rem 1.6rem; font-size: 1.3rem; line-height: 1.5; font-family: 'Mona Sans', sans-serif;"></div>
+
                             <div class="form-group">
-                                <label class="txt txt-14 form-label"><?php echo esc_html($c_form_name_label); ?> <span class="req">*</span></label>
-                                <input type="text" class="form-control" placeholder="<?php echo esc_attr($c_form_name_placeholder); ?>" required>
+                                <label for="careerFullName" class="txt txt-14 form-label"><?php echo esc_html($c_form_name_label); ?> <span class="req">*</span></label>
+                                <input type="text" id="careerFullName" name="fullName" class="form-control" placeholder="<?php echo esc_attr($c_form_name_placeholder); ?>" required>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label class="txt txt-14 form-label"><?php echo esc_html($c_form_email_label); ?> <span class="req">*</span></label>
-                                    <input type="email" class="form-control" placeholder="<?php echo esc_attr($c_form_email_placeholder); ?>" required>
+                                    <label for="careerEmail" class="txt txt-14 form-label"><?php echo esc_html($c_form_email_label); ?> <span class="req">*</span></label>
+                                    <input type="email" id="careerEmail" name="email" class="form-control" placeholder="<?php echo esc_attr($c_form_email_placeholder); ?>" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="txt txt-14 form-label"><?php echo esc_html($c_form_phone_label); ?> <span class="req">*</span></label>
-                                    <input type="tel" class="form-control" placeholder="<?php echo esc_attr($c_form_phone_placeholder); ?>" required>
+                                    <label for="careerPhone" class="txt txt-14 form-label"><?php echo esc_html($c_form_phone_label); ?> <span class="req">*</span></label>
+                                    <input type="tel" id="careerPhone" name="phoneNumber" class="form-control" placeholder="<?php echo esc_attr($c_form_phone_placeholder); ?>" required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -233,17 +240,17 @@ $career_ben_content = tr_posts_field('career_ben_content') ?: '<ul class="txt tx
                                             d="M4.35435 30.7084C6.14546 32.4584 8.30491 33.3334 10.8327 33.3334H30.8327C32.916 33.3334 34.6871 32.6045 36.146 31.1467C37.6038 29.6879 38.3327 27.9167 38.3327 25.8334C38.3327 23.9167 37.701 22.2429 36.4377 20.8117C35.1732 19.3817 33.5827 18.5556 31.666 18.3334C31.666 15.0834 30.5338 12.3262 28.2694 10.0617C26.006 7.79841 23.2493 6.66675 19.9993 6.66675C17.3605 6.66675 14.9993 7.45842 12.916 9.04175C10.8327 10.6251 9.44379 12.6945 8.74935 15.2501C6.63824 15.7223 4.9299 16.8056 3.62435 18.5001C2.31879 20.1945 1.66602 22.1251 1.66602 24.2917C1.66602 26.8195 2.56213 28.9584 4.35435 30.7084ZM13.4031 23.3425L17.9404 23.3426V28.3295H22.1417V23.3426L26.679 23.3427L20.6899 15.9843C20.3565 15.5746 19.731 15.5745 19.3975 15.984L13.4031 23.3425Z"
                                             fill="#0B6F7E" />
                                     </svg>
-                                    <input type="file" id="cv-upload-input" accept=".pdf,.doc,.docx"
-                                        style="display: none;">
+                                    <input type="file" id="cv-upload-input" name="cv_file" accept=".pdf,.doc,.docx"
+                                        style="display: none;" required>
                                     <span class="txt txt-14 upload-text" id="cv-upload-text"><?php echo esc_html($c_form_cv_placeholder); ?></span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="txt txt-14 form-label"><?php echo esc_html($c_form_intro_label); ?> <span class="req">*</span></label>
-                                <textarea class="form-control" placeholder="<?php echo esc_attr($c_form_intro_placeholder); ?>" required></textarea>
+                                <label for="careerIntro" class="txt txt-14 form-label"><?php echo esc_html($c_form_intro_label); ?> <span class="req">*</span></label>
+                                <textarea id="careerIntro" name="intro" class="form-control" placeholder="<?php echo esc_attr($c_form_intro_placeholder); ?>" required></textarea>
                             </div>
                             <div class="form-submit-wrap">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary" id="careerSubmitBtn">
                                     <span class="txt txt-14 txt-semi"><?php echo esc_html($c_form_submit); ?></span>
                                 </button>
                             </div>

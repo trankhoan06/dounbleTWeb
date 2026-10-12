@@ -559,6 +559,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (consultationModal) {
         const openModal = () => {
+            consultationModal.style.display = 'flex';
+            // Force browser reflow so CSS transition runs smoothly
+            void consultationModal.offsetHeight;
             consultationModal.classList.add('is-open');
             consultationModal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
@@ -575,14 +578,35 @@ document.addEventListener('DOMContentLoaded', () => {
             consultationModal.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = '';
             if (window.lenis) window.lenis.start();
+            setTimeout(() => {
+                if (!consultationModal.classList.contains('is-open')) {
+                    consultationModal.style.display = 'none';
+                }
+            }, 300);
         };
 
-        // Open modal when clicking CTA trigger buttons
+        // Initialize state (keep hidden until opened)
+        if (!consultationModal.classList.contains('is-open')) {
+            consultationModal.style.display = 'none';
+        }
+
+        // Open modal when clicking CTA trigger buttons (both direct and delegated)
         consultationTriggers.forEach((btn) => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 openModal();
             });
+        });
+
+        document.addEventListener('click', (e) => {
+            const trigger = e.target.closest('.header-cta, [data-modal-target="consultationModal"], a[href="#consultationModal"]');
+            if (trigger) {
+                const href = trigger.getAttribute('href');
+                if (!href || href === '#' || href === '#consultationModal' || trigger.hasAttribute('data-modal-target') || trigger.classList.contains('header-cta')) {
+                    e.preventDefault();
+                    openModal();
+                }
+            }
         });
 
         // Close button click
@@ -701,31 +725,124 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
+                const alertBox = document.getElementById('consultationAlert');
+                if (alertBox) {
+                    alertBox.style.display = 'none';
+                    alertBox.innerHTML = '';
+                    alertBox.className = 'modal-form-alert';
+                }
+
                 const submitBtn = consultationForm.querySelector('.modal-submit-btn');
                 const originalText = submitBtn ? submitBtn.innerHTML : '';
 
+                const sendingText = (window.doublet_ajax && window.doublet_ajax.i18n && window.doublet_ajax.i18n.sending) ? window.doublet_ajax.i18n.sending : 'SENDING...';
+                const successText = (window.doublet_ajax && window.doublet_ajax.i18n && window.doublet_ajax.i18n.success) ? window.doublet_ajax.i18n.success : 'SENT SUCCESSFULLY!';
+
                 if (submitBtn) {
                     submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<span class="txt txt-14 txt-semi">SENDING...</span>';
+                    submitBtn.innerHTML = `<span class="txt txt-14 txt-semi">${sendingText}</span>`;
                 }
 
-                setTimeout(() => {
-                    if (submitBtn) {
-                        submitBtn.innerHTML = '<span class="txt txt-14 txt-semi">SENT SUCCESSFULLY!</span>';
+                const formData = new FormData(consultationForm);
+                if (!formData.get('action')) {
+                    formData.append('action', 'doublet_submit_consultation');
+                }
+                if (!formData.get('nonce') && window.doublet_ajax && window.doublet_ajax.nonce) {
+                    formData.append('nonce', window.doublet_ajax.nonce);
+                }
+                if (!formData.get('lang') && window.doublet_ajax && window.doublet_ajax.current_lang) {
+                    formData.append('lang', window.doublet_ajax.current_lang);
+                }
+
+                const ajaxUrl = (window.doublet_ajax && window.doublet_ajax.ajax_url) ? window.doublet_ajax.ajax_url : '/wp-admin/admin-ajax.php';
+
+                const sendConsultationRequest = (recaptchaToken = '') => {
+                    if (recaptchaToken) {
+                        formData.append('recaptcha_token', recaptchaToken);
                     }
-                    setTimeout(() => {
-                        consultationForm.reset();
-                        if (serviceDropdown && typeof serviceDropdown.resetDropdown === 'function') {
-                            serviceDropdown.resetDropdown();
+
+                    fetch(ajaxUrl, {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'same-origin'
+                    })
+                .then((response) => response.json())
+                .then((res) => {
+                    if (res && res.success) {
+                        if (submitBtn) {
+                            submitBtn.style.backgroundColor = '#0B6F7E';
+                            submitBtn.innerHTML = `<span class="txt txt-14 txt-semi">&#10003; ${successText}</span>`;
+                        }
+                        if (alertBox) {
+                            alertBox.style.display = 'block';
+                            alertBox.style.backgroundColor = 'rgba(32, 183, 198, 0.12)';
+                            alertBox.style.color = '#0B6F7E';
+                            alertBox.style.border = '1px solid #20B7C6';
+                            alertBox.textContent = (res.data && res.data.message) ? res.data.message : successText;
+                        }
+
+                        setTimeout(() => {
+                            consultationForm.reset();
+                            if (serviceDropdown && typeof serviceDropdown.resetDropdown === 'function') {
+                                serviceDropdown.resetDropdown();
+                            }
+                            if (alertBox) {
+                                alertBox.style.display = 'none';
+                                alertBox.innerHTML = '';
+                            }
+                            if (submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.style.backgroundColor = '';
+                                submitBtn.innerHTML = originalText;
+                            }
+                            closeModal();
+                        }, 2200);
+                    } else {
+                        const errMsg = (res && res.data && res.data.message) ? res.data.message : 'Có lỗi xảy ra, vui lòng thử lại.';
+                        if (alertBox) {
+                            alertBox.style.display = 'block';
+                            alertBox.style.backgroundColor = 'rgba(235, 31, 48, 0.1)';
+                            alertBox.style.color = '#EB1F30';
+                            alertBox.style.border = '1px solid #EB1F30';
+                            alertBox.textContent = errMsg;
                         }
                         if (submitBtn) {
                             submitBtn.disabled = false;
                             submitBtn.innerHTML = originalText;
                         }
-                        closeModal();
-                    }, 1500);
-                }, 800);
+                    }
+                })
+                .catch((err) => {
+                    console.error('Consultation submission error:', err);
+                    if (alertBox) {
+                        alertBox.style.display = 'block';
+                        alertBox.style.backgroundColor = 'rgba(235, 31, 48, 0.1)';
+                        alertBox.style.color = '#EB1F30';
+                        const connErrMsg = (window.doublet_ajax && window.doublet_ajax.i18n && window.doublet_ajax.i18n.error) ? window.doublet_ajax.i18n.error : 'Lỗi kết nối máy chủ, vui lòng thử lại sau.';
+                        alertBox.textContent = connErrMsg;
+                    }
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }
+                });
+            };
+
+                const siteKey = (window.doublet_ajax && window.doublet_ajax.recaptcha_site_key) ? window.doublet_ajax.recaptcha_site_key : '';
+                if (typeof window.grecaptcha !== 'undefined' && siteKey) {
+                    window.grecaptcha.ready(() => {
+                        window.grecaptcha.execute(siteKey, { action: 'consultation' })
+                            .then((token) => sendConsultationRequest(token))
+                            .catch((err) => {
+                                console.warn('reCAPTCHA execution error:', err);
+                                sendConsultationRequest('');
+                            });
+                    });
+                } else {
+                    sendConsultationRequest('');
+                }
             });
         }
     }
 });
+

@@ -194,34 +194,39 @@ $contact_map_iframe_src = tr_posts_field('contact_map_iframe_src') ?: 'https://w
                 <!-- Right: Contact Form -->
                 <div class="contact-form-wrap">
                     <div class="contact-form-overlay"></div>
-                    <form action="#" class="contact-form" id="contactForm">
+                    <form action="#" method="POST" class="contact-form" id="contactForm">
+                        <input type="hidden" name="action" value="doublet_submit_contact">
+                        <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'doublet_contact_nonce' ) ); ?>">
+                        <input type="hidden" name="lang" value="<?php echo function_exists('pll_current_language') ? esc_attr( pll_current_language('slug') ) : 'en'; ?>">
+                        <div class="contact-form-alert" id="contactAlert" style="display: none; margin-bottom: 1.6rem; padding: 1.2rem 1.6rem; font-size: 1.3rem; line-height: 1.5; font-family: 'Mona Sans', sans-serif;"></div>
+
                         <div class="form-group">
-                            <label class="txt txt-14 txt-semi form-label">Full name <span class="req">*</span></label>
-                            <input type="text" class="form-control txt-14" placeholder="Enter your name" required>
+                            <label for="contactFullName" class="txt txt-14 txt-semi form-label">Full name <span class="req">*</span></label>
+                            <input type="text" id="contactFullName" name="fullName" class="form-control txt-14" placeholder="Enter your name" required>
                         </div>
                         <div class="form-row-2">
                             <div class="form-group">
-                                <label class="txt txt-14 txt-semi form-label">Email <span class="req">*</span></label>
-                                <input type="email" class="form-control" placeholder="Enter your email" required>
+                                <label for="contactEmail" class="txt txt-14 txt-semi form-label">Email <span class="req">*</span></label>
+                                <input type="email" id="contactEmail" name="email" class="form-control" placeholder="Enter your email" required>
                             </div>
                             <div class="form-group">
-                                <label class="txt txt-14 txt-semi form-label">Phone Number <span
+                                <label for="contactPhone" class="txt txt-14 txt-semi form-label">Phone Number <span
                                         class="req">*</span></label>
-                                <input type="tel" class="form-control" placeholder="Enter your phone number" required>
+                                <input type="tel" id="contactPhone" name="phoneNumber" class="form-control" placeholder="Enter your phone number" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="txt txt-14 txt-semi form-label">Company</label>
-                            <input type="text" class="form-control" placeholder="Enter your company name">
+                            <label for="contactCompany" class="txt txt-14 txt-semi form-label">Company</label>
+                            <input type="text" id="contactCompany" name="company" class="form-control" placeholder="Enter your company name">
                         </div>
                         <div class="form-group">
-                            <label class="txt txt-14 txt-semi form-label">Message</label>
-                            <textarea class="form-control" placeholder="Enter message"></textarea>
+                            <label for="contactMessage" class="txt txt-14 txt-semi form-label">Message</label>
+                            <textarea id="contactMessage" name="message" class="form-control" placeholder="Enter message"></textarea>
                         </div>
                         <p class="txt txt-13 form-privacy"><?php echo esc_html($contact_form_privacy); ?></p>
                         <!-- Submit -->
                         <div class="form-submit-wrap">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary" id="contactSubmitBtn">
                                 <span class="txt txt-14 txt-semi"><?php echo esc_html($contact_form_submit_btn); ?></span>
                             </button>
                             <p class="txt txt-13 form-submit-note"><?php echo esc_html($contact_form_submit_note); ?></p>

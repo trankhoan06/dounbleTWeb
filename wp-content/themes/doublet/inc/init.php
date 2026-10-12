@@ -18,24 +18,66 @@ function admin_style() {
 }
 add_action('admin_enqueue_scripts', 'admin_style');
 
-// Mail
+// Mail (Configured from TypeRocket Theme Options)
 add_action( 'phpmailer_init', 'my_phpmailer_example' );
 function my_phpmailer_example( $phpmailer ) {
-    $phpmailer->isSMTP();     
-    $phpmailer->Host = tr_options_field('tr_theme_options.smtp_host');
-    $phpmailer->SMTPAuth = tr_options_field('tr_theme_options.authentication');  // Force it to use Username and Password to authenticate
-    $phpmailer->Port = tr_options_field('tr_theme_options.smtp_port');
-    $phpmailer->Username = tr_options_field('tr_theme_options.username');
-    $phpmailer->Password = tr_options_field('tr_theme_options.smtp_password');
+    $smtp_host = tr_options_field('tr_theme_options.smtp_host');
+    if ( !empty($smtp_host) ) {
+        $phpmailer->isSMTP();
+        $phpmailer->Host = trim($smtp_host);
 
-    // Additional settings…
-    $encryption= tr_options_field('tr_theme_options.encryption');
-    $phpmailer->SMTPSecure =$encryption; // Choose SSL or TLS, if necessary for your server    
-    if(empty($encryption)){
-        $phpmailer->SMTPAutoTLS = false;
+        $username = trim((string) tr_options_field('tr_theme_options.username'));
+        $password = trim((string) tr_options_field('tr_theme_options.smtp_password'));
+        $auth_opt = tr_options_field('tr_theme_options.authentication');
+
+        // Auto-enable SMTPAuth if username and password are provided
+        $phpmailer->SMTPAuth = (!empty($username) && !empty($password)) ? true : (bool) $auth_opt;
+
+        $port = intval(tr_options_field('tr_theme_options.smtp_port')) ?: 587;
+        $encryption = strtolower(trim((string) tr_options_field('tr_theme_options.encryption')));
+
+        // Auto-correct port/encryption mismatches (e.g., port 587 with SSL -> TLS)
+        if ($port === 587 && $encryption === 'ssl') {
+            $encryption = 'tls';
+        } elseif ($port === 465 && (empty($encryption) || $encryption === 'tls')) {
+            $encryption = 'ssl';
+        }
+
+        $phpmailer->Port = $port;
+        $phpmailer->Username = $username;
+        $phpmailer->Password = $password;
+
+        if ( !empty($encryption) ) {
+            $phpmailer->SMTPSecure = $encryption;
+            $phpmailer->SMTPAutoTLS = true;
+        } else {
+            $phpmailer->SMTPSecure = '';
+            $phpmailer->SMTPAutoTLS = false;
+        }
     }
-    $phpmailer->From = tr_options_field('tr_theme_options.from_email');
-    $phpmailer->FromName = get_bloginfo('name');                     
+
+    $raw_from = trim((string) tr_options_field('tr_theme_options.from_email'));
+    $username = trim((string) tr_options_field('tr_theme_options.username'));
+
+    // If from_email is not a valid email (e.g. user entered "DoubleT"), use username or admin_email
+    if ( is_email($raw_from) ) {
+        $from_email = $raw_from;
+    } elseif ( is_email($username) ) {
+        $from_email = $username;
+    } else {
+        $from_email = get_option('admin_email');
+    }
+
+    // If user entered a name in from_email, use it as FromName, else blog name
+    if ( !empty($raw_from) && !is_email($raw_from) ) {
+        $from_name = $raw_from;
+    } else {
+        $from_name = get_bloginfo('name') ?: 'Double T Metal Co., Ltd';
+    }
+
+    $phpmailer->From = $from_email;
+    $phpmailer->FromName = $from_name;
+    $phpmailer->CharSet = 'UTF-8';
 }
 
 function cc_mime_types($mimes) {

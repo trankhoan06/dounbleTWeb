@@ -54,8 +54,30 @@ function themax_enqueue_assets() {
     // Lenis is optional at runtime: the site keeps native scrolling if the CDN
     // is unavailable, while supported browsers receive smooth wheel scrolling.
     wp_enqueue_script('lenis', 'https://cdn.jsdelivr.net/npm/lenis@1.3.17/dist/lenis.min.js', array(), '1.3.17', true);
-    $global_js_ver = file_exists(get_template_directory() . '/js/global.js') ? filemtime(get_template_directory() . '/js/global.js') : '1.0.0';
     wp_enqueue_script('global-js', $theme_dir . '/js/global.js', array('lenis'), $global_js_ver, true);
+    // Google reCAPTCHA v3 from Theme Options
+    $recaptcha_site_key = trim((string) tr_options_field('tr_theme_options.recaptcha_site_key'));
+    if (!empty($recaptcha_site_key)) {
+        wp_enqueue_script('google-recaptcha-v3', 'https://www.google.com/recaptcha/api.js?render=' . esc_attr($recaptcha_site_key), array(), null, true);
+    }
+
+    $current_lang = function_exists('pll_current_language') ? pll_current_language('slug') : 'en';
+    $current_lang = strtolower($current_lang ?: 'en');
+
+    wp_localize_script('global-js', 'doublet_ajax', array(
+        'ajax_url'           => admin_url('admin-ajax.php'),
+        'nonce'              => wp_create_nonce('doublet_consultation_nonce'),
+        'contact_nonce'      => wp_create_nonce('doublet_contact_nonce'),
+        'career_nonce'       => wp_create_nonce('doublet_career_nonce'),
+        'recaptcha_site_key' => $recaptcha_site_key,
+        'current_lang'       => $current_lang,
+        'i18n'     => array(
+            'sending'        => ($current_lang === 'vi') ? 'ĐANG GỬI...' : 'SENDING...',
+            'success'        => ($current_lang === 'vi') ? 'GỬI THÀNH CÔNG!' : 'SENT SUCCESSFULLY!',
+            'error'          => ($current_lang === 'vi') ? 'GỬI THẤT BẠI, VUI LÒNG THỬ LẠI!' : 'FAILED TO SEND, PLEASE TRY AGAIN!',
+            'select_service' => ($current_lang === 'vi') ? 'Vui lòng chọn dịch vụ' : 'Please select a service',
+        )
+    ));
 
     // Swiper is 150 KB and is only used by the templates below. Loading it
     // globally delayed every other page unnecessarily.
@@ -80,8 +102,10 @@ function themax_enqueue_assets() {
 
     // Template specific CSS & JS
     if (is_page_template('page-templates/career-detail.php') || is_singular('career') || is_singular('careers')) {
-        wp_enqueue_style('doublet-career-detail', $theme_dir . '/css/career-detail.css', array(), '1.0.0');
-        wp_enqueue_script('doublet-career-detail-js', $theme_dir . '/js/career-detail.js', array('global-js'), '1.0.0', true);
+        $career_css_ver = file_exists(get_template_directory() . '/css/career-detail.css') ? filemtime(get_template_directory() . '/css/career-detail.css') : '1.0.0';
+        $career_js_ver = file_exists(get_template_directory() . '/js/career-detail.js') ? filemtime(get_template_directory() . '/js/career-detail.js') : '1.0.0';
+        wp_enqueue_style('doublet-career-detail', $theme_dir . '/css/career-detail.css', array(), $career_css_ver);
+        wp_enqueue_script('doublet-career-detail-js', $theme_dir . '/js/career-detail.js', array('global-js'), $career_js_ver, true);
     }
     elseif (is_page_template('page-templates/careers.php')) {
         wp_enqueue_style('doublet-careers', $theme_dir . '/css/careers.css', array(), '1.0.0');
@@ -93,8 +117,10 @@ function themax_enqueue_assets() {
         wp_enqueue_style('doublet-commitment', $theme_dir . '/css/commitment.css', array(), $commitment_css_ver);
         wp_enqueue_script('doublet-commitment-js', $theme_dir . '/js/commitment.js', array('global-js'), '1.0.0', true);
     }
-    elseif (is_page_template('page-templates/contact.php')) {
+    elseif (is_page_template('page-templates/contact.php') || is_page_template('contact.php')) {
         wp_enqueue_style('doublet-contact', $theme_dir . '/css/contact.css', array(), '1.0.0');
+        $contact_js_ver = file_exists(get_template_directory() . '/js/contact.js') ? filemtime(get_template_directory() . '/js/contact.js') : '1.0.0';
+        wp_enqueue_script('doublet-contact-js', $theme_dir . '/js/contact.js', array('global-js'), $contact_js_ver, true);
     }
     elseif ($is_home_page) {
         wp_enqueue_style('aos', 'https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css', array(), '2.3.4');

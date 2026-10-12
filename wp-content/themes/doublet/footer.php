@@ -329,7 +329,7 @@ $footer_service_items = function_exists('themax_get_nav_menu_items') ? themax_ge
         </svg>
     </button>
 
-    <div class="modal-backdrop" id="consultationModal" style="display: none;" aria-hidden="true" role="dialog" aria-modal="true"
+    <div class="modal-backdrop" id="consultationModal" aria-hidden="true" role="dialog" aria-modal="true"
         aria-labelledby="modalTitle" data-lenis-prevent>
         <div class="modal-container" data-lenis-prevent>
             <button class="modal-close-btn cut-diagonal" id="modalCloseBtn" aria-label="Close modal">
@@ -429,11 +429,16 @@ $footer_service_items = function_exists('themax_get_nav_menu_items') ? themax_ge
                 </div>
 
                 <div class="modal-col-right">
-                    <form class="modal-form" id="consultationForm">
+                    <form class="modal-form" id="consultationForm" method="POST">
+                        <input type="hidden" name="action" value="doublet_submit_consultation">
+                        <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'doublet_consultation_nonce' ) ); ?>">
+                        <input type="hidden" name="lang" value="<?php echo esc_attr( $current_lang ); ?>">
+                        <div class="modal-form-alert" id="consultationAlert" style="display: none; margin-bottom: 1.6rem; padding: 1.2rem 1.6rem; font-size: 1.3rem; line-height: 1.5; font-family: 'Mona Sans', sans-serif;"></div>
+
                         <div class="modal-form-group">
                             <label for="fullName" class="req txt txt-13 txt-14_mb txt-semi modal-label-field"><?php echo esc_html($modal_form_name_label); ?>
                                 <span class="req">*</span></label>
-                            <input type="text" id="fullName" class="modal-input txt txt-14" placeholder="<?php echo esc_attr($modal_form_name_placeholder); ?>"
+                            <input type="text" id="fullName" name="fullName" class="modal-input txt txt-14" placeholder="<?php echo esc_attr($modal_form_name_placeholder); ?>"
                                 required>
                         </div>
 
@@ -441,14 +446,14 @@ $footer_service_items = function_exists('themax_get_nav_menu_items') ? themax_ge
                             <div class="modal-form-group">
                                 <label for="email" class="req txt txt-13 txt-14_mb txt-semi modal-label-field"><?php echo esc_html($modal_form_email_label); ?>
                                     <span class="req">*</span></label>
-                                <input type="email" id="email" class="modal-input txt txt-14"
+                                <input type="email" id="email" name="email" class="modal-input txt txt-14"
                                     placeholder="<?php echo esc_attr($modal_form_email_placeholder); ?>" required>
                             </div>
                             <div class="modal-form-group">
                                 <label for="phoneNumber"
                                     class="req txt txt-13 txt-14_mb txt-semi modal-label-field"><?php echo esc_html($modal_form_phone_label); ?>
                                     <span class="req">*</span></label>
-                                <input type="tel" id="phoneNumber" class="modal-input txt txt-14"
+                                <input type="tel" id="phoneNumber" name="phoneNumber" class="modal-input txt txt-14"
                                     placeholder="<?php echo esc_attr($modal_form_phone_placeholder); ?>" required>
                             </div>
                         </div>
@@ -456,7 +461,7 @@ $footer_service_items = function_exists('themax_get_nav_menu_items') ? themax_ge
                         <div class="modal-form-group">
                             <label for="company"
                                 class="req txt txt-13 txt-14_mb txt-semi modal-label-field"><?php echo esc_html($modal_form_company_label); ?></label>
-                            <input type="text" id="company" class="modal-input txt txt-14"
+                            <input type="text" id="company" name="company" class="modal-input txt txt-14"
                                 placeholder="<?php echo esc_attr($modal_form_company_placeholder); ?>">
                         </div>
 
